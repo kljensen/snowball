@@ -69,3 +69,54 @@ func preprocessWord(word string) string {
 
 	return word
 }
+
+// Finds the region after the first non-vowel following a vowel,
+// or is the null region at the end of the word if there is no
+// such non-vowel.
+//
+func vnvSuffix(word string) string {
+	runes := []rune(word)
+	// uscular
+	for i := 1; i < len(runes); i++ {
+		if isLowerVowel(runes[i-1]) && !isLowerVowel(runes[i]) {
+			return string(runes[i+1:])
+		}
+	}
+	return ""
+}
+
+// R1 is the region after the first non-vowel following a vowel,
+// or is the null region at the end of the word if there is no
+// such non-vowel.
+//
+// R2 is the region after the first non-vowel following a vowel
+// in R1, or is the null region at the end of the word if there
+// is no such non-vowel.
+//
+// See http://snowball.tartarus.org/texts/r1r2.html
+//
+func r1r2(word string) (r1, r2 string) {
+
+	specialPrefixes := []string{"gener", "commun", "arsen"}
+	hasSpecialPrefix := false
+	specialPrefix := ""
+	for _, specialPrefix = range specialPrefixes {
+		if strings.HasPrefix(word, specialPrefix) {
+			hasSpecialPrefix = true
+			break
+		}
+	}
+
+	if hasSpecialPrefix {
+		if specialPrefix == "commun" {
+			r1 = word[6:]
+		} else {
+			r1 = word[5:]
+		}
+
+	} else {
+		r1 = vnvSuffix(word)
+	}
+	r2 = vnvSuffix(r1)
+	return
+}
