@@ -17,15 +17,22 @@ func isShortWord(word, r1 string) (isShort bool) {
 
 	if numRunes == 2 {
 		if isLowerVowel(runes[0]) && !isLowerVowel(runes[1]) {
+
+			// The word is just two letters, starting with a 
+			// vowel and ending with a non-vowel.
+
 			isShort = true
 			return
 		}
 	} else if numRunes >= 3 {
+
 		r3 := runes[len(runes)-1]
 		r2 := runes[len(runes)-2]
 		r1 := runes[len(runes)-3]
 		// w, x, Y rune codepoints = 119, 120, 89
 		if !isLowerVowel(r3) && r3 != 119 && r3 != 120 && r3 != 89 && isLowerVowel(r2) && !isLowerVowel(r1) {
+
+			// The word ends in non-vowel, vowel, non-vowel not in wXY
 			isShort = true
 			return
 		}
