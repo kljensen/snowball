@@ -1,9 +1,5 @@
 package snowball
 
-import (
-	"strings"
-)
-
 // Step 1a is noralization of various special "s"-endings.
 //
 func step1a(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
@@ -11,34 +7,27 @@ func step1a(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
 	r1out = r1in
 	r2out = r2in
 
-	switch {
-	case strings.HasSuffix(wordIn, "sses"):
-		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordIn, r1in, r2in, "sses", "ss", true)
+	suffix, found := firstSuffix(wordIn, "sses", "ied", "ies", "s")
+	if found == false {
+		return
+	}
+	switch suffix {
+	case "sses":
+		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, suffix, "ss", true)
 
-	case strings.HasSuffix(wordIn, "ied"):
-	case strings.HasSuffix(wordIn, "ies"):
-		repl := "i"
+	case "ied":
+	case "ies":
+		var repl string
 		if len(wordIn) == 4 {
 			repl = "ie"
-		}
-		var suffix string
-		if wordIn[len(wordIn)-1:] == "d" {
-			suffix = "ied"
 		} else {
-			suffix = "ies"
+			repl = "i"
 		}
-		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, repl, true)
+		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, suffix, repl, true)
 
-	case strings.HasSuffix(wordIn, "s"):
-		runes := []rune(wordIn[:len(wordIn)-1])
-		hadVowel := false
-		for i := 0; i < len(runes)-2; i++ {
-			if isLowerVowel(runes[i]) {
-				hadVowel = true
-			}
-		}
-		if hadVowel {
-			wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordIn, r1in, r2in, "s", "", true)
+	case "s":
+		if hasVowel(wordIn, 0, 2) {
+			wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, "s", "", true)
 		}
 	}
 	return

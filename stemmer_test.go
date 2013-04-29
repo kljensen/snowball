@@ -171,6 +171,7 @@ func Test_r1r2(t *testing.T) {
 		{"communism", "ism", "m"},
 		{"arsenal", "al", ""},
 		{"generalities", "alities", "ities"},
+		{"embed", "bed", ""},
 	}
 	for _, testCase := range wordTests {
 		r1, r2 := r1r2(testCase.word)
@@ -246,6 +247,69 @@ func Test_step1a(t *testing.T) {
 		wordOut, r1out, r2out := step1a(testCase.wordIn, testCase.r1in, testCase.r2in)
 		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
 			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
+		}
+	}
+}
+
+func Test_hasVowel(t *testing.T) {
+	var wordTests = []struct {
+		word      string
+		leftSkip  int
+		rightSkip int
+		result    bool
+	}{
+		{"television", 0, 0, true},
+		{"xxxaxxx", 0, 0, true},
+		{"xxxaxxx", 1, 1, true},
+		{"xxxaxxx", 1, 4, false},
+		{"xxxaxxx", 4, 1, false},
+		{"xxxaxxx", 4, 10, false},
+		{"xxxaxxx", 4, 5, false},
+		{"axxxxxx", 1, 0, false},
+		{"xxxxxxa", 0, 1, false},
+	}
+	for _, testCase := range wordTests {
+		result := hasVowel(testCase.word, testCase.leftSkip, testCase.rightSkip)
+		if result != testCase.result {
+			t.Errorf("Expected %v, but got %v for \"{%v, %v, %v}\"", testCase.result, result, testCase.word, testCase.leftSkip, testCase.rightSkip)
+		}
+	}
+}
+
+func Test_isShortWord(t *testing.T) {
+	// bed, shed and shred are short words, bead, embed, beds are not short words. 
+	var wordTests = []struct {
+		word    string
+		isShort bool
+	}{
+		{"bed", true},
+		{"shed", true},
+		{"shred", true},
+		{"bead", false},
+		{"embed", false},
+		{"beds", false},
+	}
+	for _, testCase := range wordTests {
+		r1, _ := r1r2(testCase.word)
+		isShort := isShortWord(testCase.word, r1)
+		if isShort != testCase.isShort {
+			t.Errorf("Expected %v, but got %v for \"{%v, %v}\"", testCase.isShort, isShort, testCase.word, r1)
+		}
+	}
+}
+func Test_firstSuffix(t *testing.T) {
+	var wordTests = []struct {
+		word      string
+		sufficies []string
+		suffix    string
+		found     bool
+	}{
+		{"mistresses", []string{"tresses", "ses"}, "tresses", true},
+	}
+	for _, testCase := range wordTests {
+		suffix, found := firstSuffix(testCase.word, testCase.sufficies...)
+		if suffix != testCase.suffix || found != testCase.found {
+			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.suffix, testCase.found, suffix, found)
 		}
 	}
 }

@@ -4,6 +4,19 @@ import (
 	"strings"
 )
 
+// Returns the first matching suffix
+//
+func firstSuffix(word string, sufficies ...string) (suffix string, found bool) {
+	for _, suffix = range sufficies {
+		if strings.HasSuffix(word, suffix) {
+			found = true
+			return
+		}
+	}
+	suffix = ""
+	return
+}
+
 // Replaces a `suffix` on each of `wordIn`, `r1in`, and `r2in`,
 // with `repl`. To indicate that `wordIn` is known to end in `suffix`,
 // set `known` to true.  Here, we assume that `r2in` is a suffix of
@@ -16,10 +29,13 @@ func replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, repl string, known bool) 
 	r2out = r2in
 	if known || strings.HasSuffix(wordIn, suffix) {
 		wordOut = wordIn[:len(wordIn)-len(suffix)] + repl
-		if strings.HasSuffix(r1in, suffix) {
-			r1out = r1in[:len(r1in)-len(suffix)] + repl
-			if strings.HasSuffix(r2in, suffix) {
-				r2out = r2in[:len(r2in)-len(suffix)] + repl
+		suffixLen := len(suffix)
+		r1inLen := len(r1in)
+		if suffixLen < r1inLen {
+			r1out = r1in[:r1inLen-suffixLen] + repl
+			r2inLen := len(r2in)
+			if suffixLen < r2inLen {
+				r2out = r2in[:r2inLen-suffixLen] + repl
 			} else {
 				r2out = ""
 			}

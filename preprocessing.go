@@ -4,6 +4,7 @@ import (
 	// "errors"
 	// "log"
 	"strings"
+	"unicode/utf8"
 )
 
 // Replaces all different kinds of apostrophes with a single
@@ -16,6 +17,36 @@ func normalizeApostrophes(inputWord string) string {
 		outputWord = strings.Replace(outputWord, apostrophe, "\x27", -1)
 	}
 	return outputWord
+}
+
+// Test if a string has a rune, skipping parts of the string
+// that are less than `leftSkip` of the beginning and `rightSkip`
+// of the end.
+//
+func hasRune(word string, leftSkip int, rightSkip int, testRunes ...rune) bool {
+	leftMin := leftSkip
+	rightMax := utf8.RuneCountInString(word) - rightSkip
+	for i, r := range word {
+		if i < leftMin {
+			continue
+		} else if i >= rightMax {
+			break
+		}
+		for _, tr := range testRunes {
+			if r == tr {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// Test if a string has a vowel, skipping parts of the string
+// that are less than `leftSkip` of the beginning and `rightSkip`
+// of the end.  (All counts in runes.)
+//
+func hasVowel(word string, leftSkip int, rightSkip int) bool {
+	return hasRune(word, leftSkip, rightSkip, 97, 101, 105, 111, 117, 121)
 }
 
 // Checks if a rune is a lowercase English vowel.

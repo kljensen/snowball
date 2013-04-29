@@ -5,8 +5,6 @@ package snowball
 
 const vowels string = "aeiouy"
 
-var doubleConsonants = [...]string{"bb", "dd", "ff", "gg", "mm", "nn",
-	"pp", "rr", "tt"}
 var liEnding = "cdeghkmnrt"
 var step1aSuffixes = [...]string{"sses", "ied", "ies", "us", "ss", "s"}
 var step1bSuffixes = [...]string{"eedly", "ingly", "edly", "eed", "ing", "ed"}
