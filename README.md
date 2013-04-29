@@ -13,9 +13,25 @@ This is based almost entirely on the [NLTK](http://nltk.org/)
 version of
 [Snowball](https://raw.github.com/nltk/nltk/master/nltk/stem/snowball.py).
 
+## Warnings
+
+I may have variously treated strings as utf8 and byte arrays.  This needs
+to be remedied.  The reason that I've bothered with unicode is because
+I'd like to (some day) implement the stemmers for other languages and 
+I figured some of the code could be reused.
+
+## Notes
+
+I tried to avoid maps and regular expressions for 1) kicks and 2) because
+I thought they'd negatively impact the speed.
+
+## Authors
+
+* Kyle Jensen (kljensen@gmail.com, @DataKyle)
+
 ## License (MIT)
 
-Copyright (c) 2013 Kyle L. Jensen (kljensen@gmail.com)
+Copyright (c) 2013 the Authors (see above)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
