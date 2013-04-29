@@ -165,6 +165,9 @@ func Test_r1r2(t *testing.T) {
 		{"beauty", "y", ""},
 		{"eucharist", "harist", "ist"},
 		{"animadversion", "imadversion", "adversion"},
+		{"mistresses", "tresses", "ses"},
+		{"sprinkled", "kled", ""},
+		// Special cases below
 		{"communism", "ism", "m"},
 		{"arsenal", "al", ""},
 		{"generalities", "alities", "ities"},
@@ -173,6 +176,34 @@ func Test_r1r2(t *testing.T) {
 		r1, r2 := r1r2(testCase.word)
 		if r1 != testCase.r1 || r2 != testCase.r2 {
 			t.Errorf("Expected \"{%v, %v}\", but got \"{%v, %v}\"", testCase.r1, testCase.r2, r1, r2)
+		}
+	}
+}
+
+func Test_replaceWordR1R2Suffix(t *testing.T) {
+	var wordTests = []struct {
+		wordIn   string
+		r1in     string
+		r2in     string
+		suffix   string
+		repl     string
+		known    bool
+		wordOut  string
+		r1out    string
+		r2out    string
+		replaced bool
+	}{
+		{"animadversion", "imadversion", "adversion", "version", "", false, "animad", "imad", "ad", true},
+		{"animadversion", "imadversion", "adversion", "version", "", true, "animad", "imad", "ad", true},
+		{"animadversion", "imadversion", "", "version", "", true, "animad", "imad", "", true},
+		{"animadversion", "imadversion", "adversion", "version", "xx", false, "animadxx", "imadxx", "adxx", true},
+		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
+		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
+	}
+	for _, testCase := range wordTests {
+		wordOut, r1out, r2out, replaced := replaceWordR1R2Suffix(testCase.wordIn, testCase.r1in, testCase.r2in, testCase.suffix, testCase.repl, testCase.known)
+		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out || replaced != testCase.replaced {
+			t.Errorf("Expected \"{%v, %v, %v, %v}\", but got \"{%v, %v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, testCase.replaced, wordOut, r1out, r2out, replaced)
 		}
 	}
 }
@@ -192,6 +223,27 @@ func Test_step0(t *testing.T) {
 	}
 	for _, testCase := range wordTests {
 		wordOut, r1out, r2out := step0(testCase.wordIn, testCase.r1in, testCase.r2in)
+		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
+			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
+		}
+	}
+}
+
+func Test_step1a(t *testing.T) {
+	var wordTests = []struct {
+		wordIn  string
+		r1in    string
+		r2in    string
+		wordOut string
+		r1out   string
+		r2out   string
+	}{
+		{"ties", "ties", "ties", "tie", "tie", "tie"},
+		{"cries", "cries", "cries", "cri", "cri", "cri"},
+		{"mistresses", "tresses", "ses", "mistress", "tress", ""},
+	}
+	for _, testCase := range wordTests {
+		wordOut, r1out, r2out := step1a(testCase.wordIn, testCase.r1in, testCase.r2in)
 		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
 			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
 		}
