@@ -200,6 +200,7 @@ func Test_replaceWordR1R2Suffix(t *testing.T) {
 		{"animadversion", "imadversion", "adversion", "version", "xx", false, "animadxx", "imadxx", "adxx", true},
 		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
 		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
+		{"vett", "t", "", "tt", "t", true, "vet", "", "", true},
 	}
 	for _, testCase := range wordTests {
 		wordOut, r1out, r2out, replaced := replaceWordR1R2Suffix(testCase.wordIn, testCase.r1in, testCase.r2in, testCase.suffix, testCase.repl, testCase.known)
@@ -207,43 +208,6 @@ func Test_replaceWordR1R2Suffix(t *testing.T) {
 			t.Errorf("Expected \"{%v, %v, %v, %v}\", but got \"{%v, %v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, testCase.replaced, wordOut, r1out, r2out, replaced)
 		}
 	}
-}
-
-type stepFunc func(string, string, string) (string, string, string)
-type stepTest struct {
-	wordIn  string
-	r1in    string
-	r2in    string
-	wordOut string
-	r1out   string
-	r2out   string
-}
-
-func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
-	for _, testCase := range tcs {
-		wordOut, r1out, r2out := f(testCase.wordIn, testCase.r1in, testCase.r2in)
-		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
-			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
-		}
-	}
-}
-
-func Test_step0(t *testing.T) {
-	var testCases = []stepTest{
-		{"general's", "al's", "", "general", "al", ""},
-		{"general's'", "al's'", "", "general", "al", ""},
-		{"spices'", "es'", "", "spices", "es", ""},
-	}
-	runStepTest(t, step0, testCases)
-}
-
-func Test_step1a(t *testing.T) {
-	var testCases = []stepTest{
-		{"ties", "ties", "ties", "tie", "tie", "tie"},
-		{"cries", "cries", "cries", "cri", "cri", "cri"},
-		{"mistresses", "tresses", "ses", "mistress", "tress", ""},
-	}
-	runStepTest(t, step1a, testCases)
 }
 
 func Test_hasVowel(t *testing.T) {
@@ -307,4 +271,59 @@ func Test_firstSuffix(t *testing.T) {
 			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.suffix, testCase.found, suffix, found)
 		}
 	}
+}
+
+type stepFunc func(string, string, string) (string, string, string)
+type stepTest struct {
+	wordIn  string
+	r1in    string
+	r2in    string
+	wordOut string
+	r1out   string
+	r2out   string
+}
+
+func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
+	for _, testCase := range tcs {
+		wordOut, r1out, r2out := f(testCase.wordIn, testCase.r1in, testCase.r2in)
+		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
+			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
+		}
+	}
+}
+
+func Test_step0(t *testing.T) {
+	var testCases = []stepTest{
+		{"general's", "al's", "", "general", "al", ""},
+		{"general's'", "al's'", "", "general", "al", ""},
+		{"spices'", "es'", "", "spices", "es", ""},
+	}
+	runStepTest(t, step0, testCases)
+}
+
+func Test_step1a(t *testing.T) {
+	var testCases = []stepTest{
+		{"ties", "ties", "ties", "tie", "tie", "tie"},
+		{"cries", "cries", "cries", "cri", "cri", "cri"},
+		{"mistresses", "tresses", "ses", "mistress", "tress", ""},
+	}
+	runStepTest(t, step1a, testCases)
+}
+
+func Test_step1b(t *testing.T) {
+
+	// I could find immediately conjure up true words to
+	// which these cases apply; so, I made some up.
+
+	var testCases = []stepTest{
+		{"exxeedly", "xxeedly", "", "exxee", "xxee", ""},
+		{"exxeed", "xxeed", "", "exxee", "xxee", ""},
+		{"luxuriated", "uriated", "iated", "luxuriate", "uriate", "iate"},
+		{"luxuribled", "uribled", "ibled", "luxurible", "urible", "ible"},
+		{"luxuriized", "uriized", "iized", "luxuriize", "uriize", "iize"},
+		{"luxuriedly", "uriedly", "iedly", "luxuri", "uri", "i"},
+		{"vetted", "ted", "", "vet", "", ""},
+		{"hopping", "ping", "", "hop", "", ""},
+	}
+	runStepTest(t, step1b, testCases)
 }

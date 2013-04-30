@@ -52,6 +52,14 @@ func step1b(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
 
 	suffix, found = firstSuffix(wordIn, "eedly", "eed")
 	if found {
+
+		// Notice that, the original algorithm is oddly
+		// articulated at this step and says, if we found
+		// one of these sufficies, to "replace by ee if in R1".
+		// The NLTK implementation replaces by "ee" in each
+		// of `wordOut`, `r1out`, `r2out`, which is what we've
+		// done here.
+
 		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, suffix, "ee", true)
 		return
 	}
@@ -60,7 +68,6 @@ func step1b(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
 	if found {
 		if hasVowel(wordIn, 0, len(suffix)) {
 			wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, suffix, "", true)
-
 			var (
 				newSuffix      string
 				newSuffixFound bool
@@ -69,11 +76,14 @@ func step1b(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
 			// Check for special ending
 			newSuffix, newSuffixFound = firstSuffix(wordOut, "at", "bl", "iz")
 			if newSuffixFound {
-				wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, suffix, suffix+"e", true)
+				wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, newSuffix, newSuffix+"e", true)
 				return
 			}
 
-			// Check for double consonant ending
+			// Check for double consonant ending.  Note that, the original algorithm
+			// implies that all double consonant endings should be removed; however,
+			// the NLTK implementation only removes the following sufficies.
+			//
 			newSuffix, newSuffixFound = firstSuffix(wordOut, "bb", "dd", "ff", "gg",
 				"mm", "nn", "pp", "rr", "tt")
 			if newSuffixFound {
@@ -94,61 +104,3 @@ func step1b(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
 	}
 	return
 }
-
-// for suffix in self.__step1b_suffixes:
-//     if word.endswith(suffix):
-//         if suffix in ("eed", "eedly"):
-
-//             if r1.endswith(suffix):
-//                 word = "".join((word[:-len(suffix)], "ee"))
-
-//                 if len(r1) >= len(suffix):
-//                     r1 = "".join((r1[:-len(suffix)], "ee"))
-//                 else:
-//                     r1 = ""
-
-//                 if len(r2) >= len(suffix):
-//                     r2 = "".join((r2[:-len(suffix)], "ee"))
-//                 else:
-//                     r2 = ""
-//         else:
-//             for letter in word[:-len(suffix)]:
-//                 if letter in self.__vowels:
-//                     step1b_vowel_found = True
-//                     break
-
-//             if step1b_vowel_found:
-//                 word = word[:-len(suffix)]
-//                 r1 = r1[:-len(suffix)]
-//                 r2 = r2[:-len(suffix)]
-
-//                 if word.endswith(("at", "bl", "iz")):
-//                     word = "".join((word, "e"))
-//                     r1 = "".join((r1, "e"))
-
-//                     if len(word) > 5 or len(r1) >=3:
-//                         r2 = "".join((r2, "e"))
-
-//                 elif word.endswith(self.__double_consonants):
-//                     word = word[:-1]
-//                     r1 = r1[:-1]
-//                     r2 = r2[:-1]
-
-//                 elif ((r1 == "" and len(word) >= 3 and
-//                        word[-1] not in self.__vowels and
-//                        word[-1] not in "wxY" and
-//                        word[-2] in self.__vowels and
-//                        word[-3] not in self.__vowels)
-//                       or
-//                       (r1 == "" and len(word) == 2 and
-//                        word[0] in self.__vowels and
-//                        word[1] not in self.__vowels)):
-
-//                     word = "".join((word, "e"))
-
-//                     if len(r1) > 0:
-//                         r1 = "".join((r1, "e"))
-
-//                     if len(r2) > 0:
-//                         r2 = "".join((r2, "e"))
-//         break

@@ -27,15 +27,15 @@ func replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, repl string, known bool) 
 	wordOut = wordIn
 	r1out = r1in
 	r2out = r2in
+	suffixLen := len(suffix)
 	if known || strings.HasSuffix(wordIn, suffix) {
-		wordOut = wordIn[:len(wordIn)-len(suffix)] + repl
-		suffixLen := len(suffix)
-		r1inLen := len(r1in)
-		if suffixLen < r1inLen {
-			r1out = r1in[:r1inLen-suffixLen] + repl
-			r2inLen := len(r2in)
-			if suffixLen < r2inLen {
-				r2out = r2in[:r2inLen-suffixLen] + repl
+		wordOut = wordIn[:len(wordIn)-suffixLen] + repl
+		r1len := len(r1in)
+		if suffixLen <= r1len {
+			r1out = r1in[:r1len-suffixLen] + repl
+			r2len := len(r2in)
+			if suffixLen <= r2len {
+				r2out = r2in[:r2len-suffixLen] + repl
 			} else {
 				r2out = ""
 			}
