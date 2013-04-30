@@ -210,55 +210,44 @@ func Test_replaceWordR1R2Suffix(t *testing.T) {
 }
 
 type stepFunc func(string, string, string) (string, string, string)
+type stepTest struct {
+	wordIn  string
+	r1in    string
+	r2in    string
+	wordOut string
+	r1out   string
+	r2out   string
+}
 
-func runStepTest(t *testing.T, f stepFunc, tcs []testCases) {
-
+func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
+	for _, testCase := range tcs {
+		wordOut, r1out, r2out := f(testCase.wordIn, testCase.r1in, testCase.r2in)
+		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
+			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
+		}
+	}
 }
 
 func Test_step0(t *testing.T) {
-	var wordTests = []struct {
-		wordIn  string
-		r1in    string
-		r2in    string
-		wordOut string
-		r1out   string
-		r2out   string
-	}{
+	var testCases = []stepTest{
 		{"general's", "al's", "", "general", "al", ""},
 		{"general's'", "al's'", "", "general", "al", ""},
 		{"spices'", "es'", "", "spices", "es", ""},
 	}
-	for _, testCase := range wordTests {
-		wordOut, r1out, r2out := step0(testCase.wordIn, testCase.r1in, testCase.r2in)
-		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
-			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
-		}
-	}
+	runStepTest(t, step0, testCases)
 }
 
 func Test_step1a(t *testing.T) {
-	var wordTests = []struct {
-		wordIn  string
-		r1in    string
-		r2in    string
-		wordOut string
-		r1out   string
-		r2out   string
-	}{
+	var testCases = []stepTest{
 		{"ties", "ties", "ties", "tie", "tie", "tie"},
 		{"cries", "cries", "cries", "cri", "cri", "cri"},
 		{"mistresses", "tresses", "ses", "mistress", "tress", ""},
 	}
-	for _, testCase := range wordTests {
-		wordOut, r1out, r2out := step1a(testCase.wordIn, testCase.r1in, testCase.r2in)
-		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out {
-			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, wordOut, r1out, r2out)
-		}
-	}
+	runStepTest(t, step1a, testCases)
 }
 
 func Test_hasVowel(t *testing.T) {
-	var wordTests = []struct {
+	var testCases = []struct {
 		word      string
 		leftSkip  int
 		rightSkip int
@@ -274,7 +263,7 @@ func Test_hasVowel(t *testing.T) {
 		{"axxxxxx", 1, 0, false},
 		{"xxxxxxa", 0, 1, false},
 	}
-	for _, testCase := range wordTests {
+	for _, testCase := range testCases {
 		result := hasVowel(testCase.word, testCase.leftSkip, testCase.rightSkip)
 		if result != testCase.result {
 			t.Errorf("Expected %v, but got %v for \"{%v, %v, %v}\"", testCase.result, result, testCase.word, testCase.leftSkip, testCase.rightSkip)
@@ -284,7 +273,7 @@ func Test_hasVowel(t *testing.T) {
 
 func Test_isShortWord(t *testing.T) {
 	// bed, shed and shred are short words, bead, embed, beds are not short words. 
-	var wordTests = []struct {
+	var testCases = []struct {
 		word    string
 		isShort bool
 	}{
@@ -295,7 +284,7 @@ func Test_isShortWord(t *testing.T) {
 		{"embed", false},
 		{"beds", false},
 	}
-	for _, testCase := range wordTests {
+	for _, testCase := range testCases {
 		r1, _ := r1r2(testCase.word)
 		isShort := isShortWord(testCase.word, r1)
 		if isShort != testCase.isShort {
@@ -304,7 +293,7 @@ func Test_isShortWord(t *testing.T) {
 	}
 }
 func Test_firstSuffix(t *testing.T) {
-	var wordTests = []struct {
+	var testCases = []struct {
 		word      string
 		sufficies []string
 		suffix    string
@@ -312,7 +301,7 @@ func Test_firstSuffix(t *testing.T) {
 	}{
 		{"mistresses", []string{"tresses", "ses"}, "tresses", true},
 	}
-	for _, testCase := range wordTests {
+	for _, testCase := range testCases {
 		suffix, found := firstSuffix(testCase.word, testCase.sufficies...)
 		if suffix != testCase.suffix || found != testCase.found {
 			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.suffix, testCase.found, suffix, found)
