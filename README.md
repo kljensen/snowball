@@ -11,7 +11,8 @@ This is a work in progress.  There has not been much progress.
 
 This is based almost entirely on the [NLTK](http://nltk.org/)
 version of
-[Snowball](https://raw.github.com/nltk/nltk/master/nltk/stem/snowball.py).
+[Snowball](https://raw.github.com/nltk/nltk/master/nltk/stem/snowball.py),
+which is described [here](http://snowball.tartarus.org/algorithms/english/stemmer.html).
 
 ## Warnings
 

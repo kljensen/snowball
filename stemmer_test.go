@@ -209,6 +209,12 @@ func Test_replaceWordR1R2Suffix(t *testing.T) {
 	}
 }
 
+type stepFunc func(string, string, string) (string, string, string)
+
+func runStepTest(t *testing.T, f stepFunc, tcs []testCases) {
+
+}
+
 func Test_step0(t *testing.T) {
 	var wordTests = []struct {
 		wordIn  string
