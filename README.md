@@ -26,13 +26,15 @@ I figured some of the code could be reused.
 I tried to avoid maps and regular expressions for 1) kicks and 2) because
 I thought they'd negatively impact the speed.
 
-## Authors
+
+## Contributors
 
 * Kyle Jensen (kljensen@gmail.com, @DataKyle)
+* Your name here should be here, seriously.
 
 ## License (MIT)
 
-Copyright (c) 2013 the Authors (see above)
+Copyright (c) 2013 the Contributors (see above)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
