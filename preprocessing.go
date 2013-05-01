@@ -1,62 +1,180 @@
 package snowball
 
 import (
-	// "errors"
-	// "log"
 	"strings"
-	"unicode/utf8"
 )
 
-// Replaces all different kinds of apostrophes with a single
-// kind: "\x27".
-//
-func normalizeApostrophes(inputWord string) string {
-	var apostrophes = [3]string{"\u2019", "\u2018", "\u201B"}
-	outputWord := inputWord
-	for _, apostrophe := range apostrophes {
-		outputWord = strings.Replace(outputWord, apostrophe, "\x27", -1)
-	}
-	return outputWord
+var specialWords = map[string]string{
+	"skis":       "ski",
+	"skies":      "sky",
+	"dying":      "die",
+	"lying":      "lie",
+	"tying":      "tie",
+	"idly":       "idl",
+	"gently":     "gentl",
+	"ugly":       "ugli",
+	"early":      "earli",
+	"only":       "onli",
+	"singly":     "singl",
+	"sky":        "sky",
+	"news":       "news",
+	"howe":       "howe",
+	"atlas":      "atlas",
+	"cosmos":     "cosmos",
+	"bias":       "bias",
+	"andes":      "andes",
+	"inning":     "inning",
+	"innings":    "inning",
+	"outing":     "outing",
+	"outings":    "outing",
+	"canning":    "canning",
+	"cannings":   "canning",
+	"herring":    "herring",
+	"herrings":   "herring",
+	"earring":    "earring",
+	"earrings":   "earring",
+	"proceed":    "proceed",
+	"proceeds":   "proceed",
+	"proceeded":  "proceed",
+	"proceeding": "proceed",
+	"exceed":     "exceed",
+	"exceeds":    "exceed",
+	"exceeded":   "exceed",
+	"exceeding":  "exceed",
+	"succeed":    "succeed",
+	"succeeds":   "succeed",
+	"succeeded":  "succeed",
+	"succeeding": "succeed",
 }
 
-// Test if a string has a rune, skipping parts of the string
-// that are less than `leftSkip` of the beginning and `rightSkip`
-// of the end.
-//
-func hasRune(word string, leftSkip int, rightSkip int, testRunes ...rune) bool {
-	leftMin := leftSkip
-	rightMax := utf8.RuneCountInString(word) - rightSkip
-	for i, r := range word {
-		if i < leftMin {
-			continue
-		} else if i >= rightMax {
-			break
-		}
-		for _, tr := range testRunes {
-			if r == tr {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-// Test if a string has a vowel, skipping parts of the string
-// that are less than `leftSkip` of the beginning and `rightSkip`
-// of the end.  (All counts in runes.)
-//
-func hasVowel(word string, leftSkip int, rightSkip int) bool {
-	return hasRune(word, leftSkip, rightSkip, 97, 101, 105, 111, 117, 121)
-}
-
-// Checks if a rune is a lowercase English vowel.
-//
-func isLowerVowel(r rune) bool {
-	switch r {
-	case 97, 101, 105, 111, 117, 121:
-		return true
-	}
-	return false
+var stopWords = map[string]bool{
+	"a":          true,
+	"about":      true,
+	"above":      true,
+	"after":      true,
+	"again":      true,
+	"against":    true,
+	"all":        true,
+	"am":         true,
+	"an":         true,
+	"and":        true,
+	"any":        true,
+	"are":        true,
+	"as":         true,
+	"at":         true,
+	"be":         true,
+	"because":    true,
+	"been":       true,
+	"before":     true,
+	"being":      true,
+	"below":      true,
+	"between":    true,
+	"both":       true,
+	"but":        true,
+	"by":         true,
+	"can":        true,
+	"did":        true,
+	"do":         true,
+	"does":       true,
+	"doing":      true,
+	"don":        true,
+	"down":       true,
+	"during":     true,
+	"each":       true,
+	"few":        true,
+	"for":        true,
+	"from":       true,
+	"further":    true,
+	"had":        true,
+	"has":        true,
+	"have":       true,
+	"having":     true,
+	"he":         true,
+	"her":        true,
+	"here":       true,
+	"hers":       true,
+	"herself":    true,
+	"him":        true,
+	"himself":    true,
+	"his":        true,
+	"how":        true,
+	"i":          true,
+	"if":         true,
+	"in":         true,
+	"into":       true,
+	"is":         true,
+	"it":         true,
+	"its":        true,
+	"itself":     true,
+	"just":       true,
+	"me":         true,
+	"more":       true,
+	"most":       true,
+	"my":         true,
+	"myself":     true,
+	"no":         true,
+	"nor":        true,
+	"not":        true,
+	"now":        true,
+	"of":         true,
+	"off":        true,
+	"on":         true,
+	"once":       true,
+	"only":       true,
+	"or":         true,
+	"other":      true,
+	"our":        true,
+	"ours":       true,
+	"ourselves":  true,
+	"out":        true,
+	"over":       true,
+	"own":        true,
+	"s":          true,
+	"same":       true,
+	"she":        true,
+	"should":     true,
+	"so":         true,
+	"some":       true,
+	"such":       true,
+	"t":          true,
+	"than":       true,
+	"that":       true,
+	"the":        true,
+	"their":      true,
+	"theirs":     true,
+	"them":       true,
+	"themselves": true,
+	"then":       true,
+	"there":      true,
+	"these":      true,
+	"they":       true,
+	"this":       true,
+	"those":      true,
+	"through":    true,
+	"to":         true,
+	"too":        true,
+	"under":      true,
+	"until":      true,
+	"up":         true,
+	"very":       true,
+	"was":        true,
+	"we":         true,
+	"were":       true,
+	"what":       true,
+	"when":       true,
+	"where":      true,
+	"which":      true,
+	"while":      true,
+	"who":        true,
+	"whom":       true,
+	"why":        true,
+	"will":       true,
+	"with":       true,
+	"you":        true,
+	"your":       true,
+	"yours":      true,
+	"yourself":   true,
+	"yourselves": true,
 }
 
 // Capitalize all 'Y's preceded by vowels or starting a word
@@ -69,6 +187,18 @@ func capitalizeYs(word string) string {
 		}
 	}
 	return string(runes)
+}
+
+// Replaces all different kinds of apostrophes with a single
+// kind: "\x27".
+//
+func normalizeApostrophes(inputWord string) string {
+	var apostrophes = [3]string{"\u2019", "\u2018", "\u201B"}
+	outputWord := inputWord
+	for _, apostrophe := range apostrophes {
+		outputWord = strings.Replace(outputWord, apostrophe, "\x27", -1)
+	}
+	return outputWord
 }
 
 // Takes an `inputWord` and applies various transformations
@@ -99,55 +229,4 @@ func preprocessWord(word string) string {
 	word = capitalizeYs(word)
 
 	return word
-}
-
-// Finds the region after the first non-vowel following a vowel,
-// or is the null region at the end of the word if there is no
-// such non-vowel.
-//
-func vnvSuffix(word string) string {
-	runes := []rune(word)
-	// uscular
-	for i := 1; i < len(runes); i++ {
-		if isLowerVowel(runes[i-1]) && !isLowerVowel(runes[i]) {
-			return string(runes[i+1:])
-		}
-	}
-	return ""
-}
-
-// R1 is the region after the first non-vowel following a vowel,
-// or is the null region at the end of the word if there is no
-// such non-vowel.
-//
-// R2 is the region after the first non-vowel following a vowel
-// in R1, or is the null region at the end of the word if there
-// is no such non-vowel.
-//
-// See http://snowball.tartarus.org/texts/r1r2.html
-//
-func r1r2(word string) (r1, r2 string) {
-
-	specialPrefixes := []string{"gener", "commun", "arsen"}
-	hasSpecialPrefix := false
-	specialPrefix := ""
-	for _, specialPrefix = range specialPrefixes {
-		if strings.HasPrefix(word, specialPrefix) {
-			hasSpecialPrefix = true
-			break
-		}
-	}
-
-	if hasSpecialPrefix {
-		if specialPrefix == "commun" {
-			r1 = word[6:]
-		} else {
-			r1 = word[5:]
-		}
-
-	} else {
-		r1 = vnvSuffix(word)
-	}
-	r2 = vnvSuffix(r1)
-	return
 }
