@@ -327,3 +327,13 @@ func Test_step1b(t *testing.T) {
 	}
 	runStepTest(t, step1b, testCases)
 }
+
+func Test_step1c(t *testing.T) {
+	var testCases = []stepTest{
+		{"cry", "", "", "cri", "", ""},
+		{"say", "", "", "say", "", ""},
+		{"by", "", "", "by", "", ""},
+		{"xexby", "xby", "", "xexbi", "xbi", ""},
+	}
+	runStepTest(t, step1c, testCases)
+}
