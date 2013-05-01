@@ -14,14 +14,12 @@ version of
 [Snowball](https://raw.github.com/nltk/nltk/master/nltk/stem/snowball.py),
 which is described [here](http://snowball.tartarus.org/algorithms/english/stemmer.html).
 
-## Warnings
+## Warnings and Notes
 
 I may have variously treated strings as utf8 and byte arrays.  This needs
 to be remedied.  The reason that I've bothered with unicode is because
 I'd like to (some day) implement the stemmers for other languages and 
 I figured some of the code could be reused.
-
-## Notes
 
 I tried to avoid maps and regular expressions for 1) kicks and 2) because
 I thought they'd negatively impact the speed.
