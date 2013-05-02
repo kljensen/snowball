@@ -95,3 +95,92 @@ func isLowerVowel(r rune) bool {
 	}
 	return false
 }
+
+// Returns the stemmed version of a word if it is a special
+// case, otherwise returns the empty string.
+//
+func stemSpecialWord(word string) (stemmed string) {
+	switch word {
+	case "skis":
+		stemmed = "ski"
+	case "skies":
+		stemmed = "sky"
+	case "dying":
+		stemmed = "die"
+	case "lying":
+		stemmed = "lie"
+	case "tying":
+		stemmed = "tie"
+	case "idly":
+		stemmed = "idl"
+	case "gently":
+		stemmed = "gentl"
+	case "ugly":
+		stemmed = "ugli"
+	case "early":
+		stemmed = "earli"
+	case "only":
+		stemmed = "onli"
+	case "singly":
+		stemmed = "singl"
+	case "sky":
+		stemmed = "sky"
+	case "news":
+		stemmed = "news"
+	case "howe":
+		stemmed = "howe"
+	case "atlas":
+		stemmed = "atlas"
+	case "cosmos":
+		stemmed = "cosmos"
+	case "bias":
+		stemmed = "bias"
+	case "andes":
+		stemmed = "andes"
+	case "inning":
+		stemmed = "inning"
+	case "innings":
+		stemmed = "inning"
+	case "outing":
+		stemmed = "outing"
+	case "outings":
+		stemmed = "outing"
+	case "canning":
+		stemmed = "canning"
+	case "cannings":
+		stemmed = "canning"
+	case "herring":
+		stemmed = "herring"
+	case "herrings":
+		stemmed = "herring"
+	case "earring":
+		stemmed = "earring"
+	case "earrings":
+		stemmed = "earring"
+	case "proceed":
+		stemmed = "proceed"
+	case "proceeds":
+		stemmed = "proceed"
+	case "proceeded":
+		stemmed = "proceed"
+	case "proceeding":
+		stemmed = "proceed"
+	case "exceed":
+		stemmed = "exceed"
+	case "exceeds":
+		stemmed = "exceed"
+	case "exceeded":
+		stemmed = "exceed"
+	case "exceeding":
+		stemmed = "exceed"
+	case "succeed":
+		stemmed = "succeed"
+	case "succeeds":
+		stemmed = "succeed"
+	case "succeeded":
+		stemmed = "succeed"
+	case "succeeding":
+		stemmed = "succeed"
+	}
+	return
+}

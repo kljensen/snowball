@@ -77,7 +77,7 @@ func Test_specialWords(t *testing.T) {
 		"outing",
 	}
 	for _, word := range knownTrueSpecialwords {
-		if _, ok := specialWords[word]; !ok {
+		if stemmed := stemSpecialWord(word); stemmed == "" {
 			t.Errorf("Expected %v, to be in specialWords", word)
 		}
 	}
@@ -90,7 +90,7 @@ func Test_specialWords(t *testing.T) {
 		"bullschnizzle",
 	}
 	for _, word := range knownFalseSpecialwords {
-		if _, ok := specialWords[word]; ok {
+		if stemmed := stemSpecialWord(word); stemmed != "" {
 			t.Errorf("Expected %v, to NOT be in specialWords", word)
 		}
 	}

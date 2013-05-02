@@ -4,49 +4,6 @@ import (
 	"strings"
 )
 
-var specialWords = map[string]string{
-	"skis":       "ski",
-	"skies":      "sky",
-	"dying":      "die",
-	"lying":      "lie",
-	"tying":      "tie",
-	"idly":       "idl",
-	"gently":     "gentl",
-	"ugly":       "ugli",
-	"early":      "earli",
-	"only":       "onli",
-	"singly":     "singl",
-	"sky":        "sky",
-	"news":       "news",
-	"howe":       "howe",
-	"atlas":      "atlas",
-	"cosmos":     "cosmos",
-	"bias":       "bias",
-	"andes":      "andes",
-	"inning":     "inning",
-	"innings":    "inning",
-	"outing":     "outing",
-	"outings":    "outing",
-	"canning":    "canning",
-	"cannings":   "canning",
-	"herring":    "herring",
-	"herrings":   "herring",
-	"earring":    "earring",
-	"earrings":   "earring",
-	"proceed":    "proceed",
-	"proceeds":   "proceed",
-	"proceeded":  "proceed",
-	"proceeding": "proceed",
-	"exceed":     "exceed",
-	"exceeds":    "exceed",
-	"exceeded":   "exceed",
-	"exceeding":  "exceed",
-	"succeed":    "succeed",
-	"succeeds":   "succeed",
-	"succeeded":  "succeed",
-	"succeeding": "succeed",
-}
-
 var stopWords = map[string]bool{
 	"a":          true,
 	"about":      true,
@@ -213,7 +170,7 @@ func preprocessWord(word string) string {
 	}
 
 	// Return special words
-	if specialVersion, ok := specialWords[word]; ok {
+	if specialVersion := stemSpecialWord(word); specialVersion != "" {
 		word = specialVersion
 		return word
 	}
