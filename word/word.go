@@ -5,22 +5,52 @@
 */
 package runeslice
 
+// Word represents a word that is going to be stemmed.
+// 
 type Word struct {
-	rs      []rune
+
+	// A slice of runes
+	rs []rune
+
+	// The index in rs where the R1 region begins
 	r1start int
+
+	// The index in rs where the R2 region begins
 	r2start int
 }
 
+// Create a new Word struct
 func New(in string) (word *Word) {
 	word = &Word{rs: []rune(in)}
 	return
 }
 
+// Return the R1 region as a slice of runes
+func (w *Word) R1() []rune {
+	return w.rs[r1start:]
+}
+
+// Return the R1 region as a string
+func (w *Word) R1String() []rune {
+	return strin(w.R1)
+}
+
+// Return the R2 region as a slice of runes
+func (w *Word) R2() []rune {
+	return w.rs[r2start:]
+}
+
+// Return the R2 region as a string
+func (w *Word) R2String() []rune {
+	return strin(w.R2)
+}
+
+// Return the Word as a string
 func (w *Word) String() string {
 	return string(w.rs)
 }
 
-// Returns the first prefix found or the empty string.
+// Return the first prefix found or the empty string.
 func (w *Word) FirstPrefix(prefixes ...string) string {
 	found := false
 	rsLen := len(w.rs)
@@ -40,7 +70,7 @@ func (w *Word) FirstPrefix(prefixes ...string) string {
 	return ""
 }
 
-// Returns the first suffix found or the empty string.
+// Return the first suffix found or the empty string.
 func (w *Word) FirstSuffix(sufficies ...string) (suffix string) {
 	rsLen := len(w.rs)
 	for _, suffix := range sufficies {
