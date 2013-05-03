@@ -46,7 +46,7 @@ func Test_stopWords(t *testing.T) {
 		"was",
 	}
 	for _, word := range knownTrueStopwords {
-		if stopWords[word] == false {
+		if isStopWord(word) == false {
 			t.Errorf("Expected %v, to be in stopWords", word)
 		}
 	}
@@ -59,7 +59,7 @@ func Test_stopWords(t *testing.T) {
 		"bullschnizzle",
 	}
 	for _, word := range knownFalseStopwords {
-		if stopWords[word] == true {
+		if isStopWord(word) == true {
 			t.Errorf("Expected %v, to be in stopWords", word)
 		}
 	}
