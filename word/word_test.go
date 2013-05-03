@@ -3,9 +3,9 @@ package runeslice
 import "testing"
 
 func Test_New(t *testing.T) {
-	r := RuneSlice("kyle")
-	if r.String() != "kyle" {
-		t.Errorf("Expected \"%v\" but got \"%v\"", "kyle", r.String())
+	w := New("kyle")
+	if w.String() != "kyle" {
+		t.Errorf("Expected \"%v\" but got \"%v\"", "kyle", w.String())
 	}
 }
 
@@ -23,8 +23,8 @@ func Test_FirstPrefix(t *testing.T) {
 		{"firehose", []string{"firehosex"}, ""},
 	}
 	for _, tc := range testCases {
-		rs := RuneSlice(tc.input)
-		prefix := rs.FirstPrefix(tc.prefixes...)
+		w := New(tc.input)
+		prefix := w.FirstPrefix(tc.prefixes...)
 		if prefix != tc.prefix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.prefix, prefix)
 		}
@@ -43,8 +43,8 @@ func Test_FirstSuffix(t *testing.T) {
 		{"firehose", []string{"fire", "xfirehose"}, ""},
 	}
 	for _, tc := range testCases {
-		rs := RuneSlice(tc.input)
-		suffix := rs.FirstSuffix(tc.suffixes...)
+		w := New(tc.input)
+		suffix := w.FirstSuffix(tc.suffixes...)
 		if suffix != tc.suffix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
 		}

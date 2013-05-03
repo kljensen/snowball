@@ -5,25 +5,30 @@
 */
 package runeslice
 
-import (
-	"log"
-)
+type Word struct {
+	rs      []rune
+	r1start int
+	r2start int
+}
 
-type RuneSlice []rune
+func New(in string) (word *Word) {
+	word = &Word{rs: []rune(in)}
+	return
+}
 
-func (rs *RuneSlice) String() string {
-	return string(*rs)
+func (w *Word) String() string {
+	return string(w.rs)
 }
 
 // Returns the first prefix found or the empty string.
-func (rs *RuneSlice) FirstPrefix(prefixes ...string) string {
+func (w *Word) FirstPrefix(prefixes ...string) string {
 	found := false
-	rsLen := len(*rs)
+	rsLen := len(w.rs)
 
 	for _, prefix := range prefixes {
 		found = true
 		for i, r := range prefix {
-			if i > rsLen-1 || (*rs)[i] != r {
+			if i > rsLen-1 || (w.rs)[i] != r {
 				found = false
 				break
 			}
@@ -36,20 +41,19 @@ func (rs *RuneSlice) FirstPrefix(prefixes ...string) string {
 }
 
 // Returns the first suffix found or the empty string.
-func (rs *RuneSlice) FirstSuffix(sufficies ...string) (suffix string) {
-	rsLen := len(*rs)
+func (w *Word) FirstSuffix(sufficies ...string) (suffix string) {
+	rsLen := len(w.rs)
 	for _, suffix := range sufficies {
 		numMatching := 0
 		suffixRunes := []rune(suffix)
 		suffixLen := len(suffixRunes)
 		for i := 0; i < rsLen && i < suffixLen; i++ {
-			if (*rs)[rsLen-i-1] != suffixRunes[suffixLen-i-1] {
+			if w.rs[rsLen-i-1] != suffixRunes[suffixLen-i-1] {
 				break
 			} else {
 				numMatching += 1
 			}
 		}
-		log.Println(suffix, numMatching)
 		if numMatching == suffixLen {
 			return suffix
 		}
