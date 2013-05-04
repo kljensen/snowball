@@ -1,7 +1,7 @@
 package snowball
 
 import (
-	// "github.com/kljensen/snowball/word"
+	"github.com/kljensen/snowball/stemword"
 	"strings"
 	"unicode/utf8"
 )
@@ -10,15 +10,13 @@ import (
 // or is the null region at the end of the word if there is no
 // such non-vowel.
 //
-func vnvSuffix(word string) string {
-	runes := []rune(word)
-	// uscular
-	for i := 1; i < len(runes); i++ {
-		if isLowerVowel(runes[i-1]) && !isLowerVowel(runes[i]) {
-			return string(runes[i+1:])
+func vnvSuffix(word *stemword.Word) int {
+	for i := 1; i < len(word.RS); i++ {
+		if isLowerVowel(word.RS[i-1]) && !isLowerVowel(word.RS[i]) {
+			return i + 1
 		}
 	}
-	return ""
+	return len(word.RS)
 }
 
 // R1 is the region after the first non-vowel following a vowel,
@@ -31,31 +29,31 @@ func vnvSuffix(word string) string {
 //
 // See http://snowball.tartarus.org/texts/r1r2.html
 //
-func r1r2(word string) (r1, r2 string) {
+// func r1r2(word string) (r1, r2 string) {
 
-	specialPrefixes := []string{"gener", "commun", "arsen"}
-	hasSpecialPrefix := false
-	specialPrefix := ""
-	for _, specialPrefix = range specialPrefixes {
-		if strings.HasPrefix(word, specialPrefix) {
-			hasSpecialPrefix = true
-			break
-		}
-	}
+// 	specialPrefixes := []string{"gener", "commun", "arsen"}
+// 	hasSpecialPrefix := false
+// 	specialPrefix := ""
+// 	for _, specialPrefix = range specialPrefixes {
+// 		if strings.HasPrefix(word, specialPrefix) {
+// 			hasSpecialPrefix = true
+// 			break
+// 		}
+// 	}
 
-	if hasSpecialPrefix {
-		if specialPrefix == "commun" {
-			r1 = word[6:]
-		} else {
-			r1 = word[5:]
-		}
+// 	if hasSpecialPrefix {
+// 		if specialPrefix == "commun" {
+// 			r1 = word[6:]
+// 		} else {
+// 			r1 = word[5:]
+// 		}
 
-	} else {
-		r1 = vnvSuffix(word)
-	}
-	r2 = vnvSuffix(r1)
-	return
-}
+// 	} else {
+// 		r1 = vnvSuffix(word)
+// 	}
+// 	r2 = vnvSuffix(r1)
+// 	return
+// }
 
 // Test if a string has a rune, skipping parts of the string
 // that are less than `leftSkip` of the beginning and `rightSkip`
