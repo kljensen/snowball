@@ -13,29 +13,47 @@ type Word struct {
 	RS []rune
 
 	// The index in RS where the R1 region begins
-	R1i int
+	R1start int
 
 	// The index in RS where the R2 region begins
-	R2i int
+	R2start int
 }
 
 // Create a new Word struct
 func New(in string) (word *Word) {
 	word = &Word{RS: []rune(in)}
-	word.R1i = len(word.RS)
-	word.R2i = len(word.RS)
+	word.R1start = len(word.RS)
+	word.R2start = len(word.RS)
 	return
 }
 
-// Resets R1i and R2i to ensure they 
+// wordOut, r1out, r2out, replaced = replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, "", false)
+
+func (w *Word) ReplaceSuffix(suffix, replacement string) bool {
+	foundSuffix := w.FirstSuffix(suffix)
+	if foundSuffix == suffix {
+		lenWithoutSuffix := len(w.RS) - len(foundSuffix)
+		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
+		if lenWithoutSuffix < w.R1start {
+			w.R1start = len(w.RS)
+		}
+		if lenWithoutSuffix < w.R2start {
+			w.R2start = len(w.RS)
+		}
+		return true
+	}
+	return false
+}
+
+// Resets R1start and R2start to ensure they 
 // are within bounds of the current rune slice.
 func (w *Word) resetR1R2() {
 	rsLen := len(w.RS)
-	if w.R1i > rsLen {
-		w.R1i = rsLen
+	if w.R1start > rsLen {
+		w.R1start = rsLen
 	}
-	if w.R2i > rsLen {
-		w.R2i = rsLen
+	if w.R2start > rsLen {
+		w.R2start = rsLen
 	}
 }
 
@@ -59,7 +77,7 @@ func (w *Word) slice(start, stop int) []rune {
 
 // Return the R1 region as a slice of runes
 func (w *Word) R1() []rune {
-	return w.RS[w.R1i:]
+	return w.RS[w.R1start:]
 }
 
 // Return the R1 region as a string
@@ -69,7 +87,7 @@ func (w *Word) R1String() string {
 
 // Return the R2 region as a slice of runes
 func (w *Word) R2() []rune {
-	return w.RS[w.R2i:]
+	return w.RS[w.R2start:]
 }
 
 // Return the R2 region as a string

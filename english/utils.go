@@ -7,18 +7,22 @@ import (
 )
 
 // Finds the region after the first non-vowel following a vowel,
-// or is the null region at the end of the word if there is no
-// such non-vowel.
+// or a the null region at the end of the word if there is no
+// such non-vowel.  Returns the index in the Word where the 
+// region starts; optionally skips the first `start` characters.
 //
-func vnvSuffix(word *stemword.Word) int {
-	for i := 1; i < len(word.RS); i++ {
-		if isLowerVowel(word.RS[i-1]) && !isLowerVowel(word.RS[i]) {
-			return i + 1
+func vnvSuffix(word *stemword.Word, start int) int {
+	for i := 1; i < len(word.RS[start:]); i++ {
+		j := start + i
+		if isLowerVowel(word.RS[j-1]) && !isLowerVowel(word.RS[j]) {
+			return j + 1
 		}
 	}
 	return len(word.RS)
 }
 
+// Find the starting point of the two regions R1 & R2.
+//
 // R1 is the region after the first non-vowel following a vowel,
 // or is the null region at the end of the word if there is no
 // such non-vowel.
@@ -29,31 +33,18 @@ func vnvSuffix(word *stemword.Word) int {
 //
 // See http://snowball.tartarus.org/texts/r1r2.html
 //
-// func r1r2(word string) (r1, r2 string) {
+func r1r2(word *stemword.Word) (r1start, r2start int) {
 
-// 	specialPrefixes := []string{"gener", "commun", "arsen"}
-// 	hasSpecialPrefix := false
-// 	specialPrefix := ""
-// 	for _, specialPrefix = range specialPrefixes {
-// 		if strings.HasPrefix(word, specialPrefix) {
-// 			hasSpecialPrefix = true
-// 			break
-// 		}
-// 	}
+	specialPrefix := word.FirstPrefix("gener", "commun", "arsen")
 
-// 	if hasSpecialPrefix {
-// 		if specialPrefix == "commun" {
-// 			r1 = word[6:]
-// 		} else {
-// 			r1 = word[5:]
-// 		}
-
-// 	} else {
-// 		r1 = vnvSuffix(word)
-// 	}
-// 	r2 = vnvSuffix(r1)
-// 	return
-// }
+	if specialPrefix != "" {
+		r1start = len(specialPrefix)
+	} else {
+		r1start = vnvSuffix(word, 0)
+	}
+	r2start = vnvSuffix(word, r1start)
+	return
+}
 
 // Test if a string has a rune, skipping parts of the string
 // that are less than `leftSkip` of the beginning and `rightSkip`
