@@ -22,27 +22,59 @@ type Word struct {
 // Create a new Word struct
 func New(in string) (word *Word) {
 	word = &Word{rs: []rune(in)}
+	word.r1start = len(word.rs)
+	word.r2start = len(word.rs)
 	return
+}
+
+// Resets r1start and r2start to ensure they 
+// are within bounds of the current rune slice.
+func (w *Word) resetR1R2() {
+	rsLen := len(w.rs)
+	if w.r1start > rsLen {
+		w.r1start = rsLen
+	}
+	if w.r2start > rsLen {
+		w.r2start = rsLen
+	}
+}
+
+// Return a slice of w.rs, allowing the start
+// and stop to be out of bounds.
+//
+func (w *Word) slice(start, stop int) []rune {
+	startMin := 0
+	if start < startMin {
+		start = startMin
+	}
+	max := len(w.rs) - 1
+	if start > max {
+		start = max
+	}
+	if stop > max {
+		stop = max
+	}
+	return w.rs[start:stop]
 }
 
 // Return the R1 region as a slice of runes
 func (w *Word) R1() []rune {
-	return w.rs[r1start:]
+	return w.rs[w.r1start:]
 }
 
 // Return the R1 region as a string
-func (w *Word) R1String() []rune {
-	return strin(w.R1)
+func (w *Word) R1String() string {
+	return string(w.R1())
 }
 
 // Return the R2 region as a slice of runes
 func (w *Word) R2() []rune {
-	return w.rs[r2start:]
+	return w.rs[w.r2start:]
 }
 
 // Return the R2 region as a string
-func (w *Word) R2String() []rune {
-	return strin(w.R2)
+func (w *Word) R2String() string {
+	return string(w.R2())
 }
 
 // Return the Word as a string
