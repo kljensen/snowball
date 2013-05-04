@@ -1,4 +1,4 @@
-package runeslice
+package stemword
 
 import "testing"
 
