@@ -374,7 +374,44 @@ func Test_step2(t *testing.T) {
 		{"xxxtional", 4, 5, "xxxtional", "ional", "onal"},
 		// Test "li"
 		{"xxxcli", 3, 6, "xxxc", "c", ""},
+		// Test "li", non-valid li letter preceeding
 		{"xxxxli", 3, 6, "xxxxli", "xli", ""},
+		// Test "ogi"
+		{"xxlogi", 2, 6, "xxlog", "log", ""},
+		// Test "ogi", not preceeded by "l"
+		{"xxxogi", 2, 6, "xxxogi", "xogi", ""},
+		// Test the others, which are simple replacements
+		{"xxxxenci", 3, 7, "xxxxence", "xence", ""},
+		{"xxxxanci", 3, 7, "xxxxance", "xance", ""},
+		{"xxxxabli", 3, 7, "xxxxable", "xable", ""},
+		{"xxxxentli", 3, 8, "xxxxent", "xent", ""},
+		{"xxxxizer", 3, 7, "xxxxize", "xize", ""},
+		{"xxxxization", 3, 10, "xxxxize", "xize", ""},
+		{"xxxxational", 3, 10, "xxxxate", "xate", ""},
+		{"xxxxation", 3, 8, "xxxxate", "xate", ""},
+		{"xxxxator", 3, 7, "xxxxate", "xate", ""},
+		{"xxxxalism", 3, 8, "xxxxal", "xal", ""},
+		{"xxxxaliti", 3, 8, "xxxxal", "xal", ""},
+		{"xxxxalli", 3, 7, "xxxxal", "xal", ""},
+		{"xxxxfulness", 3, 10, "xxxxful", "xful", ""},
+		{"xxxxousli", 3, 8, "xxxxous", "xous", ""},
+		{"xxxxousness", 3, 10, "xxxxous", "xous", ""},
+		{"xxxxiveness", 3, 10, "xxxxive", "xive", ""},
+		{"xxxxiviti", 3, 8, "xxxxive", "xive", ""},
+		{"xxxxbiliti", 3, 9, "xxxxble", "xble", ""},
+		{"xxxxbli", 3, 6, "xxxxble", "xble", ""},
+		{"xxxxfulli", 3, 8, "xxxxful", "xful", ""},
+		{"xxxxlessli", 3, 8, "xxxxless", "xless", ""},
+		// Some of the same words, this time not in our fake R1
+		{"xxxxenci", 8, 8, "xxxxenci", "", ""},
+		{"xxxxanci", 8, 8, "xxxxanci", "", ""},
+		{"xxxxabli", 8, 8, "xxxxabli", "", ""},
+		{"xxxxentli", 9, 9, "xxxxentli", "", ""},
+		{"xxxxizer", 8, 8, "xxxxizer", "", ""},
+		{"xxxxization", 11, 11, "xxxxization", "", ""},
+		{"xxxxational", 11, 11, "xxxxational", "", ""},
+		{"xxxxation", 9, 9, "xxxxation", "", ""},
+		{"xxxxator", 8, 8, "xxxxator", "", ""},
 	}
 	runStepTest(t, step2, testCases)
 }

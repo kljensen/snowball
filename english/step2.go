@@ -2,28 +2,35 @@ package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
-	"log"
 )
 
 func step2(w *stemword.Word) bool {
 
-	// Ending for which to check; the order is important.
+	// Ending for which to check, longest first.
 	endings := [24]string{
+		"ational",
+		"fulness",
+		"iveness",
+		"ization",
+		"ousness",
+		"biliti",
+		"lessli",
 		"tional",
-		"enci",
+		"alism",
+		"aliti",
+		"ation",
+		"entli",
+		"fulli",
+		"iviti",
+		"ousli",
 		"anci",
 		"abli",
-		"entli",
-		"izer", "ization",
-		"ational", "ation", "ator",
-		"alism", "aliti", "alli",
-		"fulness",
-		"ousli", "ousness",
-		"iveness", "iviti",
-		"biliti", "bli",
+		"alli",
+		"ator",
+		"enci",
+		"izer",
+		"bli",
 		"ogi",
-		"fulli",
-		"lessli",
 		"li",
 	}
 
@@ -38,12 +45,9 @@ func step2(w *stemword.Word) bool {
 	if len(possibleR1Endings) == 0 {
 		return false
 	}
-	log.Println(possibleR1Endings[0])
 
 	// Find all endings in R1
 	suffix := w.FirstSuffix(possibleR1Endings...)
-	log.Println("--", suffix, "--")
-	log.Println(w)
 
 	// Handle special cases
 	switch suffix {
