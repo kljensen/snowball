@@ -1,4 +1,4 @@
-package snowball
+package english
 
 import (
 	"github.com/kljensen/snowball/stemword"

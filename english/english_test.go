@@ -1,4 +1,4 @@
-package snowball
+package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
@@ -355,12 +355,26 @@ func Test_step1b(t *testing.T) {
 	runStepTest(t, step1b, testCases)
 }
 
-// func Test_step1c(t *testing.T) {
-// 	var testCases = []stepTest{
-// 		{"cry", "", "", "cri", "", ""},
-// 		{"say", "", "", "say", "", ""},
-// 		{"by", "", "", "by", "", ""},
-// 		{"xexby", "xby", "", "xexbi", "xbi", ""},
-// 	}
-// 	runStepTest(t, step1c, testCases)
-// }
+func Test_step1c(t *testing.T) {
+	var testCases = []stepTest{
+		{"cry", 3, 3, "cri", "", ""},
+		{"say", 3, 3, "say", "", ""},
+		{"by", 2, 2, "by", "", ""},
+		{"xexby", 2, 5, "xexbi", "xbi", ""},
+	}
+	runStepTest(t, step1c, testCases)
+}
+
+func Test_step2(t *testing.T) {
+	// Here I've faked R1 & R2 for simplicity
+	var testCases = []stepTest{
+		// Test "tional"
+		{"xxxtional", 3, 5, "xxxtion", "tion", ""},
+		// Test when "tional" doesn't fit in R1
+		{"xxxtional", 4, 5, "xxxtional", "ional", "onal"},
+		// Test "li"
+		{"xxxcli", 3, 6, "xxxc", "c", ""},
+		{"xxxxli", 3, 6, "xxxxli", "xli", ""},
+	}
+	runStepTest(t, step2, testCases)
+}

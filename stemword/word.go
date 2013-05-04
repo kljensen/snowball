@@ -27,12 +27,13 @@ func New(in string) (word *Word) {
 	return
 }
 
-// wordOut, r1out, r2out, replaced = replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, "", false)
+// Replace a suffix and adjust R1start and R2start as needed.
+// If `force` is false, check to make sure the suffix exists first.
+//
+func (w *Word) ReplaceSuffix(suffix, replacement string, force bool) bool {
 
-func (w *Word) ReplaceSuffix(suffix, replacement string) bool {
-	foundSuffix := w.FirstSuffix(suffix)
-	if foundSuffix == suffix {
-		lenWithoutSuffix := len(w.RS) - len(foundSuffix)
+	if force || suffix == w.FirstSuffix(suffix) {
+		lenWithoutSuffix := len(w.RS) - len(suffix)
 		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
 		if lenWithoutSuffix < w.R1start {
 			w.R1start = len(w.RS)

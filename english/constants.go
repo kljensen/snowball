@@ -1,7 +1,7 @@
 /*
 	Constants used in the English Snowball stemmer.
 */
-package snowball
+package english
 
 const vowels string = "aeiouy"
 

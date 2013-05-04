@@ -1,4 +1,4 @@
-package snowball
+package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
@@ -15,7 +15,7 @@ func step1b(w *stemword.Word) (didReplacement bool) {
 		// The NLTK implementation replaces by "ee" in each
 		// of `wordOut`, `r1out`, `r2out`, which is what we've
 		// done here.
-		didReplacement = w.ReplaceSuffix(suffix, "ee")
+		didReplacement = w.ReplaceSuffix(suffix, "ee", true)
 		return
 	}
 
@@ -24,7 +24,7 @@ func step1b(w *stemword.Word) (didReplacement bool) {
 		didReplacement = true
 		for i := 0; i < len(w.RS)-len(suffix); i++ {
 			if isLowerVowel(w.RS[i]) {
-				w.ReplaceSuffix(suffix, "")
+				w.ReplaceSuffix(suffix, "", true)
 
 				var (
 					newSuffix string
@@ -33,7 +33,7 @@ func step1b(w *stemword.Word) (didReplacement bool) {
 				// Check for special ending
 				newSuffix = w.FirstSuffix("at", "bl", "iz")
 				if newSuffix != "" {
-					w.ReplaceSuffix(newSuffix, newSuffix+"e")
+					w.ReplaceSuffix(newSuffix, newSuffix+"e", true)
 					return
 				}
 
@@ -43,7 +43,7 @@ func step1b(w *stemword.Word) (didReplacement bool) {
 				//
 				newSuffix = w.FirstSuffix("bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
 				if newSuffix != "" {
-					w.ReplaceSuffix(newSuffix, newSuffix[:1])
+					w.ReplaceSuffix(newSuffix, newSuffix[:1], true)
 					return
 				}
 

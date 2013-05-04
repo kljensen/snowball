@@ -1,20 +1,21 @@
-package snowball
+package english
+
+import (
+	"github.com/kljensen/snowball/stemword"
+)
 
 // Replace suffix y or Y by i if preceded by a non-vowel which is not
 // the first letter of the word (so cry -> cri, by -> by, say -> say)
 //
-func step1c(wordIn, r1in, r2in string) (wordOut, r1out, r2out string) {
-	wordOut = wordIn
-	r1out = r1in
-	r2out = r2in
+func step1c(w *stemword.Word) bool {
 
-	runes := []rune(wordOut)
-	runesLen := len(runes)
-
+	rsLen := len(w.RS)
 	// y = 121
 	// Y = 89
-	if len(wordIn) > 2 && (runes[runesLen-1] == 121 || runes[runesLen-1] == 89) && !isLowerVowel(runes[runesLen-2]) {
-		wordOut, r1out, r2out, _ = replaceWordR1R2Suffix(wordOut, r1out, r2out, string(runes[runesLen-1]), "i", true)
+	// i = 105
+	if len(w.RS) > 2 && (w.RS[rsLen-1] == 121 || w.RS[rsLen-1] == 89) && !isLowerVowel(w.RS[rsLen-2]) {
+		w.RS[rsLen-1] = 105
+		return true
 	}
-	return
+	return false
 }
