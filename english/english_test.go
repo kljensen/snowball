@@ -251,27 +251,30 @@ func Test_hasVowel(t *testing.T) {
 	}
 }
 
-// func Test_isShortWord(t *testing.T) {
-// 	// bed, shed and shred are short words, bead, embed, beds are not short words. 
-// 	var testCases = []struct {
-// 		word    string
-// 		isShort bool
-// 	}{
-// 		{"bed", true},
-// 		{"shed", true},
-// 		{"shred", true},
-// 		{"bead", false},
-// 		{"embed", false},
-// 		{"beds", false},
-// 	}
-// 	for _, testCase := range testCases {
-// 		r1, _ := r1r2(testCase.word)
-// 		isShort := isShortWord(testCase.word, r1)
-// 		if isShort != testCase.isShort {
-// 			t.Errorf("Expected %v, but got %v for \"{%v, %v}\"", testCase.isShort, isShort, testCase.word, r1)
-// 		}
-// 	}
-// }
+func Test_isShortWord(t *testing.T) {
+	// bed, shed and shred are short words, bead, embed, beds are not short words. 
+	var testCases = []struct {
+		word    string
+		isShort bool
+	}{
+		{"bed", true},
+		{"shed", true},
+		{"shred", true},
+		{"bead", false},
+		{"embed", false},
+		{"beds", false},
+	}
+	for _, testCase := range testCases {
+		w := stemword.New(testCase.word)
+		r1start, r2start := r1r2(w)
+		w.R1start = r1start
+		w.R2start = r2start
+		isShort := isShortWord(w)
+		if isShort != testCase.isShort {
+			t.Errorf("Expected %v, but got %v for \"{%v, %v}\"", testCase.isShort, isShort, testCase.word, w.R1String())
+		}
+	}
+}
 func Test_firstSuffix(t *testing.T) {
 	var testCases = []struct {
 		word      string
@@ -334,23 +337,23 @@ func Test_step1a(t *testing.T) {
 	runStepTest(t, step1a, testCases)
 }
 
-// func Test_step1b(t *testing.T) {
+func Test_step1b(t *testing.T) {
 
-// 	// I could find immediately conjure up true words to
-// 	// which these cases apply; so, I made some up.
+	// I could find immediately conjure up true words to
+	// which these cases apply; so, I made some up.
 
-// 	var testCases = []stepTest{
-// 		{"exxeedly", "xxeedly", "", "exxee", "xxee", ""},
-// 		{"exxeed", "xxeed", "", "exxee", "xxee", ""},
-// 		{"luxuriated", "uriated", "iated", "luxuriate", "uriate", "iate"},
-// 		{"luxuribled", "uribled", "ibled", "luxurible", "urible", "ible"},
-// 		{"luxuriized", "uriized", "iized", "luxuriize", "uriize", "iize"},
-// 		{"luxuriedly", "uriedly", "iedly", "luxuri", "uri", "i"},
-// 		{"vetted", "ted", "", "vet", "", ""},
-// 		{"hopping", "ping", "", "hop", "", ""},
-// 	}
-// 	runStepTest(t, step1b, testCases)
-// }
+	var testCases = []stepTest{
+		{"exxeedly", 1, 8, "exxee", "xxee", ""},
+		{"exxeed", 1, 7, "exxee", "xxee", ""},
+		{"luxuriated", 3, 5, "luxuriate", "uriate", "iate"},
+		{"luxuribled", 3, 5, "luxurible", "urible", "ible"},
+		{"luxuriized", 3, 5, "luxuriize", "uriize", "iize"},
+		{"luxuriedly", 3, 5, "luxuri", "uri", "i"},
+		{"vetted", 3, 6, "vet", "", ""},
+		{"hopping", 3, 7, "hop", "", ""},
+	}
+	runStepTest(t, step1b, testCases)
+}
 
 // func Test_step1c(t *testing.T) {
 // 	var testCases = []stepTest{

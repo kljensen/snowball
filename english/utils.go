@@ -240,3 +240,41 @@ func replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, repl string, known bool) 
 	}
 	return
 }
+
+// A word is called short if it ends in a short syllable, and if R1 is null. 
+// Define a short syllable in a word as either
+//  (a) a vowel followed by a non-vowel other than w, x or Y
+//      and preceded by a non-vowel, or
+//  (b) a vowel at the beginning of the word followed by a non-vowel. 
+//
+func isShortWord(w *stemword.Word) (isShort bool) {
+
+	// If r1 is not empty, not short
+	if w.R1start < len(w.RS) {
+		return
+	}
+
+	if len(w.RS) == 2 {
+		if isLowerVowel(w.RS[0]) && !isLowerVowel(w.RS[1]) {
+
+			// The word is just two letters, starting with a 
+			// vowel and ending with a non-vowel.
+
+			isShort = true
+			return
+		}
+	} else if len(w.RS) >= 3 {
+
+		s1 := w.RS[len(w.RS)-1]
+		s2 := w.RS[len(w.RS)-2]
+		s3 := w.RS[len(w.RS)-3]
+		// w, x, Y rune codepoints = 119, 120, 89
+		if !isLowerVowel(s1) && s1 != 119 && s1 != 120 && s1 != 89 && isLowerVowel(s2) && !isLowerVowel(s3) {
+
+			// The word ends in non-vowel, vowel, non-vowel not in wXY
+			isShort = true
+			return
+		}
+	}
+	return
+}
