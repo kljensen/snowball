@@ -35,12 +35,12 @@ func (w *Word) ReplaceSuffix(suffix, replacement string, force bool) bool {
 	if force || suffix == w.FirstSuffix(suffix) {
 		lenWithoutSuffix := len(w.RS) - len(suffix)
 		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
-		if lenWithoutSuffix < w.R1start {
-			w.R1start = len(w.RS)
-		}
-		if lenWithoutSuffix < w.R2start {
-			w.R2start = len(w.RS)
-		}
+
+		// If R1 and R2 are now beyond the length
+		// of the word, they are set to the length
+		// of the word.  Otherwise, they are left
+		// as they were.
+		w.resetR1R2()
 		return true
 	}
 	return false

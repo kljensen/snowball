@@ -321,7 +321,7 @@ func Test_step1a(t *testing.T) {
 	var testCases = []stepTest{
 		{"ties", 0, 0, "tie", "tie", "tie"},
 		{"cries", 0, 0, "cri", "cri", "cri"},
-		{"mistresses", 3, 7, "mistress", "tress", ""},
+		{"mistresses", 3, 7, "mistress", "tress", "s"},
 	}
 	runStepTest(t, step1a, testCases)
 }
@@ -358,7 +358,7 @@ func Test_step2(t *testing.T) {
 	// Here I've faked R1 & R2 for simplicity
 	var testCases = []stepTest{
 		// Test "tional"
-		{"xxxtional", 3, 5, "xxxtion", "tion", ""},
+		{"xxxtional", 3, 5, "xxxtion", "tion", "on"},
 		// Test when "tional" doesn't fit in R1
 		{"xxxtional", 4, 5, "xxxtional", "ional", "onal"},
 		// Test "li"
@@ -370,9 +370,9 @@ func Test_step2(t *testing.T) {
 		// Test "ogi", not preceeded by "l"
 		{"xxxogi", 2, 6, "xxxogi", "xogi", ""},
 		// Test the others, which are simple replacements
-		{"xxxxenci", 3, 7, "xxxxence", "xence", ""},
-		{"xxxxanci", 3, 7, "xxxxance", "xance", ""},
-		{"xxxxabli", 3, 7, "xxxxable", "xable", ""},
+		{"xxxxenci", 3, 7, "xxxxence", "xence", "e"},
+		{"xxxxanci", 3, 7, "xxxxance", "xance", "e"},
+		{"xxxxabli", 3, 7, "xxxxable", "xable", "e"},
 		{"xxxxentli", 3, 8, "xxxxent", "xent", ""},
 		{"xxxxizer", 3, 7, "xxxxize", "xize", ""},
 		{"xxxxization", 3, 10, "xxxxize", "xize", ""},
@@ -388,7 +388,7 @@ func Test_step2(t *testing.T) {
 		{"xxxxiveness", 3, 10, "xxxxive", "xive", ""},
 		{"xxxxiviti", 3, 8, "xxxxive", "xive", ""},
 		{"xxxxbiliti", 3, 9, "xxxxble", "xble", ""},
-		{"xxxxbli", 3, 6, "xxxxble", "xble", ""},
+		{"xxxxbli", 3, 6, "xxxxble", "xble", "e"},
 		{"xxxxfulli", 3, 8, "xxxxful", "xful", ""},
 		{"xxxxlessli", 3, 8, "xxxxless", "xless", ""},
 		// Some of the same words, this time not in our fake R1
@@ -415,6 +415,8 @@ func Test_Stem(t *testing.T) {
 		{"above", "above"},
 		{"abruptness", "abrupt"},
 		{"absolute", "absolut"},
+		{"abated", "abat"},
+		{"acclivity", "accliv"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)
