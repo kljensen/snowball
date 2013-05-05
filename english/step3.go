@@ -16,14 +16,16 @@ import (
 func step3(w *stemword.Word) bool {
 
 	// Ending for which to check, longest first.
-	endings := [7]string{
+	endings := [9]string{
 		"ational",
 		"tional",
 		"alize",
 		"icate",
+		"ative",
 		"iciti",
 		"ical",
 		"ful",
+		"ness",
 	}
 
 	// Filter out those endings that are too long to be in R1
@@ -42,7 +44,17 @@ func step3(w *stemword.Word) bool {
 	suffix := w.FirstSuffix(possibleR1Endings...)
 
 	// Handle special cases
-	if suffix == "" {
+	switch suffix {
+	case "":
+		return false
+
+	case "ative":
+
+		// If in R2, delete
+		if len(w.RS)-w.R2start >= 5 {
+			w.ReplaceSuffix(suffix, "", true)
+			return true
+		}
 		return false
 	}
 

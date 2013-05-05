@@ -6,6 +6,74 @@ import (
 	"unicode/utf8"
 )
 
+// Replaces all different kinds of apostrophes with a single
+// kind: "'" -- that is, "\x27", or unicode codepoint 39.
+//
+func normalizeApostrophes(word *stemword.Word) (numSubstitutions int) {
+	for i, r := range word.RS {
+		switch r {
+
+		// The rune is one of "\u2019", "\u2018", or "\u201B".
+		case 8217, 8216, 8219:
+			word.RS[i] = 39
+			numSubstitutions += 1
+		}
+	}
+	return
+}
+
+// Trim off leading apostropes.  (Slight variation from
+// NLTK implementation here, in which only the first is removed.)
+//
+func trimLeftApostrophes(word *stemword.Word) {
+	var (
+		numApostrophes int
+		r              rune
+	)
+
+	for numApostrophes, r = range word.RS {
+
+		// Check for "'", which is unicode code point 39
+		if r != 39 {
+			break
+		}
+	}
+	if numApostrophes > 0 {
+		word.RS = word.RS[numApostrophes:]
+		word.R1start = word.R1start - numApostrophes
+		word.R2start = word.R2start - numApostrophes
+	}
+}
+
+// Capitalize all 'Y's preceded by vowels or starting a word
+//
+func capitalizeYs(word *stemword.Word) (numCapitalizations int) {
+	for i, r := range word.RS {
+		// Unicode code points
+		// y = 121
+		// Y = 89
+		if r == 121 && (i == 0 || isLowerVowel(word.RS[i-1])) {
+			word.RS[i] = 89
+			numCapitalizations += 1
+		}
+	}
+	return
+}
+
+// Uncapitalize all 'Y's
+//
+func uncapitalizeYs(word *stemword.Word) {
+	for i, r := range word.RS {
+		// Unicode code points
+		// y = 121
+		// Y = 89
+		if r == 89 {
+			word.RS[i] = 121
+		}
+	}
+	return
+}
+
 // Finds the region after the first non-vowel following a vowel,
 // or a the null region at the end of the word if there is no
 // such non-vowel.  Returns the index in the Word where the 

@@ -22,12 +22,14 @@ func step5(w *stemword.Word) bool {
 		return false
 	}
 
-	if w.RS[lri] == 101 && !endsShortSyllable(w, lri) {
+	if w.RS[lri] == 101 {
 
-		// Delete "e" suffix if R1 or R2 and not preceded
+		// Delete "e" suffix if in R2, or in R1 and not preceded
 		// by a short syllable.
-		w.ReplaceSuffix("e", "", true)
-		return true
+		if w.R2start <= lri || !endsShortSyllable(w, lri) {
+			w.ReplaceSuffix("e", "", true)
+			return true
+		}
 
 	} else if w.R2start <= lri && w.RS[lri] == 108 {
 

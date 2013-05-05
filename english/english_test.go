@@ -5,37 +5,6 @@ import (
 	"testing"
 )
 
-// Stuct for holding tests where a word is transformed
-// into another by the function to be tested.
-//
-type simpleStringTestCase struct {
-	wordIn  string
-	wordOut string
-}
-
-// A type representing all functions that take one
-// string and return another.
-type simpleStringFunction func(string) string
-
-// Runs a series of test cases for functions that just
-// transform one string into another.
-//
-func runSimpleStringTests(t *testing.T, f simpleStringFunction, tcs []simpleStringTestCase) {
-	for _, testCase := range tcs {
-		output := f(testCase.wordIn)
-		if output != testCase.wordOut {
-			t.Errorf("Expected \"%v\", but got \"%v\"", testCase.wordOut, output)
-		}
-	}
-}
-
-func Test_constants(t *testing.T) {
-	expectedVowels := "aeiouy"
-	if vowels != "aeiouy" {
-		t.Errorf("Expected %v, got %v", expectedVowels, vowels)
-	}
-}
-
 // Test stopWords for things we know should be true
 // or false.
 //
@@ -109,44 +78,46 @@ func Test_normalizeApostrophes(t *testing.T) {
 		"‛xxx‛",
 	}
 	for _, v := range variants {
-		normalizedVersion := normalizeApostrophes(v)
-		if normalizedVersion != "'xxx'" {
-			t.Errorf("Expected \"'xxx'\", not \"%v\"", normalizedVersion)
-		}
-	}
-}
-
-func Test_isLowerVowel(t *testing.T) {
-	for _, r := range vowels {
-		if isLowerVowel(r) == false {
-			t.Errorf("Expected \"%v\" to be a vowel", r)
-		}
-	}
-
-	consonant := "bcdfghjklmnpqrstvwxz"
-	for _, r := range consonant {
-		if isLowerVowel(r) == true {
-			t.Errorf("Expected \"%v\" to NOT be a vowel", r)
+		w := stemword.New(v)
+		normalizeApostrophes(w)
+		if w.String() != "'xxx'" {
+			t.Errorf("Expected \"'xxx'\", not \"%v\"", w.String())
 		}
 	}
 }
 
 func Test_capitalizeYs(t *testing.T) {
-	var wordTests = []simpleStringTestCase{
+	var wordTests = []struct {
+		in  string
+		out string
+	}{
 		{"ysdcsdeysdfsysdfsdiyoyyyxyxayxey", "YsdcsdeYsdfsysdfsdiYoYyYxyxaYxeY"},
 	}
-	runSimpleStringTests(t, capitalizeYs, wordTests)
+	for _, wt := range wordTests {
+		w := stemword.New(wt.in)
+		capitalizeYs(w)
+		if w.String() != wt.out {
+			t.Errorf("Expected \"%v\", not \"%v\"", wt.out, w.String())
+		}
+	}
 }
-
-func Test_preprocessWord(t *testing.T) {
-	var wordTests = []simpleStringTestCase{
+func Test_preprocess(t *testing.T) {
+	var wordTests = []struct {
+		in  string
+		out string
+	}{
 		{"arguing", "arguing"},
-		{"Arguing", "arguing"},
 		{"'catty", "catty"},
-		{"Kyle’s", "kyle's"},
+		{"kyle’s", "kyle's"},
 		{"toy", "toY"},
 	}
-	runSimpleStringTests(t, preprocessWord, wordTests)
+	for _, wt := range wordTests {
+		w := stemword.New(wt.in)
+		preprocess(w)
+		if w.String() != wt.out {
+			t.Errorf("Expected \"%v\", not \"%v\"", wt.out, w.String())
+		}
+	}
 }
 
 func Test_vnvSuffix(t *testing.T) {
@@ -292,6 +263,24 @@ func Test_firstSuffix(t *testing.T) {
 	}
 }
 
+func Test_endsShortSyllable(t *testing.T) {
+	var testCases = []struct {
+		word   string
+		pos    int
+		result bool
+	}{
+		{"absolute", 7, true},
+	}
+	for _, testCase := range testCases {
+		w := stemword.New(testCase.word)
+		result := endsShortSyllable(w, testCase.pos)
+		if result != testCase.result {
+			t.Errorf("Expected endsShortSyllable(%v, %v) to return %v, not %v", testCase.word, testCase.pos, testCase.result, result)
+		}
+	}
+
+}
+
 type stepFunc func(*stemword.Word) bool
 type stepTest struct {
 	wordIn  string
@@ -414,4 +403,24 @@ func Test_step2(t *testing.T) {
 		{"xxxxator", 8, 8, "xxxxator", "", ""},
 	}
 	runStepTest(t, step2, testCases)
+}
+
+func Test_Stem(t *testing.T) {
+	var testCases = []struct {
+		in  string
+		out string
+	}{
+		{"aberration", "aberr"},
+		// above is a stop word
+		{"above", "above"},
+		{"abruptness", "abrupt"},
+		{"absolute", "absolut"},
+	}
+	for _, tc := range testCases {
+		stemmed := Stem(tc.in)
+		if stemmed != tc.out {
+			t.Errorf("Expected %v to stem to %v, but got %v", tc.in, tc.out, stemmed)
+		}
+	}
+
 }
