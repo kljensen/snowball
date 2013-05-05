@@ -16,42 +16,17 @@ import (
 // delete if preceded by s or t
 func step4(w *stemword.Word) bool {
 
-	// Ending for which to check, longest first.
-	endings := [18]string{
-		"ement",
-		"ance",
-		"ence",
-		"able",
-		"ible",
-		"ment",
-		"ent",
-		"ant",
-		"ism",
-		"ate",
-		"iti",
-		"ous",
-		"ive",
-		"ize",
-		"ion",
-		"al",
-		"er",
-		"ic",
-	}
+	// Find all endings in R1
+	suffix := w.FirstSuffix(
+		"ement", "ance", "ence", "able", "ible", "ment",
+		"ent", "ant", "ism", "ate", "iti", "ous", "ive",
+		"ize", "ion", "al", "er", "ic",
+	)
 
-	// Filter out those endings that are too long to be in R1
-	r2Len := len(w.RS) - w.R2start
-	possibleR2Endings := make([]string, 0, len(endings))
-	for _, ending := range endings {
-		if len(ending) <= r2Len {
-			possibleR2Endings = append(possibleR2Endings, ending)
-		}
-	}
-	if len(possibleR2Endings) == 0 {
+	// If it does not fit in R2, do nothing.
+	if len(suffix) > len(w.RS)-w.R2start {
 		return false
 	}
-
-	// Find all endings in R1
-	suffix := w.FirstSuffix(possibleR2Endings...)
 
 	// Handle special cases
 	switch suffix {

@@ -405,6 +405,14 @@ func Test_step2(t *testing.T) {
 	runStepTest(t, step2, testCases)
 }
 
+func Test_step4(t *testing.T) {
+	var testCases = []stepTest{
+		{"accumulate", 2, 5, "accumul", "cumul", "ul"},
+		{"agreement", 2, 6, "agreement", "reement", "ent"},
+	}
+	runStepTest(t, step4, testCases)
+}
+
 func Test_Stem(t *testing.T) {
 	var testCases = []struct {
 		in  string
@@ -418,6 +426,7 @@ func Test_Stem(t *testing.T) {
 		{"abated", "abat"},
 		{"acclivity", "accliv"},
 		{"accumulations", "accumul"},
+		{"agreement", "agreement"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)
