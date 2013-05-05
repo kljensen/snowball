@@ -30,8 +30,9 @@ func step5(w *stemword.Word) bool {
 			w.ReplaceSuffix("e", "", true)
 			return true
 		}
+		return false
 
-	} else if w.R2start <= lri && w.RS[lri] == 108 {
+	} else if w.R2start <= lri && w.RS[lri] == 108 && lri-1 >= 0 && w.RS[lri-1] == 108 {
 
 		// Delete "l" suffix if in R2 and preceded by "l"
 		// l = 108

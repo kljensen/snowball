@@ -417,6 +417,7 @@ func Test_Stem(t *testing.T) {
 		{"absolute", "absolut"},
 		{"abated", "abat"},
 		{"acclivity", "accliv"},
+		{"accumulations", "accumul"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)
