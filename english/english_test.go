@@ -270,6 +270,13 @@ func Test_endsShortSyllable(t *testing.T) {
 		result bool
 	}{
 		{"absolute", 7, true},
+		{"ape", 2, true},
+		{"rap", 3, true},
+		{"trap", 4, true},
+		{"entrap", 6, true},
+		{"uproot", 6, false},
+		{"bestow", 6, false},
+		{"disturb", 7, false},
 	}
 	for _, testCase := range testCases {
 		w := stemword.New(testCase.word)
@@ -429,6 +436,7 @@ func Test_Stem(t *testing.T) {
 		{"accumulations", "accumul"},
 		{"agreement", "agreement"},
 		{"breed", "breed"},
+		{"ape", "ape"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)

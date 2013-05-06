@@ -334,7 +334,7 @@ func isShortWord(w *stemword.Word) (isShort bool) {
 func endsShortSyllable(w *stemword.Word, i int) bool {
 
 	// Check condition (b) first.  
-	if i == 2 && len(w.RS) == 2 {
+	if i == 2 {
 		if isLowerVowel(w.RS[0]) && !isLowerVowel(w.RS[1]) {
 			return true
 		} else {
