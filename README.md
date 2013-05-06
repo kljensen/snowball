@@ -1,28 +1,64 @@
 Snowball
 ========
 
-Pure Go implementation of the Snowball stemmer for English
+A [http://golang.org](Go) implementation of the
+[Snowball stemmer for English](http://snowball.tartarus.org/algorithms/english/stemmer.html)
+for natural language processing.
 
-## Caveats
+## Usage
 
-This is a work in progress.  There has not been much progress.
+The `snowball` package has a single exported function `snowball.Stem`,
+which is defined in `snowball/snowball.go`.  Each language also exports
+a `Stem` function: e.g. `english.Stem`, which is defined in
+`snowball/english/stem.go`.
 
-## Thanks
+Here is a minimal Go program that uses this package in order
+to stem a single word.
 
-This is based almost entirely on the [NLTK](http://nltk.org/)
-version of
-[Snowball](https://raw.github.com/nltk/nltk/master/nltk/stem/snowball.py),
-which is described [here](http://snowball.tartarus.org/algorithms/english/stemmer.html).
+```
+package main
+import (
+	"fmt"
+	"github.com/kljensen/snowball"
+)
+func main(){
+	stemmed, err := snowball.Stem("Accumulations", "english", true)
+	if err == nil{
+		fmt.Println(stemmed) // Prints "accumul"
+	}
+}
+```
 
-## Warnings and Notes
+## Status
 
-I may have variously treated strings as utf8 and byte arrays.  This needs
-to be remedied.  The reason that I've bothered with unicode is because
-I'd like to (some day) implement the stemmers for other languages and 
-I figured some of the code could be reused.
+Only the English stemmer is implemented; however, I'd like to add others.
+The English stemmer produces the same output as the stemmer Snowball
+language stemmer given the sample vocabulary
+[here](http://snowball.tartarus.org/algorithms/english/stemmer.html).
 
-I tried to avoid maps and regular expressions for 1) kicks and 2) because
-I thought they'd negatively impact the speed.
+## Implementation
+
+I would like to mention here a few details about
+the manner in which the stemmers (currently only English) are implemented.
+
+* In order to ensure the code is easily extended to non-English lanuages,
+  I avoided using bytes and byte arrays, and instead perform all operations
+  on runes.
+* In order to avoid casting strings into slices of runes numerous times,
+  this implementation uses a single slice of runes for each word that needs
+  to be stemmed.
+* Instead of carrying around the word regions R1 and R2 as separate strings
+  (or slices or runes, or whatever), we carry around the index where each of
+  these regions begins.  (See `snowball/snowballword/snowballword.go`).
+  I believe this is a relatively efficient way of storing R1 and R2.
+* I tried to avoided all maps and regular expressions for 1) kicks and 2) because
+  I thought they'd negatively impact the speed. 
+
+## Future work
+
+I'd like to implement the Snowball stemmer for other lanuages, particularly Spanish.
+If you can help, I would greatly appreciate it: please fork the project and send
+a pull request!
 
 
 ## Contributors
