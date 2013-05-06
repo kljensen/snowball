@@ -340,6 +340,7 @@ func Test_step1b(t *testing.T) {
 		{"luxuriedly", 3, 5, "luxuri", "uri", "i"},
 		{"vetted", 3, 6, "vet", "", ""},
 		{"hopping", 3, 7, "hop", "", ""},
+		{"breed", 5, 5, "breed", "", ""},
 	}
 	runStepTest(t, step1b, testCases)
 }
@@ -427,6 +428,7 @@ func Test_Stem(t *testing.T) {
 		{"acclivity", "accliv"},
 		{"accumulations", "accumul"},
 		{"agreement", "agreement"},
+		{"breed", "breed"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)

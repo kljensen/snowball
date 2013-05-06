@@ -4,64 +4,64 @@ import (
 	"github.com/kljensen/snowball/stemword"
 )
 
-func step1b(w *stemword.Word) (didReplacement bool) {
+func step1b(w *stemword.Word) bool {
 
-	suffix := w.FirstSuffix("eedly", "eed")
-	if suffix != "" {
+	suffix := w.FirstSuffix("eedly", "ingly", "edly", "ing", "eed", "ed")
 
-		// Notice that, the original algorithm is oddly
-		// articulated at this step and says, if we found
-		// one of these sufficies, to "replace by ee if in R1".
-		// The NLTK implementation replaces by "ee" in each
-		// of `wordOut`, `r1out`, `r2out`, which is what we've
-		// done here.
-		didReplacement = w.ReplaceSuffix(suffix, "ee", true)
-		return
-	}
-
-	suffix = w.FirstSuffix("ed", "edly", "ing", "ingly")
-	if suffix != "" {
-		didReplacement = true
+	switch suffix {
+	case "":
+		return false
+	case "eed", "eedly":
+		// Replace by ee if in R1 
+		if len(suffix) <= len(w.RS)-w.R1start {
+			w.ReplaceSuffix(suffix, "ee", true)
+		}
+		return true
+	case "ed", "edly", "ing", "ingly":
+		hasLowerVowel := false
 		for i := 0; i < len(w.RS)-len(suffix); i++ {
 			if isLowerVowel(w.RS[i]) {
-				w.ReplaceSuffix(suffix, "", true)
-
-				var (
-					newSuffix string
-				)
-
-				// Check for special ending
-				newSuffix = w.FirstSuffix("at", "bl", "iz")
-				if newSuffix != "" {
-					w.ReplaceSuffix(newSuffix, newSuffix+"e", true)
-					return
-				}
-
-				// Check for double consonant ending.  Note that, the original algorithm
-				// implies that all double consonant endings should be removed; however,
-				// the NLTK implementation only removes the following sufficies.
-				//
-				newSuffix = w.FirstSuffix("bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
-				if newSuffix != "" {
-					w.ReplaceSuffix(newSuffix, newSuffix[:1], true)
-					return
-				}
-
-				// Check for a short word
-				if isShortWord(w) {
-					// By definition, r1 and r2 are the empty string for
-					// short words.
-					w.RS = append(w.RS, []rune("e")...)
-					w.R1start = len(w.RS)
-					w.R2start = len(w.RS)
-					return
-				}
-
+				hasLowerVowel = true
 				break
 			}
 		}
+		if hasLowerVowel {
 
-		// return
+			// Delete if the preceding word part contains a vowel
+			w.ReplaceSuffix(suffix, "", true)
+
+			// and after the deletion...
+			var (
+				newSuffix string
+			)
+
+			// If the word ends "at", "bl" or "iz" add "e" 
+			newSuffix = w.FirstSuffix("at", "bl", "iz")
+			if newSuffix != "" {
+				w.ReplaceSuffix(newSuffix, newSuffix+"e", true)
+				return true
+			}
+
+			// If the word ends with a double remove the last letter
+			newSuffix = w.FirstSuffix("bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
+			if newSuffix != "" {
+				w.ReplaceSuffix(newSuffix, newSuffix[:1], true)
+				return true
+			}
+
+			// If the word is short, add "e"
+			if isShortWord(w) {
+				// By definition, r1 and r2 are the empty string for
+				// short words.
+				w.RS = append(w.RS, []rune("e")...)
+				w.R1start = len(w.RS)
+				w.R2start = len(w.RS)
+				return true
+			}
+			return true
+		}
+
 	}
-	return
+
+	return false
 }
