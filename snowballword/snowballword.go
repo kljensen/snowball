@@ -1,7 +1,8 @@
 /*
-	This package implements various string-like methods
-	over slices of runes.  It is similar to the
-	exp/utf8string package.
+	This package defines a SnowballWord struct that is used
+	to encapsulate most of the "state" variables we must track
+	when stemming a word.  The SnowballWord struct also has
+	a few methods common to stemming in a variety of languages.
 */
 package snowballword
 
