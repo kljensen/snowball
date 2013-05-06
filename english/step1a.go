@@ -16,10 +16,10 @@ func step1a(w *stemword.Word) bool {
 
 	case "ies", "ied":
 		var repl string
-		if len(w.RS) == 4 {
-			repl = "ie"
-		} else {
+		if len(w.RS) > 4 {
 			repl = "i"
+		} else {
+			repl = "ie"
 		}
 		w.ReplaceSuffix(suffix, repl, true)
 		return true
