@@ -452,7 +452,7 @@ func Test_Stem(t *testing.T) {
 		{"ies", "ie"},
 	}
 	for _, tc := range testCases {
-		stemmed := Stem(tc.in)
+		stemmed := Stem(tc.in, true)
 		if stemmed != tc.out {
 			t.Errorf("Expected %v to stem to %v, but got %v", tc.in, tc.out, stemmed)
 		}

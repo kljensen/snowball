@@ -16,7 +16,7 @@ func main() {
 		if err == io.EOF {
 			break
 		}
-		_, err = out.WriteString(english.Stem(input) + "\n")
+		_, err = out.WriteString(english.Stem(input, false) + "\n")
 		if err != nil {
 			panic(err)
 		}

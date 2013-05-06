@@ -10,12 +10,12 @@ func logStep(name string, w *stemword.Word) {
 	log.Printf("After %v -> %v (%v, %v)", name, w.String(), w.R1String(), w.R2String())
 }
 
-func Stem(word string) string {
+func Stem(word string, stemStopwWords bool) string {
 
 	word = strings.ToLower(strings.TrimSpace(word))
 
 	// Return small words and stop words
-	if len(word) <= 2 || isStopWord(word) {
+	if len(word) <= 2 || (stemStopwWords && isStopWord(word)) {
 		return word
 	}
 
@@ -28,10 +28,6 @@ func Stem(word string) string {
 	w := stemword.New(word)
 	preprocess(w)
 	logStep("preprocess", w)
-
-	r1start, r2start := r1r2(w)
-	w.R1start = r1start
-	w.R2start = r2start
 
 	_ = step0(w)
 	logStep("step 0", w)
