@@ -57,8 +57,8 @@ the manner in which the stemmers (currently only English) are implemented.
   these regions begins.  These are stored as `R1start` and `R2start` on the 
   `SnowballWord` struct. I believe this is a relatively efficient way of
   storing R1 and R2.
-* I tried to avoided all maps and regular expressions for 1) kicks, and 2) because
-  I thought they'd negatively impact the speed. 
+* I tried to avoided all maps and regular expressions 1) for kicks, and 2) because
+  I thought they'd negatively impact the performance. 
 
 
 ## Future work
