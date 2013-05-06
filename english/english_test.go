@@ -348,6 +348,7 @@ func Test_step1b(t *testing.T) {
 		{"vetted", 3, 6, "vet", "", ""},
 		{"hopping", 3, 7, "hop", "", ""},
 		{"breed", 5, 5, "breed", "", ""},
+		{"skating", 4, 6, "skate", "e", ""},
 	}
 	runStepTest(t, step1b, testCases)
 }
@@ -420,6 +421,12 @@ func Test_step4(t *testing.T) {
 	}
 	runStepTest(t, step4, testCases)
 }
+func Test_step5(t *testing.T) {
+	var testCases = []stepTest{
+		{"skate", 4, 5, "skate", "e", ""},
+	}
+	runStepTest(t, step5, testCases)
+}
 
 func Test_Stem(t *testing.T) {
 	var testCases = []struct {
@@ -437,6 +444,7 @@ func Test_Stem(t *testing.T) {
 		{"agreement", "agreement"},
 		{"breed", "breed"},
 		{"ape", "ape"},
+		{"skating", "skate"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)

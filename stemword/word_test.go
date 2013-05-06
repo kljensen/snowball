@@ -63,6 +63,7 @@ func Test_ReplaceSuffix(t *testing.T) {
 		outputR2String string
 	}{
 		{"accliviti", 2, 6, "iviti", "ive", "acclive", "clive", "e"},
+		{"skating", 4, 6, "ing", "e", "skate", "e", ""},
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)

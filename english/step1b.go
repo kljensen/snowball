@@ -2,6 +2,7 @@ package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
+	// "log"
 )
 
 func step1b(w *stemword.Word) bool {
@@ -27,6 +28,9 @@ func step1b(w *stemword.Word) bool {
 		}
 		if hasLowerVowel {
 
+			originalR1start := w.R1start
+			originalR2start := w.R2start
+
 			// Delete if the preceding word part contains a vowel
 			w.ReplaceSuffix(suffix, "", true)
 
@@ -36,28 +40,39 @@ func step1b(w *stemword.Word) bool {
 			)
 
 			// If the word ends "at", "bl" or "iz" add "e" 
-			newSuffix = w.FirstSuffix("at", "bl", "iz")
-			if newSuffix != "" {
+			newSuffix = w.FirstSuffix("at", "bl", "iz", "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
+			switch newSuffix {
+			case "":
+				// If the word is short, add "e"
+				if isShortWord(w) {
+					// By definition, r1 and r2 are the empty string for
+					// short words.
+					w.RS = append(w.RS, []rune("e")...)
+					w.R1start = len(w.RS)
+					w.R2start = len(w.RS)
+					return true
+				}
+			case "at", "bl", "iz":
 				w.ReplaceSuffix(newSuffix, newSuffix+"e", true)
-				return true
-			}
 
-			// If the word ends with a double remove the last letter
-			newSuffix = w.FirstSuffix("bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
-			if newSuffix != "" {
+			case "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt":
 				w.ReplaceSuffix(newSuffix, newSuffix[:1], true)
-				return true
 			}
 
-			// If the word is short, add "e"
-			if isShortWord(w) {
-				// By definition, r1 and r2 are the empty string for
-				// short words.
-				w.RS = append(w.RS, []rune("e")...)
-				w.R1start = len(w.RS)
-				w.R2start = len(w.RS)
-				return true
+			// Because we did a double replacement,
+			// we need to fix R1 and R2 manually.
+			rsLen := len(w.RS)
+			if originalR1start < rsLen {
+				w.R1start = originalR1start
+			} else {
+				w.R1start = rsLen
 			}
+			if originalR2start < rsLen {
+				w.R2start = originalR2start
+			} else {
+				w.R2start = rsLen
+			}
+
 			return true
 		}
 
