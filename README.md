@@ -1,9 +1,11 @@
 Snowball
 ========
 
-A [http://golang.org](Go) implementation of the
-[Snowball stemmer for English](http://snowball.tartarus.org/algorithms/english/stemmer.html)
-for natural language processing.
+A [Go](http://golang.org) implementation of the
+[Snowball stemmer](http://snowball.tartarus.org/)
+for natural language processing.  The project currently only includes
+the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html).
+
 
 ## Usage
 
@@ -15,7 +17,7 @@ a `Stem` function: e.g. `english.Stem`, which is defined in
 Here is a minimal Go program that uses this package in order
 to stem a single word.
 
-```
+```go
 package main
 import (
 	"fmt"
@@ -29,12 +31,14 @@ func main(){
 }
 ```
 
+
 ## Status
 
 Only the English stemmer is implemented; however, I'd like to add others.
 The English stemmer produces the same output as the stemmer Snowball
 language stemmer given the sample vocabulary
 [here](http://snowball.tartarus.org/algorithms/english/stemmer.html).
+
 
 ## Implementation
 
@@ -43,16 +47,19 @@ the manner in which the stemmers (currently only English) are implemented.
 
 * In order to ensure the code is easily extended to non-English lanuages,
   I avoided using bytes and byte arrays, and instead perform all operations
-  on runes.
+  on runes.  See `snowball/snowballword/snowballword.go` and the 
+  `SnowballWord` struct.
 * In order to avoid casting strings into slices of runes numerous times,
-  this implementation uses a single slice of runes for each word that needs
-  to be stemmed.
+  this implementation uses a single slice of runes stored in the `SnowballWord`
+  struct for each word that needs to be stemmed.
 * Instead of carrying around the word regions R1 and R2 as separate strings
   (or slices or runes, or whatever), we carry around the index where each of
-  these regions begins.  (See `snowball/snowballword/snowballword.go`).
-  I believe this is a relatively efficient way of storing R1 and R2.
-* I tried to avoided all maps and regular expressions for 1) kicks and 2) because
+  these regions begins.  These are stored as `R1start` and `R2start` on the 
+  `SnowballWord` struct. I believe this is a relatively efficient way of
+  storing R1 and R2.
+* I tried to avoided all maps and regular expressions for 1) kicks, and 2) because
   I thought they'd negatively impact the speed. 
+
 
 ## Future work
 
@@ -65,6 +72,7 @@ a pull request!
 
 * Kyle Jensen (kljensen@gmail.com, @DataKyle)
 * Your name here should be here, seriously.
+
 
 ## License (MIT)
 
