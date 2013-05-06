@@ -7,7 +7,7 @@ import (
 // Step 2 is the stemming of various endings found in 
 // R1 including "al", "ness", and "li".
 //
-func step2(w *stemword.Word) bool {
+func step2(w *snowballword.SnowballWord) bool {
 
 	// Possible sufficies for this step, longest first.
 	suffix := w.FirstSuffix(

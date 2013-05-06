@@ -6,7 +6,7 @@ import (
 
 // Step 1b is the normalization of various "ly" and "ed" sufficies.
 //
-func step1b(w *stemword.Word) bool {
+func step1b(w *snowballword.SnowballWord) bool {
 
 	suffix := w.FirstSuffix("eedly", "ingly", "edly", "ing", "eed", "ed")
 

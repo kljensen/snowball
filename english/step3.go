@@ -7,7 +7,7 @@ import (
 // Step 3 is the stemming of various longer sufficies
 // found in R1.
 //
-func step3(w *stemword.Word) bool {
+func step3(w *snowballword.SnowballWord) bool {
 
 	suffix := w.FirstSuffix(
 		"ational", "tional", "alize", "icate", "ative",

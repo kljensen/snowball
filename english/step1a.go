@@ -6,7 +6,7 @@ import (
 
 // Step 1a is noralization of various special "s"-endings.
 //
-func step1a(w *stemword.Word) bool {
+func step1a(w *snowballword.SnowballWord) bool {
 
 	suffix := w.FirstSuffix("sses", "ied", "ies", "us", "ss", "s")
 	switch suffix {

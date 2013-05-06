@@ -5,9 +5,9 @@
 */
 package stemword
 
-// Word represents a word that is going to be stemmed.
+// SnowballWord represents a word that is going to be stemmed.
 // 
-type Word struct {
+type SnowballWord struct {
 
 	// A slice of runes
 	RS []rune
@@ -19,9 +19,9 @@ type Word struct {
 	R2start int
 }
 
-// Create a new Word struct
-func New(in string) (word *Word) {
-	word = &Word{RS: []rune(in)}
+// Create a new SnowballWord struct
+func New(in string) (word *SnowballWord) {
+	word = &SnowballWord{RS: []rune(in)}
 	word.R1start = len(word.RS)
 	word.R2start = len(word.RS)
 	return
@@ -30,7 +30,7 @@ func New(in string) (word *Word) {
 // Replace a suffix and adjust R1start and R2start as needed.
 // If `force` is false, check to make sure the suffix exists first.
 //
-func (w *Word) ReplaceSuffix(suffix, replacement string, force bool) bool {
+func (w *SnowballWord) ReplaceSuffix(suffix, replacement string, force bool) bool {
 
 	if force || suffix == w.FirstSuffix(suffix) {
 		lenWithoutSuffix := len(w.RS) - len(suffix)
@@ -48,7 +48,7 @@ func (w *Word) ReplaceSuffix(suffix, replacement string, force bool) bool {
 
 // Resets R1start and R2start to ensure they 
 // are within bounds of the current rune slice.
-func (w *Word) resetR1R2() {
+func (w *SnowballWord) resetR1R2() {
 	rsLen := len(w.RS)
 	if w.R1start > rsLen {
 		w.R1start = rsLen
@@ -61,7 +61,7 @@ func (w *Word) resetR1R2() {
 // Return a slice of w.RS, allowing the start
 // and stop to be out of bounds.
 //
-func (w *Word) slice(start, stop int) []rune {
+func (w *SnowballWord) slice(start, stop int) []rune {
 	startMin := 0
 	if start < startMin {
 		start = startMin
@@ -77,32 +77,32 @@ func (w *Word) slice(start, stop int) []rune {
 }
 
 // Return the R1 region as a slice of runes
-func (w *Word) R1() []rune {
+func (w *SnowballWord) R1() []rune {
 	return w.RS[w.R1start:]
 }
 
 // Return the R1 region as a string
-func (w *Word) R1String() string {
+func (w *SnowballWord) R1String() string {
 	return string(w.R1())
 }
 
 // Return the R2 region as a slice of runes
-func (w *Word) R2() []rune {
+func (w *SnowballWord) R2() []rune {
 	return w.RS[w.R2start:]
 }
 
 // Return the R2 region as a string
-func (w *Word) R2String() string {
+func (w *SnowballWord) R2String() string {
 	return string(w.R2())
 }
 
-// Return the Word as a string
-func (w *Word) String() string {
+// Return the SnowballWord as a string
+func (w *SnowballWord) String() string {
 	return string(w.RS)
 }
 
 // Return the first prefix found or the empty string.
-func (w *Word) FirstPrefix(prefixes ...string) string {
+func (w *SnowballWord) FirstPrefix(prefixes ...string) string {
 	found := false
 	rsLen := len(w.RS)
 
@@ -122,7 +122,7 @@ func (w *Word) FirstPrefix(prefixes ...string) string {
 }
 
 // Return the first suffix found or the empty string.
-func (w *Word) FirstSuffix(sufficies ...string) (suffix string) {
+func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string) {
 	rsLen := len(w.RS)
 	for _, suffix := range sufficies {
 		numMatching := 0

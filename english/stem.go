@@ -2,13 +2,8 @@ package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
-	"log"
 	"strings"
 )
-
-func logStep(name string, w *stemword.Word) {
-	log.Printf("After %v -> %v (%v, %v)", name, w.String(), w.R1String(), w.R2String())
-}
 
 // Stem an English word.  This is the only exported
 // function in this package.
@@ -22,34 +17,28 @@ func Stem(word string, stemStopwWords bool) string {
 		return word
 	}
 
-	// Return special words
+	// Return special words immediately
 	if specialVersion := stemSpecialWord(word); specialVersion != "" {
 		word = specialVersion
 		return word
 	}
 
 	w := stemword.New(word)
+
+	// Stem the word.  Note, each of these
+	// steps will alter `w` in place.
+	//
 	preprocess(w)
-	logStep("preprocess", w)
+	step0(w)
+	step1a(w)
+	step1b(w)
+	step1c(w)
+	step2(w)
+	step3(w)
+	step4(w)
+	step5(w)
+	postprocess(w)
 
-	_ = step0(w)
-	logStep("step 0", w)
-	_ = step1a(w)
-	logStep("step 1a", w)
-	_ = step1b(w)
-	logStep("step 1b", w)
-	_ = step1c(w)
-	logStep("step 1c", w)
-	_ = step2(w)
-	logStep("step 2", w)
-	_ = step3(w)
-	logStep("step 3", w)
-	_ = step4(w)
-	logStep("step 4", w)
-	_ = step5(w)
-	logStep("step 5", w)
-
-	uncapitalizeYs(w)
 	return w.String()
 
 }

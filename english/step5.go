@@ -7,7 +7,7 @@ import (
 // Step 5 is the stemming of "e" and "l" sufficies
 // found in R2.
 //
-func step5(w *stemword.Word) bool {
+func step5(w *snowballword.SnowballWord) bool {
 
 	// Last rune index = `lri`
 	lri := len(w.RS) - 1

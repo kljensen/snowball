@@ -6,7 +6,7 @@ import (
 
 // Step 1c is the normalization of various "y" endings.
 //
-func step1c(w *stemword.Word) bool {
+func step1c(w *snowballword.SnowballWord) bool {
 
 	rsLen := len(w.RS)
 

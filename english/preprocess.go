@@ -8,7 +8,7 @@ import (
 // other, subsequent stemming steps.  Most important
 // of which is defining the two regions R1 & R2.
 //
-func preprocess(word *stemword.Word) {
+func preprocess(word *snowballword.SnowballWord) {
 
 	// Clean up apostrophes
 	normalizeApostrophes(word)

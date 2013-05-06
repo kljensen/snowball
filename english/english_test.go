@@ -223,7 +223,7 @@ func Test_endsShortSyllable(t *testing.T) {
 
 }
 
-type stepFunc func(*stemword.Word) bool
+type stepFunc func(*snowballword.SnowballWord) bool
 type stepTest struct {
 	wordIn  string
 	r1start int

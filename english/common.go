@@ -7,7 +7,7 @@ import (
 // Replaces all different kinds of apostrophes with a single
 // kind: "'" -- that is, "\x27", or unicode codepoint 39.
 //
-func normalizeApostrophes(word *stemword.Word) (numSubstitutions int) {
+func normalizeApostrophes(word *snowballword.SnowballWord) (numSubstitutions int) {
 	for i, r := range word.RS {
 		switch r {
 
@@ -27,7 +27,7 @@ func normalizeApostrophes(word *stemword.Word) (numSubstitutions int) {
 // Trim off leading apostropes.  (Slight variation from
 // NLTK implementation here, in which only the first is removed.)
 //
-func trimLeftApostrophes(word *stemword.Word) {
+func trimLeftApostrophes(word *snowballword.SnowballWord) {
 	var (
 		numApostrophes int
 		r              rune
@@ -49,7 +49,7 @@ func trimLeftApostrophes(word *stemword.Word) {
 
 // Capitalize all 'Y's preceded by vowels or starting a word
 //
-func capitalizeYs(word *stemword.Word) (numCapitalizations int) {
+func capitalizeYs(word *snowballword.SnowballWord) (numCapitalizations int) {
 	for i, r := range word.RS {
 
 		// (Note: Y & y unicode code points = 89 & 121)
@@ -64,7 +64,7 @@ func capitalizeYs(word *stemword.Word) (numCapitalizations int) {
 
 // Uncapitalize all 'Y's
 //
-func uncapitalizeYs(word *stemword.Word) {
+func uncapitalizeYs(word *snowballword.SnowballWord) {
 	for i, r := range word.RS {
 
 		// (Note: Y & y unicode code points = 89 & 121)
@@ -81,7 +81,7 @@ func uncapitalizeYs(word *stemword.Word) {
 // such non-vowel.  Returns the index in the Word where the 
 // region starts; optionally skips the first `start` characters.
 //
-func vnvSuffix(word *stemword.Word, start int) int {
+func vnvSuffix(word *snowballword.SnowballWord, start int) int {
 	for i := 1; i < len(word.RS[start:]); i++ {
 		j := start + i
 		if isLowerVowel(word.RS[j-1]) && !isLowerVowel(word.RS[j]) {
@@ -103,7 +103,7 @@ func vnvSuffix(word *stemword.Word, start int) int {
 //
 // See http://snowball.tartarus.org/texts/r1r2.html
 //
-func r1r2(word *stemword.Word) (r1start, r2start int) {
+func r1r2(word *snowballword.SnowballWord) (r1start, r2start int) {
 
 	specialPrefix := word.FirstPrefix("gener", "commun", "arsen")
 
@@ -241,7 +241,7 @@ func isStopWord(word string) bool {
 
 // A word is called short if it ends in a short syllable, and if R1 is null. 
 //
-func isShortWord(w *stemword.Word) (isShort bool) {
+func isShortWord(w *snowballword.SnowballWord) (isShort bool) {
 
 	// If r1 is not empty, the word is not short
 	if w.R1start < len(w.RS) {
@@ -258,7 +258,7 @@ func isShortWord(w *stemword.Word) (isShort bool) {
 //     and preceded by a non-vowel, or
 // (b) a vowel at the beginning of the word followed by a non-vowel.
 //
-func endsShortSyllable(w *stemword.Word, i int) bool {
+func endsShortSyllable(w *snowballword.SnowballWord, i int) bool {
 
 	if i == 2 {
 

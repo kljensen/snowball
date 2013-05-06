@@ -14,7 +14,7 @@ import (
 //
 // ion
 // delete if preceded by s or t
-func step4(w *stemword.Word) bool {
+func step4(w *snowballword.SnowballWord) bool {
 
 	// Find all endings in R1
 	suffix := w.FirstSuffix(
