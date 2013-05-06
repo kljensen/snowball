@@ -2,8 +2,6 @@ package english
 
 import (
 	"github.com/kljensen/snowball/stemword"
-	"strings"
-	"unicode/utf8"
 )
 
 // Replaces all different kinds of apostrophes with a single
@@ -13,8 +11,12 @@ func normalizeApostrophes(word *stemword.Word) (numSubstitutions int) {
 	for i, r := range word.RS {
 		switch r {
 
-		// The rune is one of "\u2019", "\u2018", or "\u201B".
+		// The rune is one of "\u2019", "\u2018", or "\u201B";
+		// equivalently, unicode code points 8217, 8216, & 8219.
 		case 8217, 8216, 8219:
+
+			// (Note: the unicode code point for ' is 39.)
+
 			word.RS[i] = 39
 			numSubstitutions += 1
 		}
@@ -49,9 +51,9 @@ func trimLeftApostrophes(word *stemword.Word) {
 //
 func capitalizeYs(word *stemword.Word) (numCapitalizations int) {
 	for i, r := range word.RS {
-		// Unicode code points
-		// y = 121
-		// Y = 89
+
+		// (Note: Y & y unicode code points = 89 & 121)
+
 		if r == 121 && (i == 0 || isLowerVowel(word.RS[i-1])) {
 			word.RS[i] = 89
 			numCapitalizations += 1
@@ -64,9 +66,9 @@ func capitalizeYs(word *stemword.Word) (numCapitalizations int) {
 //
 func uncapitalizeYs(word *stemword.Word) {
 	for i, r := range word.RS {
-		// Unicode code points
-		// y = 121
-		// Y = 89
+
+		// (Note: Y & y unicode code points = 89 & 121)
+
 		if r == 89 {
 			word.RS[i] = 121
 		}
@@ -112,36 +114,6 @@ func r1r2(word *stemword.Word) (r1start, r2start int) {
 	}
 	r2start = vnvSuffix(word, r1start)
 	return
-}
-
-// Test if a string has a rune, skipping parts of the string
-// that are less than `leftSkip` of the beginning and `rightSkip`
-// of the end.
-//
-func hasRune(word string, leftSkip int, rightSkip int, testRunes ...rune) bool {
-	leftMin := leftSkip
-	rightMax := utf8.RuneCountInString(word) - rightSkip
-	for i, r := range word {
-		if i < leftMin {
-			continue
-		} else if i >= rightMax {
-			break
-		}
-		for _, tr := range testRunes {
-			if r == tr {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-// Test if a string has a vowel, skipping parts of the string
-// that are less than `leftSkip` of the beginning and `rightSkip`
-// of the end.  (All counts in runes.)
-//
-func hasVowel(word string, leftSkip int, rightSkip int) bool {
-	return hasRune(word, leftSkip, rightSkip, 97, 101, 105, 111, 117, 121)
 }
 
 // Checks if a rune is a lowercase English vowel.
@@ -243,6 +215,8 @@ func stemSpecialWord(word string) (stemmed string) {
 	return
 }
 
+// Return `true` if the input `word` is an English stop word.
+//
 func isStopWord(word string) bool {
 	switch word {
 	case "a", "about", "above", "after", "again", "against", "all", "am", "an",
@@ -265,63 +239,16 @@ func isStopWord(word string) bool {
 	return false
 }
 
-// Returns the first matching suffix
-//
-func firstSuffix(word string, sufficies ...string) (suffix string, found bool) {
-	for _, suffix = range sufficies {
-		if strings.HasSuffix(word, suffix) {
-			found = true
-			return
-		}
-	}
-	suffix = ""
-	return
-}
-
-// Replaces a `suffix` on each of `wordIn`, `r1in`, and `r2in`,
-// with `repl`. To indicate that `wordIn` is known to end in `suffix`,
-// set `known` to true.  Here, we assume that `r2in` is a suffix of
-// `r1in`, and both are sufficies of `wordIn`.  If that is not the 
-// case, you will not get the results you intend.
-//
-func replaceWordR1R2Suffix(wordIn, r1in, r2in, suffix, repl string, known bool) (wordOut, r1out, r2out string, replaced bool) {
-	wordOut = wordIn
-	r1out = r1in
-	r2out = r2in
-	suffixLen := len(suffix)
-	if known || strings.HasSuffix(wordIn, suffix) {
-		wordOut = wordIn[:len(wordIn)-suffixLen] + repl
-		r1len := len(r1in)
-		if suffixLen <= r1len {
-			r1out = r1in[:r1len-suffixLen] + repl
-			r2len := len(r2in)
-			if suffixLen <= r2len {
-				r2out = r2in[:r2len-suffixLen] + repl
-			} else {
-				r2out = ""
-			}
-		} else {
-			r1out = ""
-			r2out = ""
-		}
-		replaced = true
-	}
-	return
-}
-
 // A word is called short if it ends in a short syllable, and if R1 is null. 
-// Define a short syllable in a word as either
-//  (a) a vowel followed by a non-vowel other than w, x or Y
-//      and preceded by a non-vowel, or
-//  (b) a vowel at the beginning of the word followed by a non-vowel. 
 //
 func isShortWord(w *stemword.Word) (isShort bool) {
 
-	// If r1 is not empty, not short
+	// If r1 is not empty, the word is not short
 	if w.R1start < len(w.RS) {
 		return
 	}
 
+	// Otherwise it must end in a short syllable
 	return endsShortSyllable(w, len(w.RS))
 }
 
@@ -333,25 +260,32 @@ func isShortWord(w *stemword.Word) (isShort bool) {
 //
 func endsShortSyllable(w *stemword.Word, i int) bool {
 
-	// Check condition (b) first.  
 	if i == 2 {
+
+		// Check for a vowel at the beginning of the word followed by a non-vowel.
 		if isLowerVowel(w.RS[0]) && !isLowerVowel(w.RS[1]) {
 			return true
 		} else {
 			return false
 		}
+
 	} else if i >= 3 {
 
+		// The runes 1, 2, & 3 positions to the left of `i`.
 		s1 := w.RS[i-1]
 		s2 := w.RS[i-2]
 		s3 := w.RS[i-3]
 
-		// w, x, Y rune codepoints = 119, 120, 89
+		// Check for a vowel followed by a non-vowel other than w, x or Y
+		// and preceded by a non-vowel.
+		// (Note: w, x, Y rune codepoints = 119, 120, 89)
+		//
 		if !isLowerVowel(s1) && s1 != 119 && s1 != 120 && s1 != 89 && isLowerVowel(s2) && !isLowerVowel(s3) {
 			return true
 		} else {
 			return false
 		}
+
 	}
 	return false
 }

@@ -1,3 +1,9 @@
+/*
+	Herein lie all the tests of the Snowball English stemmer.
+
+	Many of the tests are drawn from cases where this implementation
+	did not match the results of the Python NLTK implementation.
+*/
 package english
 
 import (
@@ -168,62 +174,7 @@ func Test_r1r2(t *testing.T) {
 	}
 }
 
-func Test_replaceWordR1R2Suffix(t *testing.T) {
-	var wordTests = []struct {
-		wordIn   string
-		r1in     string
-		r2in     string
-		suffix   string
-		repl     string
-		known    bool
-		wordOut  string
-		r1out    string
-		r2out    string
-		replaced bool
-	}{
-		{"animadversion", "imadversion", "adversion", "version", "", false, "animad", "imad", "ad", true},
-		{"animadversion", "imadversion", "adversion", "version", "", true, "animad", "imad", "ad", true},
-		{"animadversion", "imadversion", "", "version", "", true, "animad", "imad", "", true},
-		{"animadversion", "imadversion", "adversion", "version", "xx", false, "animadxx", "imadxx", "adxx", true},
-		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
-		{"animadversion", "imadversion", "adversion", "versionXX", "yy", false, "animadversion", "imadversion", "adversion", false},
-		{"vett", "t", "", "tt", "t", true, "vet", "", "", true},
-	}
-	for _, testCase := range wordTests {
-		wordOut, r1out, r2out, replaced := replaceWordR1R2Suffix(testCase.wordIn, testCase.r1in, testCase.r2in, testCase.suffix, testCase.repl, testCase.known)
-		if wordOut != testCase.wordOut || r1out != testCase.r1out || r2out != testCase.r2out || replaced != testCase.replaced {
-			t.Errorf("Expected \"{%v, %v, %v, %v}\", but got \"{%v, %v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, testCase.replaced, wordOut, r1out, r2out, replaced)
-		}
-	}
-}
-
-func Test_hasVowel(t *testing.T) {
-	var testCases = []struct {
-		word      string
-		leftSkip  int
-		rightSkip int
-		result    bool
-	}{
-		{"television", 0, 0, true},
-		{"xxxaxxx", 0, 0, true},
-		{"xxxaxxx", 1, 1, true},
-		{"xxxaxxx", 1, 4, false},
-		{"xxxaxxx", 4, 1, false},
-		{"xxxaxxx", 4, 10, false},
-		{"xxxaxxx", 4, 5, false},
-		{"axxxxxx", 1, 0, false},
-		{"xxxxxxa", 0, 1, false},
-	}
-	for _, testCase := range testCases {
-		result := hasVowel(testCase.word, testCase.leftSkip, testCase.rightSkip)
-		if result != testCase.result {
-			t.Errorf("Expected %v, but got %v for \"{%v, %v, %v}\"", testCase.result, result, testCase.word, testCase.leftSkip, testCase.rightSkip)
-		}
-	}
-}
-
 func Test_isShortWord(t *testing.T) {
-	// bed, shed and shred are short words, bead, embed, beds are not short words. 
 	var testCases = []struct {
 		word    string
 		isShort bool
@@ -243,22 +194,6 @@ func Test_isShortWord(t *testing.T) {
 		isShort := isShortWord(w)
 		if isShort != testCase.isShort {
 			t.Errorf("Expected %v, but got %v for \"{%v, %v}\"", testCase.isShort, isShort, testCase.word, w.R1String())
-		}
-	}
-}
-func Test_firstSuffix(t *testing.T) {
-	var testCases = []struct {
-		word      string
-		sufficies []string
-		suffix    string
-		found     bool
-	}{
-		{"mistresses", []string{"tresses", "ses"}, "tresses", true},
-	}
-	for _, testCase := range testCases {
-		suffix, found := firstSuffix(testCase.word, testCase.sufficies...)
-		if suffix != testCase.suffix || found != testCase.found {
-			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.suffix, testCase.found, suffix, found)
 		}
 	}
 }
@@ -304,11 +239,6 @@ func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
 		w.R1start = testCase.r1start
 		w.R2start = testCase.r2start
 		_ = f(w)
-		// t.Log("Replaced =", replaced)
-		// t.Log("w.R1start =", w.R1start)
-		// t.Log("w.R2start =", w.R2start)
-		// t.Log("w.R2start =", w.R2start)
-		// t.Log("w.RS =", w.RS)
 		if w.String() != testCase.wordOut || w.R1String() != testCase.r1out || w.R2String() != testCase.r2out {
 			t.Errorf("Expected \"{%v, %v, %v}\", but got \"{%v, %v, %v}\"", testCase.wordOut, testCase.r1out, testCase.r2out, w.String(), w.R1String(), w.R2String())
 		}
@@ -436,7 +366,7 @@ func Test_Stem(t *testing.T) {
 		out string
 	}{
 		{"aberration", "aberr"},
-		// above is a stop word
+		// "above" is a stop word
 		{"above", "above"},
 		{"abruptness", "abrupt"},
 		{"absolute", "absolut"},

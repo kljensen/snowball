@@ -4,9 +4,12 @@ import (
 	"github.com/kljensen/snowball/stemword"
 )
 
+// Step 2 is the stemming of various endings found in 
+// R1 including "al", "ness", and "li".
+//
 func step2(w *stemword.Word) bool {
 
-	// Find all endings in R1
+	// Possible sufficies for this step, longest first.
 	suffix := w.FirstSuffix(
 		"ational", "fulness", "iveness", "ization", "ousness",
 		"biliti", "lessli", "tional", "alism", "aliti", "ation",
@@ -15,20 +18,23 @@ func step2(w *stemword.Word) bool {
 	)
 
 	// If it is not in R1, do nothing
-	if len(suffix) > len(w.RS)-w.R1start {
+	if suffix == "" || len(suffix) > len(w.RS)-w.R1start {
 		return false
 	}
 
-	// Handle special cases
+	// Handle special cases where we're not just going to
+	// replace the suffix with another suffix: there are
+	// other things we need to do.
+	//
 	switch suffix {
-	case "":
-		// No special suffix found
-		return false
 
 	case "li":
-		// Delete if preceded by a valid li-ending
-		// Valid li-endings: cdeghkmnrt
-		// cdeghkmnrt = 99 100 101 103 104 107 109 110 114 116
+
+		// Delete if preceded by a valid li-ending. Valid li-endings inlude the
+		// following charaters: cdeghkmnrt. (Note, the unicode code points for
+		// these characters are, repectively, as follows:
+		// 99 100 101 103 104 107 109 110 114 116)
+		//
 		rsLen := len(w.RS)
 		if rsLen >= 3 {
 			switch w.RS[rsLen-3] {
@@ -40,8 +46,10 @@ func step2(w *stemword.Word) bool {
 		return false
 
 	case "ogi":
-		// Replace by og if preceded by l
-		// l = 108
+
+		// Replace by og if preceded by l.
+		// (Note, the unicode code point for l is 108)
+		//
 		rsLen := len(w.RS)
 		if rsLen >= 4 && w.RS[rsLen-4] == 108 {
 			w.ReplaceSuffix(suffix, "og", true)
@@ -49,7 +57,9 @@ func step2(w *stemword.Word) bool {
 		return true
 	}
 
-	// Handle basic replacements
+	// Handle a suffix that was found, which is going
+	// to be replaced with a different suffix.
+	//
 	var repl string
 	switch suffix {
 	case "tional":

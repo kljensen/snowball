@@ -10,6 +10,9 @@ func logStep(name string, w *stemword.Word) {
 	log.Printf("After %v -> %v (%v, %v)", name, w.String(), w.R1String(), w.R2String())
 }
 
+// Stem an English word.  This is the only exported
+// function in this package.
+//
 func Stem(word string, stemStopwWords bool) string {
 
 	word = strings.ToLower(strings.TrimSpace(word))

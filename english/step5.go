@@ -4,13 +4,9 @@ import (
 	"github.com/kljensen/snowball/stemword"
 )
 
-// Search for the the following suffixes, and,
-// if found, perform the action indicated. 
-// 
-// e
-// delete if in R2, or in R1 and not preceded by a short syllable
-// l
-// delete if in R2 and preceded by l
+// Step 5 is the stemming of "e" and "l" sufficies
+// found in R2.
+//
 func step5(w *stemword.Word) bool {
 
 	// Last rune index = `lri`
@@ -18,11 +14,14 @@ func step5(w *stemword.Word) bool {
 
 	// If R1 is emtpy, R2 is also empty, and we
 	// need not do anything in step 5.
+	//
 	if w.R1start > lri {
 		return false
 	}
 
 	if w.RS[lri] == 101 {
+
+		// The word ends with "e", which is unicode code point 101.
 
 		// Delete "e" suffix if in R2, or in R1 and not preceded
 		// by a short syllable.
@@ -34,8 +33,10 @@ func step5(w *stemword.Word) bool {
 
 	} else if w.R2start <= lri && w.RS[lri] == 108 && lri-1 >= 0 && w.RS[lri-1] == 108 {
 
-		// Delete "l" suffix if in R2 and preceded by "l"
-		// l = 108
+		// The word ends in double "l", and the final "l" is 
+		// in R2. (Note, the unicode code point for "l" is 108.)
+
+		// Delete the second "l".
 		w.ReplaceSuffix("l", "", true)
 		return true
 
