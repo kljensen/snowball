@@ -3,7 +3,7 @@
 	over slices of runes.  It is similar to the
 	exp/utf8string package.
 */
-package stemword
+package snowballword
 
 // SnowballWord represents a word that is going to be stemmed.
 // 

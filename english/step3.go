@@ -1,7 +1,7 @@
 package english
 
 import (
-	"github.com/kljensen/snowball/stemword"
+	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 3 is the stemming of various longer sufficies

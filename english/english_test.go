@@ -7,7 +7,7 @@
 package english
 
 import (
-	"github.com/kljensen/snowball/stemword"
+	"github.com/kljensen/snowball/snowballword"
 	"testing"
 )
 
@@ -84,7 +84,7 @@ func Test_normalizeApostrophes(t *testing.T) {
 		"‛xxx‛",
 	}
 	for _, v := range variants {
-		w := stemword.New(v)
+		w := snowballword.New(v)
 		normalizeApostrophes(w)
 		if w.String() != "'xxx'" {
 			t.Errorf("Expected \"'xxx'\", not \"%v\"", w.String())
@@ -100,7 +100,7 @@ func Test_capitalizeYs(t *testing.T) {
 		{"ysdcsdeysdfsysdfsdiyoyyyxyxayxey", "YsdcsdeYsdfsysdfsdiYoYyYxyxaYxeY"},
 	}
 	for _, wt := range wordTests {
-		w := stemword.New(wt.in)
+		w := snowballword.New(wt.in)
 		capitalizeYs(w)
 		if w.String() != wt.out {
 			t.Errorf("Expected \"%v\", not \"%v\"", wt.out, w.String())
@@ -118,7 +118,7 @@ func Test_preprocess(t *testing.T) {
 		{"toy", "toY"},
 	}
 	for _, wt := range wordTests {
-		w := stemword.New(wt.in)
+		w := snowballword.New(wt.in)
 		preprocess(w)
 		if w.String() != wt.out {
 			t.Errorf("Expected \"%v\", not \"%v\"", wt.out, w.String())
@@ -136,7 +136,7 @@ func Test_vnvSuffix(t *testing.T) {
 		{"uscular", 0, 2},
 	}
 	for _, tc := range wordTests {
-		w := stemword.New(tc.word)
+		w := snowballword.New(tc.word)
 		pos := vnvSuffix(w, tc.start)
 		if pos != tc.pos {
 			t.Errorf("Expected %v, but got %v", tc.pos, pos)
@@ -164,7 +164,7 @@ func Test_r1r2(t *testing.T) {
 		{"embed", "bed", ""},
 	}
 	for _, testCase := range wordTests {
-		w := stemword.New(testCase.word)
+		w := snowballword.New(testCase.word)
 		r1start, r2start := r1r2(w)
 		w.R1start = r1start
 		w.R2start = r2start
@@ -187,7 +187,7 @@ func Test_isShortWord(t *testing.T) {
 		{"beds", false},
 	}
 	for _, testCase := range testCases {
-		w := stemword.New(testCase.word)
+		w := snowballword.New(testCase.word)
 		r1start, r2start := r1r2(w)
 		w.R1start = r1start
 		w.R2start = r2start
@@ -214,7 +214,7 @@ func Test_endsShortSyllable(t *testing.T) {
 		{"disturb", 7, false},
 	}
 	for _, testCase := range testCases {
-		w := stemword.New(testCase.word)
+		w := snowballword.New(testCase.word)
 		result := endsShortSyllable(w, testCase.pos)
 		if result != testCase.result {
 			t.Errorf("Expected endsShortSyllable(%v, %v) to return %v, not %v", testCase.word, testCase.pos, testCase.result, result)
@@ -235,7 +235,7 @@ type stepTest struct {
 
 func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
 	for _, testCase := range tcs {
-		w := stemword.New(testCase.wordIn)
+		w := snowballword.New(testCase.wordIn)
 		w.R1start = testCase.r1start
 		w.R2start = testCase.r2start
 		_ = f(w)
@@ -362,27 +362,31 @@ func Test_step5(t *testing.T) {
 
 func Test_Stem(t *testing.T) {
 	var testCases = []struct {
-		in  string
-		out string
+		in            string
+		stemStopWords bool
+		out           string
 	}{
-		{"aberration", "aberr"},
-		// "above" is a stop word
-		{"above", "above"},
-		{"abruptness", "abrupt"},
-		{"absolute", "absolut"},
-		{"abated", "abat"},
-		{"acclivity", "accliv"},
-		{"accumulations", "accumul"},
-		{"agreement", "agreement"},
-		{"breed", "breed"},
-		{"ape", "ape"},
-		{"skating", "skate"},
-		{"fluently", "fluentli"},
-		{"ied", "ie"},
-		{"ies", "ie"},
+		{"aberration", true, "aberr"},
+		{"abruptness", true, "abrupt"},
+		{"absolute", true, "absolut"},
+		{"abated", true, "abat"},
+		{"acclivity", true, "accliv"},
+		{"accumulations", true, "accumul"},
+		{"agreement", true, "agreement"},
+		{"breed", true, "breed"},
+		{"ape", true, "ape"},
+		{"skating", true, "skate"},
+		{"fluently", true, "fluentli"},
+		{"ied", true, "ie"},
+		{"ies", true, "ie"},
+		// Stop words
+		{"because", true, "becaus"},
+		{"because", false, "because"},
+		{"above", true, "abov"},
+		{"above", false, "above"},
 	}
 	for _, tc := range testCases {
-		stemmed := Stem(tc.in, true)
+		stemmed := Stem(tc.in, tc.stemStopWords)
 		if stemmed != tc.out {
 			t.Errorf("Expected %v to stem to %v, but got %v", tc.in, tc.out, stemmed)
 		}

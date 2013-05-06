@@ -1,7 +1,7 @@
 package english
 
 import (
-	"github.com/kljensen/snowball/stemword"
+	"github.com/kljensen/snowball/snowballword"
 	"strings"
 )
 
@@ -13,7 +13,7 @@ func Stem(word string, stemStopwWords bool) string {
 	word = strings.ToLower(strings.TrimSpace(word))
 
 	// Return small words and stop words
-	if len(word) <= 2 || (stemStopwWords && isStopWord(word)) {
+	if len(word) <= 2 || (stemStopwWords == false && isStopWord(word)) {
 		return word
 	}
 
@@ -23,7 +23,7 @@ func Stem(word string, stemStopwWords bool) string {
 		return word
 	}
 
-	w := stemword.New(word)
+	w := snowballword.New(word)
 
 	// Stem the word.  Note, each of these
 	// steps will alter `w` in place.

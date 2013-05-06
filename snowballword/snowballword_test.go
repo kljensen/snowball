@@ -1,4 +1,4 @@
-package stemword
+package snowballword
 
 import "testing"
 

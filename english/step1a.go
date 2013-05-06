@@ -1,7 +1,7 @@
 package english
 
 import (
-	"github.com/kljensen/snowball/stemword"
+	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 1a is noralization of various special "s"-endings.
