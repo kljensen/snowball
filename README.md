@@ -67,6 +67,8 @@ I'd like to implement the Snowball stemmer for other lanuages, particularly Span
 If you can help, I would greatly appreciate it: please fork the project and send
 a pull request!
 
+(Also, if you are interested in creating a larger NLP project for Go, please get in touch.)
+
 
 ## Contributors
 
