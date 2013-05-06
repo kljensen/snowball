@@ -6,48 +6,18 @@ import (
 
 func step2(w *stemword.Word) bool {
 
-	// Ending for which to check, longest first.
-	endings := [24]string{
-		"ational",
-		"fulness",
-		"iveness",
-		"ization",
-		"ousness",
-		"biliti",
-		"lessli",
-		"tional",
-		"alism",
-		"aliti",
-		"ation",
-		"entli",
-		"fulli",
-		"iviti",
-		"ousli",
-		"anci",
-		"abli",
-		"alli",
-		"ator",
-		"enci",
-		"izer",
-		"bli",
-		"ogi",
-		"li",
-	}
+	// Find all endings in R1
+	suffix := w.FirstSuffix(
+		"ational", "fulness", "iveness", "ization", "ousness",
+		"biliti", "lessli", "tional", "alism", "aliti", "ation",
+		"entli", "fulli", "iviti", "ousli", "anci", "abli",
+		"alli", "ator", "enci", "izer", "bli", "ogi", "li",
+	)
 
-	// Filter out those endings that are too long to be in R1
-	r1Len := len(w.RS) - w.R1start
-	possibleR1Endings := make([]string, 0, len(endings))
-	for _, ending := range endings {
-		if len(ending) <= r1Len {
-			possibleR1Endings = append(possibleR1Endings, ending)
-		}
-	}
-	if len(possibleR1Endings) == 0 {
+	// If it is not in R1, do nothing
+	if len(suffix) > len(w.RS)-w.R1start {
 		return false
 	}
-
-	// Find all endings in R1
-	suffix := w.FirstSuffix(possibleR1Endings...)
 
 	// Handle special cases
 	switch suffix {

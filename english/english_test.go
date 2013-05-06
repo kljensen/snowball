@@ -366,6 +366,7 @@ func Test_step1c(t *testing.T) {
 func Test_step2(t *testing.T) {
 	// Here I've faked R1 & R2 for simplicity
 	var testCases = []stepTest{
+		{"fluentli", 5, 8, "fluentli", "tli", ""},
 		// Test "tional"
 		{"xxxtional", 3, 5, "xxxtion", "tion", "on"},
 		// Test when "tional" doesn't fit in R1
@@ -445,6 +446,7 @@ func Test_Stem(t *testing.T) {
 		{"breed", "breed"},
 		{"ape", "ape"},
 		{"skating", "skate"},
+		{"fluently", "fluentli"},
 	}
 	for _, tc := range testCases {
 		stemmed := Stem(tc.in)
