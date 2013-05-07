@@ -71,7 +71,7 @@ a pull request!
 
 ## Related work
 
-I know of two other stemmers availble in Go:
+I know of a few other stemmers availble in Go:
 
 * [stemmer](https://github.com/dchest/stemmer) by [https://github.com/dchest](Dmitry Chestnykh).
   Frankly, I wish I had found Dmitry's project before starting on this.  His project also
