@@ -73,7 +73,7 @@ a pull request!
 
 I know of a few other stemmers availble in Go:
 
-* [stemmer](https://github.com/dchest/stemmer) by [https://github.com/dchest](Dmitry Chestnykh).
+* [stemmer](https://github.com/dchest/stemmer) by [Dmitry Chestnykh](https://github.com/dchest).
   Frankly, I wish I had found Dmitry's project before starting on this.  His project also
   implements the Snowball (Porter2) English stemmer as well as the Snowball German stemmer.
 * [porter-stemmer](https://github.com/a2800276/porter-stemmer.go) - an implementation of the
