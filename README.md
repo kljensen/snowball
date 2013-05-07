@@ -69,6 +69,26 @@ a pull request!
 
 (Also, if you are interested in creating a larger NLP project for Go, please get in touch.)
 
+## Related work
+
+I know of two other stemmers availble in Go:
+
+* [stemmer](https://github.com/dchest/stemmer) by [https://github.com/dchest](Dmitry Chestnykh).
+  Frankly, I wish I had found Dmitry's project before starting on this.  His project also
+  implements the Snowball (Porter2) English stemmer as well as the Snowball German stemmer.
+* [porter-stemmer](https://github.com/a2800276/porter-stemmer.go) - an implementation of the
+  original Porter stemming algorithm.
+* [go-stem](https://github.com/agonopol/go-stem) by [Alex Gonopolskiy](https://github.com/agonopol).
+  Also the original Porter algorithm.
+* [paicehusk](https://github.com/Rookii/paicehusk) by [Aaron Groves](https://github.com/rookii).
+  This package implements the
+  [Paice/Husk](http://www.comp.lancs.ac.uk/computing/research/stemming/)
+  stemmer.
+* [golibstemmer](https://github.com/rjohnsondev/golibstemmer)
+  by [Richard Johnson](https://github.com/rjohnsondev).  This provides Go bindings for the
+  [libstemmer](http://snowball.tartarus.org/download.php) C library. 
+* [snowball](https://bitbucket.org/tebeka/snowball) by [Miki Tebeka](http://web.mikitebeka.com/).
+  Also, I believe, Go bindings for the C library.
 
 ## Contributors
 
