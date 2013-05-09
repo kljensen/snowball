@@ -27,7 +27,7 @@ func Test_Stem(t *testing.T) {
 		{"above", "english", true, "abov", true},
 		{"because", "english", false, "because", true},
 		// Give invalid language
-		{"because", "klingon", false, "because", false},
+		{"because", "klingon", false, "", false},
 	}
 	for _, testCase := range testCases {
 		out, err := Stem(testCase.in, testCase.language, testCase.stemStopWords)
