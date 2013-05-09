@@ -1,6 +1,7 @@
 package english
 
 import (
+	"github.com/kljensen/snowball/romance"
 	"github.com/kljensen/snowball/snowballword"
 )
 
@@ -76,21 +77,6 @@ func uncapitalizeYs(word *snowballword.SnowballWord) {
 	return
 }
 
-// Finds the region after the first non-vowel following a vowel,
-// or a the null region at the end of the word if there is no
-// such non-vowel.  Returns the index in the Word where the 
-// region starts; optionally skips the first `start` characters.
-//
-func vnvSuffix(word *snowballword.SnowballWord, start int) int {
-	for i := 1; i < len(word.RS[start:]); i++ {
-		j := start + i
-		if isLowerVowel(word.RS[j-1]) && !isLowerVowel(word.RS[j]) {
-			return j + 1
-		}
-	}
-	return len(word.RS)
-}
-
 // Find the starting point of the two regions R1 & R2.
 //
 // R1 is the region after the first non-vowel following a vowel,
@@ -110,9 +96,9 @@ func r1r2(word *snowballword.SnowballWord) (r1start, r2start int) {
 	if specialPrefix != "" {
 		r1start = len(specialPrefix)
 	} else {
-		r1start = vnvSuffix(word, 0)
+		r1start = romance.VnvSuffix(word, isLowerVowel, 0)
 	}
-	r2start = vnvSuffix(word, r1start)
+	r2start = romance.VnvSuffix(word, isLowerVowel, r1start)
 	return
 }
 

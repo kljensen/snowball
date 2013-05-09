@@ -7,6 +7,7 @@
 package english
 
 import (
+	"github.com/kljensen/snowball/romance"
 	"github.com/kljensen/snowball/snowballword"
 	"testing"
 )
@@ -137,7 +138,7 @@ func Test_vnvSuffix(t *testing.T) {
 	}
 	for _, tc := range wordTests {
 		w := snowballword.New(tc.word)
-		pos := vnvSuffix(w, tc.start)
+		pos := romance.VnvSuffix(w, isLowerVowel, tc.start)
 		if pos != tc.pos {
 			t.Errorf("Expected %v, but got %v", tc.pos, pos)
 		}

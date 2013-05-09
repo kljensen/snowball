@@ -18,6 +18,9 @@ type SnowballWord struct {
 
 	// The index in RS where the R2 region begins
 	R2start int
+
+	// The index in RS where the RV region begins
+	RVstart int
 }
 
 // Create a new SnowballWord struct
@@ -25,6 +28,7 @@ func New(in string) (word *SnowballWord) {
 	word = &SnowballWord{RS: []rune(in)}
 	word.R1start = len(word.RS)
 	word.R2start = len(word.RS)
+	word.RVstart = len(word.RS)
 	return
 }
 
@@ -37,7 +41,7 @@ func (w *SnowballWord) ReplaceSuffix(suffix, replacement string, force bool) boo
 		lenWithoutSuffix := len(w.RS) - len(suffix)
 		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
 
-		// If R1 and R2 are now beyond the length
+		// If R, R2, & RV are now beyond the length
 		// of the word, they are set to the length
 		// of the word.  Otherwise, they are left
 		// as they were.
@@ -56,6 +60,9 @@ func (w *SnowballWord) resetR1R2() {
 	}
 	if w.R2start > rsLen {
 		w.R2start = rsLen
+	}
+	if w.RVstart > rsLen {
+		w.RVstart = rsLen
 	}
 }
 
@@ -95,6 +102,16 @@ func (w *SnowballWord) R2() []rune {
 // Return the R2 region as a string
 func (w *SnowballWord) R2String() string {
 	return string(w.R2())
+}
+
+// Return the RV region as a slice of runes
+func (w *SnowballWord) RV() []rune {
+	return w.RS[w.RVstart:]
+}
+
+// Return the RV region as a string
+func (w *SnowballWord) RVString() string {
+	return string(w.RV())
 }
 
 // Return the SnowballWord as a string

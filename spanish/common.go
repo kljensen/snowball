@@ -1,5 +1,33 @@
 package spanish
 
+import (
+	"github.com/kljensen/snowball/romance"
+	"github.com/kljensen/snowball/snowballword"
+)
+
+// Find the starting point of the regions R1, R2, & RV
+//
+func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int) {
+
+	r1start = romance.VnvSuffix(word, isLowerVowel, 0)
+	r2start = romance.VnvSuffix(word, isLowerVowel, r1start)
+	return
+}
+
+// Checks if a rune is a lowercase Spanish vowel.
+//
+func isLowerVowel(r rune) bool {
+
+	// The spanish vowels are "aeiouáéíóúü", which
+	// are referenced by their unicode code points
+	// in the switch statement below.
+	switch r {
+	case 97, 101, 105, 111, 117, 225, 233, 237, 243, 250, 252:
+		return true
+	}
+	return false
+}
+
 // Return `true` if the input `word` is a Spanish stop word.
 //
 func isStopWord(word string) bool {
