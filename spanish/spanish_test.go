@@ -62,7 +62,7 @@ func Test_findRegions(t *testing.T) {
 		r2start int
 		rvstart int
 	}{
-		{"macho", 3, 5, 4},
+		{"macho", 3, 5, 3},
 		{"olivia", 2, 4, 3},
 		{"trabajo", 4, 6, 3},
 		{"áureo", 3, 5, 3},
