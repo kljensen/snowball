@@ -2,7 +2,6 @@ package spanish
 
 import (
 	"github.com/kljensen/snowball/snowballword"
-	"log"
 )
 
 // Step0 is the removal of sttached pronouns
@@ -10,20 +9,18 @@ import (
 func step0(word *snowballword.SnowballWord) bool {
 
 	// Search for the longest among the following suffixes 
-	suffix1 := word.FirstSuffix(
+	suffix1, suffix1Runes := word.FirstSuffix(
 		"selas", "selos", "sela", "selo", "las", "les",
 		"los", "nos", "me", "se", "la", "le", "lo",
 	)
 
 	// If the suffix empty or not in RV, we have nothing to do.
-	if suffix1 == "" || word.RVstart > len(word.RS)-len(suffix1) {
-		log.Println("Returning false 1 for", word.String(), suffix1)
-		log.Println(word.RS, word.RVstart, suffix1)
+	if suffix1 == "" || word.RVstart > len(word.RS)-len(suffix1Runes) {
 		return false
 	}
 
 	// We'll remove suffix1, if comes after one of the following
-	suffix2 := word.FirstSuffixAt(len(word.RS)-len(suffix1),
+	suffix2, suffix2Runes := word.FirstSuffixAt(len(word.RS)-len(suffix1),
 		"iéndo", "iendo", "yendo", "ando", "ándo",
 		"ár", "ér", "ír", "ar", "er", "ir",
 	)
@@ -51,16 +48,12 @@ func step0(word *snowballword.SnowballWord) bool {
 		case "ír":
 			suffix2repl = "ir"
 		}
-		log.Println("For ", word.String(), ", replacing these two: ", suffix1, suffix2)
-		log.Println(word.String())
-		word.ReplaceSuffix(suffix1, "", true)
-		log.Println(word.String())
-		word.ReplaceSuffix(suffix2, suffix2repl, true)
-		log.Println(word.String())
+		word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
+		word.ReplaceSuffixRunes(suffix2Runes, []rune(suffix2repl), true)
 		return true
 
 	case "ando", "iendo", "ar", "er", "ir":
-		word.ReplaceSuffix(suffix1, "", true)
+		word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
 		return true
 
 	case "yendo":
@@ -72,7 +65,7 @@ func step0(word *snowballword.SnowballWord) bool {
 
 			// Note, the unicode code point for "u" is 117.
 			if word.RS[i] == 117 {
-				word.ReplaceSuffix(suffix1, "", true)
+				word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
 				return true
 			}
 		}
