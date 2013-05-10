@@ -42,7 +42,7 @@ func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int
 			// Otherwise (consonant-vowel case) RV is the region after the
 			// third letter. But RV is the end of the word if these
 			// positions cannot be found.
-			rvstart = 4
+			rvstart = 3
 		}
 	}
 
