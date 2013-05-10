@@ -8,7 +8,7 @@ import (
 //
 func step1b(w *snowballword.SnowballWord) bool {
 
-	suffix := w.FirstSuffix("eedly", "ingly", "edly", "ing", "eed", "ed")
+	suffix, suffixRunes := w.FirstSuffix("eedly", "ingly", "edly", "ing", "eed", "ed")
 
 	switch suffix {
 
@@ -19,14 +19,14 @@ func step1b(w *snowballword.SnowballWord) bool {
 	case "eed", "eedly":
 
 		// Replace by ee if in R1 
-		if len(suffix) <= len(w.RS)-w.R1start {
-			w.ReplaceSuffix(suffix, "ee", true)
+		if len(suffixRunes) <= len(w.RS)-w.R1start {
+			w.ReplaceSuffixRunes(suffixRunes, []rune("ee"), true)
 		}
 		return true
 
 	case "ed", "edly", "ing", "ingly":
 		hasLowerVowel := false
-		for i := 0; i < len(w.RS)-len(suffix); i++ {
+		for i := 0; i < len(w.RS)-len(suffixRunes); i++ {
 			if isLowerVowel(w.RS[i]) {
 				hasLowerVowel = true
 				break
@@ -45,11 +45,11 @@ func step1b(w *snowballword.SnowballWord) bool {
 			originalR2start := w.R2start
 
 			// Delete if the preceding word part contains a vowel
-			w.ReplaceSuffix(suffix, "", true)
+			w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
 
 			// ...and after the deletion...
 
-			newSuffix := w.FirstSuffix("at", "bl", "iz", "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
+			newSuffix, newSuffixRunes := w.FirstSuffix("at", "bl", "iz", "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt")
 			switch newSuffix {
 
 			case "":
@@ -68,7 +68,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 			case "at", "bl", "iz":
 
 				// If the word ends "at", "bl" or "iz" add "e" 
-				w.ReplaceSuffix(newSuffix, newSuffix+"e", true)
+				w.ReplaceSuffixRunes(newSuffixRunes, []rune(newSuffix+"e"), true)
 
 			case "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt":
 
@@ -76,8 +76,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 				// Note that, "double" does not include all possible doubles,
 				// just those shown above.
 				//
-				w.ReplaceSuffix(newSuffix, newSuffix[:1], true)
-
+				w.RS = w.RS[:len(w.RS)-1]
 			}
 
 			// Because we did a double replacement, we need to fix

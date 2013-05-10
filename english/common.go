@@ -91,7 +91,7 @@ func uncapitalizeYs(word *snowballword.SnowballWord) {
 //
 func r1r2(word *snowballword.SnowballWord) (r1start, r2start int) {
 
-	specialPrefix := word.FirstPrefix("gener", "commun", "arsen")
+	specialPrefix, _ := word.FirstPrefix("gener", "commun", "arsen")
 
 	if specialPrefix != "" {
 		r1start = len(specialPrefix)

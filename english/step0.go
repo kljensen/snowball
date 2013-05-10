@@ -7,10 +7,10 @@ import (
 // Step 0 is to strip off apostrophes and "s".
 //
 func step0(w *snowballword.SnowballWord) bool {
-	suffix := w.FirstSuffix("'s'", "'s", "'")
+	suffix, suffixRunes := w.FirstSuffix("'s'", "'s", "'")
 	if suffix == "" {
 		return false
 	}
-	w.ReplaceSuffix(suffix, "", true)
+	w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
 	return true
 }

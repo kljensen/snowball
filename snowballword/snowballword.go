@@ -6,10 +6,6 @@
 */
 package snowballword
 
-import (
-	"unicode/utf8"
-)
-
 // SnowballWord represents a word that is going to be stemmed.
 // 
 type SnowballWord struct {
@@ -41,9 +37,35 @@ func New(in string) (word *SnowballWord) {
 //
 func (w *SnowballWord) ReplaceSuffix(suffix, replacement string, force bool) bool {
 
-	if force || suffix == w.FirstSuffix(suffix) {
-		lenWithoutSuffix := len(w.RS) - utf8.RuneCountInString(suffix)
-		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
+	var (
+		doReplacement bool
+		suffixRunes   []rune
+	)
+	if force {
+		doReplacement = true
+		suffixRunes = []rune(suffix)
+	} else {
+		var foundSuffix string
+		foundSuffix, suffixRunes = w.FirstSuffix(suffix)
+		if foundSuffix == suffix {
+			doReplacement = true
+		}
+	}
+	if doReplacement == false {
+		return false
+	}
+	w.ReplaceSuffixRunes(suffixRunes, []rune(replacement), true)
+	return true
+}
+
+// Replace a suffix and adjust R1start and R2start as needed.
+// If `force` is false, check to make sure the suffix exists first.
+//
+func (w *SnowballWord) ReplaceSuffixRunes(suffixRunes []rune, replacementRunes []rune, force bool) bool {
+
+	if force || w.HasSuffixRunes(suffixRunes) {
+		lenWithoutSuffix := len(w.RS) - len(suffixRunes)
+		w.RS = append(w.RS[:lenWithoutSuffix], replacementRunes...)
 
 		// If R, R2, & RV are now beyond the length
 		// of the word, they are set to the length
@@ -124,47 +146,72 @@ func (w *SnowballWord) String() string {
 }
 
 // Return the first prefix found or the empty string.
-func (w *SnowballWord) FirstPrefix(prefixes ...string) string {
+func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foundPrefixRunes []rune) {
 	found := false
 	rsLen := len(w.RS)
 
 	for _, prefix := range prefixes {
+		prefixRunes := []rune(prefix)
+		if len(prefixRunes) > rsLen {
+			continue
+		}
+
 		found = true
-		for i, r := range prefix {
+		for i, r := range prefixRunes {
 			if i > rsLen-1 || (w.RS)[i] != r {
 				found = false
 				break
 			}
 		}
 		if found {
-			return prefix
+			foundPrefix = prefix
+			foundPrefixRunes = prefixRunes
+			break
 		}
 	}
-	return ""
+	return
 }
 
-// Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffixAt(endPos int, sufficies ...string) (suffix string) {
+// Return true if the first `endPos` runes of `w` end in `suffixRunes`
+//
+func (w *SnowballWord) HasSuffixRunesAt(endPos int, suffixRunes []rune) bool {
 	rsLen := len(w.RS)
-	for _, suffix := range sufficies {
-		numMatching := 0
-		suffixRunes := []rune(suffix)
-		suffixLen := len(suffixRunes)
-		for i := 0; i < endPos && i < rsLen && i < suffixLen; i++ {
-			if w.RS[endPos-i-1] != suffixRunes[suffixLen-i-1] {
-				break
-			} else {
-				numMatching += 1
-			}
-		}
-		if numMatching == suffixLen {
-			return suffix
+	numMatching := 0
+	suffixLen := len(suffixRunes)
+	for i := 0; i < endPos && i < rsLen && i < suffixLen; i++ {
+		if w.RS[endPos-i-1] != suffixRunes[suffixLen-i-1] {
+			break
+		} else {
+			numMatching += 1
 		}
 	}
-	return ""
+	if numMatching == suffixLen {
+		return true
+	}
+	return false
+}
+
+// Return true if `w` ends with `suffixRunes`
+//
+func (w *SnowballWord) HasSuffixRunes(suffixRunes []rune) bool {
+	return w.HasSuffixRunesAt(len(w.RS), suffixRunes)
 }
 
 // Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string) {
+func (w *SnowballWord) FirstSuffixAt(endPos int, sufficies ...string) (suffix string, suffixRunes []rune) {
+	for _, suffix := range sufficies {
+		suffixRunes := []rune(suffix)
+		if w.HasSuffixRunesAt(endPos, suffixRunes) {
+			return suffix, suffixRunes
+		}
+	}
+
+	// Empty out suffixRunes
+	suffixRunes = suffixRunes[:0]
+	return "", suffixRunes
+}
+
+// Return the first suffix found or the empty string.
+func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string, suffixRunes []rune) {
 	return w.FirstSuffixAt(len(w.RS), sufficies...)
 }
