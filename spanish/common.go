@@ -11,6 +11,41 @@ func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int
 
 	r1start = romance.VnvSuffix(word, isLowerVowel, 0)
 	r2start = romance.VnvSuffix(word, isLowerVowel, r1start)
+	rvstart = len(word.RS)
+
+	if len(word.RS) >= 3 {
+		switch {
+
+		case !isLowerVowel(word.RS[1]):
+
+			// If the second letter is a consonant, RV is the region after the
+			// next following vowel.
+			for i := 2; i < len(word.RS); i++ {
+				if isLowerVowel(word.RS[i]) {
+					rvstart = i + 1
+					break
+				}
+			}
+
+		case isLowerVowel(word.RS[0]) && isLowerVowel(word.RS[1]):
+
+			// Or if the first two letters are vowels, RV
+			// is the region after the next consonant.
+			for i := 2; i < len(word.RS); i++ {
+				if !isLowerVowel(word.RS[i]) {
+					rvstart = i + 1
+					break
+				}
+			}
+		default:
+
+			// Otherwise (consonant-vowel case) RV is the region after the
+			// third letter. But RV is the end of the word if these
+			// positions cannot be found.
+			rvstart = 4
+		}
+	}
+
 	return
 }
 
