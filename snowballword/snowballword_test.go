@@ -50,6 +50,26 @@ func Test_FirstSuffix(t *testing.T) {
 		}
 	}
 }
+func Test_FirstSuffixAt(t *testing.T) {
+	var testCases = []struct {
+		input    string
+		endPos   int
+		suffixes []string
+		suffix   string
+	}{
+		{"firehose", 6, []string{"x", "fi"}, ""},
+		{"firehose", 6, []string{"x", "eho", "fi"}, "eho"},
+		{"firehose", 4, []string{"re", "se"}, "re"},
+		{"firehose", 4, []string{"se", "xfirehose"}, ""},
+	}
+	for _, tc := range testCases {
+		w := New(tc.input)
+		suffix := w.FirstSuffixAt(tc.endPos, tc.suffixes...)
+		if suffix != tc.suffix {
+			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
+		}
+	}
+}
 
 func Test_ReplaceSuffix(t *testing.T) {
 	var testCases = []struct {
@@ -64,6 +84,7 @@ func Test_ReplaceSuffix(t *testing.T) {
 	}{
 		{"accliviti", 2, 6, "iviti", "ive", "acclive", "clive", "e"},
 		{"skating", 4, 6, "ing", "e", "skate", "e", ""},
+		{"convirtiéndo", 3, 6, "iéndo", "iendo", "convirtiendo", "virtiendo", "tiendo"},
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)

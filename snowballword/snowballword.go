@@ -6,6 +6,10 @@
 */
 package snowballword
 
+import (
+	"unicode/utf8"
+)
+
 // SnowballWord represents a word that is going to be stemmed.
 // 
 type SnowballWord struct {
@@ -38,7 +42,7 @@ func New(in string) (word *SnowballWord) {
 func (w *SnowballWord) ReplaceSuffix(suffix, replacement string, force bool) bool {
 
 	if force || suffix == w.FirstSuffix(suffix) {
-		lenWithoutSuffix := len(w.RS) - len(suffix)
+		lenWithoutSuffix := len(w.RS) - utf8.RuneCountInString(suffix)
 		w.RS = append(w.RS[:lenWithoutSuffix], []rune(replacement)...)
 
 		// If R, R2, & RV are now beyond the length
@@ -140,14 +144,14 @@ func (w *SnowballWord) FirstPrefix(prefixes ...string) string {
 }
 
 // Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string) {
+func (w *SnowballWord) FirstSuffixAt(endPos int, sufficies ...string) (suffix string) {
 	rsLen := len(w.RS)
 	for _, suffix := range sufficies {
 		numMatching := 0
 		suffixRunes := []rune(suffix)
 		suffixLen := len(suffixRunes)
-		for i := 0; i < rsLen && i < suffixLen; i++ {
-			if w.RS[rsLen-i-1] != suffixRunes[suffixLen-i-1] {
+		for i := 0; i < endPos && i < rsLen && i < suffixLen; i++ {
+			if w.RS[endPos-i-1] != suffixRunes[suffixLen-i-1] {
 				break
 			} else {
 				numMatching += 1
@@ -158,4 +162,9 @@ func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string) {
 		}
 	}
 	return ""
+}
+
+// Return the first suffix found or the empty string.
+func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string) {
+	return w.FirstSuffixAt(len(w.RS), sufficies...)
 }
