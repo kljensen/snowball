@@ -45,7 +45,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 			originalR2start := w.R2start
 
 			// Delete if the preceding word part contains a vowel
-			w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
+			w.RemoveLastNRunes(len(suffixRunes))
 
 			// ...and after the deletion...
 
@@ -76,7 +76,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 				// Note that, "double" does not include all possible doubles,
 				// just those shown above.
 				//
-				w.RS = w.RS[:len(w.RS)-1]
+				w.RemoveLastNRunes(1)
 			}
 
 			// Because we did a double replacement, we need to fix

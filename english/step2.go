@@ -39,7 +39,7 @@ func step2(w *snowballword.SnowballWord) bool {
 		if rsLen >= 3 {
 			switch w.RS[rsLen-3] {
 			case 99, 100, 101, 103, 104, 107, 109, 110, 114, 116:
-				w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
+				w.RemoveLastNRunes(len(suffixRunes))
 				return true
 			}
 		}

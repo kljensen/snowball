@@ -11,6 +11,6 @@ func step0(w *snowballword.SnowballWord) bool {
 	if suffix == "" {
 		return false
 	}
-	w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
+	w.RemoveLastNRunes(len(suffixRunes))
 	return true
 }

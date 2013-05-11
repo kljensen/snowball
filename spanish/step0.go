@@ -48,12 +48,12 @@ func step0(word *snowballword.SnowballWord) bool {
 		case "ír":
 			suffix2repl = "ir"
 		}
-		word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
+		word.RemoveLastNRunes(len(suffix1Runes))
 		word.ReplaceSuffixRunes(suffix2Runes, []rune(suffix2repl), true)
 		return true
 
 	case "ando", "iendo", "ar", "er", "ir":
-		word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
+		word.RemoveLastNRunes(len(suffix1Runes))
 		return true
 
 	case "yendo":
@@ -65,7 +65,7 @@ func step0(word *snowballword.SnowballWord) bool {
 
 			// Note, the unicode code point for "u" is 117.
 			if word.RS[i] == 117 {
-				word.ReplaceSuffixRunes(suffix1Runes, []rune(""), true)
+				word.RemoveLastNRunes(len(suffix1Runes))
 				return true
 			}
 		}

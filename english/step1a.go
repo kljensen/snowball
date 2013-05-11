@@ -44,7 +44,7 @@ func step1a(w *snowballword.SnowballWord) bool {
 		//
 		for i := 0; i < len(w.RS)-2; i++ {
 			if isLowerVowel(w.RS[i]) {
-				w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
+				w.RemoveLastNRunes(len(suffixRunes))
 				return true
 			}
 		}

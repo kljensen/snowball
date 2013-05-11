@@ -28,7 +28,7 @@ func step3(w *snowballword.SnowballWord) bool {
 		// If in R2, delete.
 		//
 		if len(w.RS)-w.R2start >= 5 {
-			w.ReplaceSuffixRunes(suffixRunes, []rune(""), true)
+			w.RemoveLastNRunes(len(suffixRunes))
 			return true
 		}
 		return false

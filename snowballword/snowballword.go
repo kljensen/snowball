@@ -58,6 +58,13 @@ func (w *SnowballWord) ReplaceSuffix(suffix, replacement string, force bool) boo
 	return true
 }
 
+// Remove the last `n` runes from the SnowballWord.
+//
+func (w *SnowballWord) RemoveLastNRunes(n int) {
+	w.RS = w.RS[:len(w.RS)-n]
+	w.resetR1R2()
+}
+
 // Replace a suffix and adjust R1start and R2start as needed.
 // If `force` is false, check to make sure the suffix exists first.
 //
