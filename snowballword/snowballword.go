@@ -179,13 +179,19 @@ func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foun
 	return
 }
 
-// Return true if the first `endPos` runes of `w` end in `suffixRunes`
+// Return true if `w.RS[startPos:endPos]` ends with runes from `suffixRunes`.
+// That is, the slice of runes between startPos and endPos have a suffix of
+// suffixRunes.
 //
-func (w *SnowballWord) HasSuffixRunesAt(endPos int, suffixRunes []rune) bool {
-	rsLen := len(w.RS)
-	numMatching := 0
+func (w *SnowballWord) HasSuffixRunesAt(startPos, endPos int, suffixRunes []rune) bool {
+	maxLen := endPos - startPos
 	suffixLen := len(suffixRunes)
-	for i := 0; i < endPos && i < rsLen && i < suffixLen; i++ {
+	if suffixLen > maxLen {
+		return false
+	}
+
+	numMatching := 0
+	for i := 0; i < maxLen && i < suffixLen; i++ {
 		if w.RS[endPos-i-1] != suffixRunes[suffixLen-i-1] {
 			break
 		} else {
@@ -201,14 +207,14 @@ func (w *SnowballWord) HasSuffixRunesAt(endPos int, suffixRunes []rune) bool {
 // Return true if `w` ends with `suffixRunes`
 //
 func (w *SnowballWord) HasSuffixRunes(suffixRunes []rune) bool {
-	return w.HasSuffixRunesAt(len(w.RS), suffixRunes)
+	return w.HasSuffixRunesAt(0, len(w.RS), suffixRunes)
 }
 
 // Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffixAt(endPos int, sufficies ...string) (suffix string, suffixRunes []rune) {
+func (w *SnowballWord) FirstSuffixAt(startPos, endPos int, sufficies ...string) (suffix string, suffixRunes []rune) {
 	for _, suffix := range sufficies {
 		suffixRunes := []rune(suffix)
-		if w.HasSuffixRunesAt(endPos, suffixRunes) {
+		if w.HasSuffixRunesAt(startPos, endPos, suffixRunes) {
 			return suffix, suffixRunes
 		}
 	}
@@ -220,5 +226,5 @@ func (w *SnowballWord) FirstSuffixAt(endPos int, sufficies ...string) (suffix st
 
 // Return the first suffix found or the empty string.
 func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string, suffixRunes []rune) {
-	return w.FirstSuffixAt(len(w.RS), sufficies...)
+	return w.FirstSuffixAt(0, len(w.RS), sufficies...)
 }

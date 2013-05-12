@@ -53,18 +53,22 @@ func Test_FirstSuffix(t *testing.T) {
 func Test_FirstSuffixAt(t *testing.T) {
 	var testCases = []struct {
 		input    string
+		startPos int
 		endPos   int
 		suffixes []string
 		suffix   string
 	}{
-		{"firehose", 6, []string{"x", "fi"}, ""},
-		{"firehose", 6, []string{"x", "eho", "fi"}, "eho"},
-		{"firehose", 4, []string{"re", "se"}, "re"},
-		{"firehose", 4, []string{"se", "xfirehose"}, ""},
+		{"firehose", 0, 6, []string{"x", "fi"}, ""},
+		{"firehose", 0, 6, []string{"x", "eho", "fi"}, "eho"},
+		{"firehose", 0, 4, []string{"re", "se"}, "re"},
+		{"firehose", 0, 4, []string{"se", "xfirehose"}, ""},
+		{"firehose", 0, 4, []string{"fire", "xxx"}, "fire"},
+		{"firehose", 1, 5, []string{"fire", "xxx"}, ""},
+		{"firehose", 1, 5, []string{"fireh", "ireh", "h"}, "ireh"},
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		suffix, _ := w.FirstSuffixAt(tc.endPos, tc.suffixes...)
+		suffix, _ := w.FirstSuffixAt(tc.startPos, tc.endPos, tc.suffixes...)
 		if suffix != tc.suffix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
 		}
