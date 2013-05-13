@@ -94,16 +94,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		"ismo", "ismos", "able", "ables", "ible", "ibles",
 		"ista", "istas", "oso", "osa", "osos", "osas",
 		"amiento", "amientos", "imiento", "imientos":
-		if suffix == "icas" {
-			log.Println("removing ", len(suffixRunes), " from ", word.String())
-			log.Println("R2 start = ", word.R2start)
-		}
 		word.RemoveLastNRunes(len(suffixRunes))
-		if suffix == "icas" {
-			log.Println("got ", word.String())
-			log.Println("R2 start = ", word.R2start)
-		}
-
 		return true
 	}
 

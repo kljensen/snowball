@@ -9,18 +9,18 @@ import (
 func step0(word *snowballword.SnowballWord) bool {
 
 	// Search for the longest among the following suffixes 
-	suffix1, suffix1Runes := word.FirstSuffix(
+	suffix1, suffix1Runes := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"selas", "selos", "sela", "selo", "las", "les",
 		"los", "nos", "me", "se", "la", "le", "lo",
 	)
 
 	// If the suffix empty or not in RV, we have nothing to do.
-	if suffix1 == "" || word.RVstart > len(word.RS)-len(suffix1Runes) {
+	if suffix1 == "" {
 		return false
 	}
 
 	// We'll remove suffix1, if comes after one of the following
-	suffix2, suffix2Runes := word.FirstSuffixAt(0, len(word.RS)-len(suffix1),
+	suffix2, suffix2Runes := word.FirstSuffixIn(word.RVstart, len(word.RS)-len(suffix1),
 		"iéndo", "iendo", "yendo", "ando", "ándo",
 		"ár", "ér", "ír", "ar", "er", "ir",
 	)

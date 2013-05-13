@@ -5,6 +5,36 @@ import (
 	"github.com/kljensen/snowball/snowballword"
 )
 
+// Change the vowels "áéíóú" into "aeiou".
+//
+func removeAccuteAccents(word *snowballword.SnowballWord) (didReplacement bool) {
+	for i := 0; i < len(word.RS); i++ {
+		switch word.RS[i] {
+		case 225:
+			// á -> a
+			word.RS[i] = 97
+			didReplacement = true
+		case 233:
+			// é -> e
+			word.RS[i] = 101
+			didReplacement = true
+		case 237:
+			// í -> i
+			word.RS[i] = 105
+			didReplacement = true
+		case 243:
+			// ó -> o
+			word.RS[i] = 111
+			didReplacement = true
+		case 250:
+			// ú -> u
+			word.RS[i] = 117
+			didReplacement = true
+		}
+	}
+	return
+}
+
 // Find the starting point of the regions R1, R2, & RV
 //
 func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int) {

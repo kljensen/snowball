@@ -50,7 +50,7 @@ func Test_FirstSuffix(t *testing.T) {
 		}
 	}
 }
-func Test_FirstSuffixAt(t *testing.T) {
+func Test_FirstSuffixIfIn(t *testing.T) {
 	var testCases = []struct {
 		input    string
 		startPos int
@@ -64,17 +64,17 @@ func Test_FirstSuffixAt(t *testing.T) {
 		{"firehose", 0, 4, []string{"se", "xfirehose"}, ""},
 		{"firehose", 0, 4, []string{"fire", "xxx"}, "fire"},
 		{"firehose", 1, 5, []string{"fire", "xxx"}, ""},
-		// The follwoing tests shows how FirstSuffixAt works. It
+		// The follwoing tests shows how FirstSuffixIfIn works. It
 		// first checks for the matching suffix and only then checks
 		// to see if it is starts at or before startPos.  This
-		// is the behavior desired for most stemming steps but
+		// is the behavior desired for many stemming steps but
 		// is somewhat counterintuitive.
 		{"firehose", 1, 5, []string{"fireh", "ireh", "h"}, ""},
 		{"firehose", 1, 5, []string{"ireh", "fireh", "h"}, "ireh"},
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		suffix, _ := w.FirstSuffixAt(tc.startPos, tc.endPos, tc.suffixes...)
+		suffix, _ := w.FirstSuffixIfIn(tc.startPos, tc.endPos, tc.suffixes...)
 		if suffix != tc.suffix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
 		}
