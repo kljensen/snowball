@@ -4,7 +4,7 @@ import (
 	"github.com/kljensen/snowball/snowballword"
 )
 
-// Step0 is the removal of sttached pronouns
+// Step 0 is the removal of attached pronouns
 //
 func step0(word *snowballword.SnowballWord) bool {
 
@@ -20,7 +20,7 @@ func step0(word *snowballword.SnowballWord) bool {
 	}
 
 	// We'll remove suffix1, if comes after one of the following
-	suffix2, suffix2Runes := word.FirstSuffixAt(len(word.RS)-len(suffix1),
+	suffix2, suffix2Runes := word.FirstSuffixAt(0, len(word.RS)-len(suffix1),
 		"iéndo", "iendo", "yendo", "ando", "ándo",
 		"ár", "ér", "ír", "ar", "er", "ir",
 	)

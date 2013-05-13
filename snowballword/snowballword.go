@@ -181,9 +181,10 @@ func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foun
 
 // Return true if `w.RS[startPos:endPos]` ends with runes from `suffixRunes`.
 // That is, the slice of runes between startPos and endPos have a suffix of
-// suffixRunes.
+// suffixRunes.  Note that this method behaves a bit differently than
+// `FirstSuffixAt` and other "At" methods.  That's why it is not exported.
 //
-func (w *SnowballWord) HasSuffixRunesAt(startPos, endPos int, suffixRunes []rune) bool {
+func (w *SnowballWord) hasSuffixRunesIn(startPos, endPos int, suffixRunes []rune) bool {
 	maxLen := endPos - startPos
 	suffixLen := len(suffixRunes)
 	if suffixLen > maxLen {
@@ -207,15 +208,28 @@ func (w *SnowballWord) HasSuffixRunesAt(startPos, endPos int, suffixRunes []rune
 // Return true if `w` ends with `suffixRunes`
 //
 func (w *SnowballWord) HasSuffixRunes(suffixRunes []rune) bool {
-	return w.HasSuffixRunesAt(0, len(w.RS), suffixRunes)
+	return w.hasSuffixRunesIn(0, len(w.RS), suffixRunes)
 }
 
-// Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffixAt(startPos, endPos int, sufficies ...string) (suffix string, suffixRunes []rune) {
-	for _, suffix := range sufficies {
+// Find the first suffix that ends at `endPos` in the word among
+// those provided; then,
+// check to see if it begins after startPos.  If it does, return
+// it, else return the empty string and empty rune slice.  This
+// may seem a counterintuitive manner to do this.  However, it 
+// matches what is required most of the time by the Snowball
+// stemmer steps.
+//
+func (w *SnowballWord) FirstSuffixAt(startPos, endPos int, suffixes ...string) (suffix string, suffixRunes []rune) {
+	for _, suffix := range suffixes {
 		suffixRunes := []rune(suffix)
-		if w.HasSuffixRunesAt(startPos, endPos, suffixRunes) {
-			return suffix, suffixRunes
+		if w.hasSuffixRunesIn(0, endPos, suffixRunes) {
+			if endPos-len(suffixRunes) >= startPos {
+				return suffix, suffixRunes
+			} else {
+				// Empty out suffixRunes
+				suffixRunes = suffixRunes[:0]
+				return "", suffixRunes
+			}
 		}
 	}
 
@@ -224,7 +238,19 @@ func (w *SnowballWord) FirstSuffixAt(startPos, endPos int, sufficies ...string) 
 	return "", suffixRunes
 }
 
+// Find the first suffix in the word among those provided; then,
+// check to see if it begins after startPos.  If it does,
+// remove it.
+//
+func (w *SnowballWord) RemoveSuffixAfter(startPos int, suffixes ...string) (suffix string, suffixRunes []rune) {
+	suffix, suffixRunes = w.FirstSuffixAt(startPos, len(w.RS), suffixes...)
+	if suffix != "" {
+		w.RemoveLastNRunes(len(suffixRunes))
+	}
+	return
+}
+
 // Return the first suffix found or the empty string.
-func (w *SnowballWord) FirstSuffix(sufficies ...string) (suffix string, suffixRunes []rune) {
-	return w.FirstSuffixAt(0, len(w.RS), sufficies...)
+func (w *SnowballWord) FirstSuffix(suffixes ...string) (suffix string, suffixRunes []rune) {
+	return w.FirstSuffixAt(0, len(w.RS), suffixes...)
 }

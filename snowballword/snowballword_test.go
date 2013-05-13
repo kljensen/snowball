@@ -64,7 +64,13 @@ func Test_FirstSuffixAt(t *testing.T) {
 		{"firehose", 0, 4, []string{"se", "xfirehose"}, ""},
 		{"firehose", 0, 4, []string{"fire", "xxx"}, "fire"},
 		{"firehose", 1, 5, []string{"fire", "xxx"}, ""},
-		{"firehose", 1, 5, []string{"fireh", "ireh", "h"}, "ireh"},
+		// The follwoing tests shows how FirstSuffixAt works. It
+		// first checks for the matching suffix and only then checks
+		// to see if it is starts at or before startPos.  This
+		// is the behavior desired for most stemming steps but
+		// is somewhat counterintuitive.
+		{"firehose", 1, 5, []string{"fireh", "ireh", "h"}, ""},
+		{"firehose", 1, 5, []string{"ireh", "fireh", "h"}, "ireh"},
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
