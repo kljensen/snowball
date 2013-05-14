@@ -1,6 +1,9 @@
 package snowball
 
-import "testing"
+import (
+	"regexp"
+	"testing"
+)
 
 func Test_Stem(t *testing.T) {
 	testCases := []struct {
@@ -57,5 +60,14 @@ func Test_Stem(t *testing.T) {
 			)
 		}
 
+	}
+}
+
+// Test if the VERSION constant is correctly formatted
+//
+func Test_Version(t *testing.T) {
+	validVersionRegexp := regexp.MustCompile(`^v\d+\.\d+\.\d+$`)
+	if validVersionRegexp.MatchString(VERSION) == false {
+		t.Errorf("Invalid version specified: %v", VERSION)
 	}
 }

@@ -6,6 +6,12 @@ import (
 	"github.com/kljensen/snowball/spanish"
 )
 
+const (
+	VERSION string = "v0.1.0"
+)
+
+// Stem a word in the specified language.
+//
 func Stem(word, language string, stemStopWords bool) (stemmed string, err error) {
 	switch language {
 	case "english":
