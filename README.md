@@ -2,7 +2,7 @@ Snowball
 ========
 
 
-A [Go](http://golang.org) implementation of the
+A [Go (golang)](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
 for natural language processing.  The project currently includes
 the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html)
