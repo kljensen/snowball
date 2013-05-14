@@ -12,7 +12,8 @@ and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemme
 |               | Status           |
 | ------------- | ---------------- |
 | Latest release | [v0.1.1](https://github.com/kljensen/snowball/tags) (2013-05-14) |
-| Latest build status  |   ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
+| Latest build status  |   [![Build Status](https://travis-ci.org/kljensen/snowball.png)](https://travis-ci.org/kljensen/snowball)
+ |
 | Go versions tested |  go1.0.3   |
 | Languages available | English, Spanish |
 | License | MIT |
