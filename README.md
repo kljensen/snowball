@@ -9,12 +9,13 @@ the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.ht
 and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html).
 
 
-| Aspect        | Status           |
+|               | Status           |
 | ------------- | ---------------- |
 | Latest release | [0.1.0](https://github.com/kljensen/snowball/tags) (2013-05-14) |
 | Latest build status  |   ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
 | Go versions tested |  go1.0.3   |
 | Languages available | English, Spanish |
+| License | MIT |
 
 
 ## Usage
