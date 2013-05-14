@@ -10,10 +10,14 @@ and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemme
 
 ## Status
 
-| Latest release | 0.1.0 (commit [539218b](https://github.com/kljensen/snowball/commit/539218bb1e08bd84d6b01622683a4ca6106ed05c, 2013-05-14) |
-| Test status  |   ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
+
+| Aspect        | Status           |
+| ------------- | ---------------- |
+| Latest release | [0.1.0](https://github.com/kljensen/snowball/tags) (2013-05-14) |
+| Latest build status  |   ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
 | Go versions tested |  go1.0.3   |
 | Languages available | English, Spanish |
+
 
 ## Usage
 
