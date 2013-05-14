@@ -1,7 +1,6 @@
 Snowball
 ========
 
-![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png)
 
 A [Go](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
@@ -9,6 +8,12 @@ for natural language processing.  The project currently only includes
 the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html)
 and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html).
 
+## Status
+
+| Latest release | 0.1.0 (commit [539218b](https://github.com/kljensen/snowball/commit/539218bb1e08bd84d6b01622683a4ca6106ed05c, 2013-05-14) |
+| Test status  |   ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
+| Go versions tested |  go1.0.3   |
+| Languages available | English, Spanish |
 
 ## Usage
 
@@ -35,10 +40,14 @@ func main(){
 ```
 
 
-## Implementation
+## Organization & Implementation
+
+The code is organized as follows:
+* The top-level package `snowball` exports a single function defined
+  in `snowball.go`.  The package also exports the latest version number.
 
 I would like to mention here a few details about
-the manner in which the stemmers (currently only English) are implemented.
+the manner in which the stemmers are implemented.
 
 * In order to ensure the code is easily extended to non-English lanuages,
   I avoided using bytes and byte arrays, and instead perform all operations
@@ -47,6 +56,10 @@ the manner in which the stemmers (currently only English) are implemented.
 * In order to avoid casting strings into slices of runes numerous times,
   this implementation uses a single slice of runes stored in the `SnowballWord`
   struct for each word that needs to be stemmed.
+* In spite of the foregoing, readability requires that some strings be 
+  kept around and repeatedly cast into slices of runes.  For example, when
+  there is a list of suffixes that we must replace in a non-ASCII language.
+  Clearly, we could hard code 
 * Instead of carrying around the word regions R1 and R2 as separate strings
   (or slices or runes, or whatever), we carry around the index where each of
   these regions begins.  These are stored as `R1start` and `R2start` on the 
