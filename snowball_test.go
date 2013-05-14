@@ -28,6 +28,21 @@ func Test_Stem(t *testing.T) {
 		{"because", "english", false, "because", true},
 		// Give invalid language
 		{"because", "klingon", false, "", false},
+
+		// Spanish tests, a few
+		{"lejana", "spanish", true, "lejan", true},
+		{"preocuparse", "spanish", true, "preocup", true},
+		{"oposición", "spanish", true, "oposicion", true},
+		{"prisionero", "spanish", true, "prisioner", true},
+		{"ridiculización", "spanish", true, "ridiculiz", true},
+		{"cotidianeidad", "spanish", true, "cotidian", true},
+		{"portezuela", "spanish", true, "portezuel", true},
+		{"enriquecerse", "spanish", true, "enriquec", true},
+		{"campesinos", "spanish", true, "campesin", true},
+		{"desalojó", "spanish", true, "desaloj", true},
+		{"anticipadas", "spanish", true, "anticip", true},
+		{"goyesca", "spanish", true, "goyesc", true},
+		{"band", "spanish", true, "band", true},
 	}
 	for _, testCase := range testCases {
 		out, err := Stem(testCase.in, testCase.language, testCase.stemStopWords)
