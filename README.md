@@ -4,7 +4,7 @@ Snowball
 
 A [Go](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
-for natural language processing.  The project currently only includes
+for natural language processing.  The project currently includes
 the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html)
 and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html).
 
@@ -20,10 +20,6 @@ and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemme
 
 ## Usage
 
-The `snowball` package has a single exported function `snowball.Stem`,
-which is defined in `snowball/snowball.go`.  Each language also exports
-a `Stem` function: e.g. `spanish.Stem`, which is defined in
-`snowball/spanish/stem.go`.
 
 Here is a minimal Go program that uses this package in order
 to stem a single word.
@@ -46,11 +42,16 @@ func main(){
 ## Organization & Implementation
 
 The code is organized as follows:
-* The top-level package `snowball` exports a single function defined
-  in `snowball.go`.  The package also exports the latest version number.
 
-I would like to mention here a few details about
-the manner in which the stemmers are implemented.
+* The top-level `snowball` package has a single exported function `snowball.Stem`,
+  which is defined in `snowball/snowball.go`. 
+* The stemmer for each language is defined in a "sub-package", e.g `snowball/spanish`.
+* Each language exports a `Stem` function: e.g. `spanish.Stem`,
+  which is defined in `snowball/spanish/stem.go`.
+* Code that is common to multiple lanuages may go in a separate package,
+  e.g. the small `romance` package.
+
+Some notes about the implementation:
 
 * In order to ensure the code is easily extended to non-English lanuages,
   I avoided using bytes and byte arrays, and instead perform all operations
@@ -60,20 +61,20 @@ the manner in which the stemmers are implemented.
   this implementation uses a single slice of runes stored in the `SnowballWord`
   struct for each word that needs to be stemmed.
 * In spite of the foregoing, readability requires that some strings be 
-  kept around and repeatedly cast into slices of runes.  For example, when
-  there is a list of suffixes that we must replace in a non-ASCII language.
-  Clearly, we could hard code 
-* Instead of carrying around the word regions R1 and R2 as separate strings
+  kept around and repeatedly cast into slices of runes.  For example,
+  in the Spanish stemmer, one step requires removing suffixes with accute
+  accents such as "ución", "logía", and "logías".  If I were to hard-code those
+  suffices as slices of runes, the code would be substantially less readable.
+* Instead of carrying around the word regions R1, R2, & RV as separate strings
   (or slices or runes, or whatever), we carry around the index where each of
-  these regions begins.  These are stored as `R1start` and `R2start` on the 
-  `SnowballWord` struct. I believe this is a relatively efficient way of
+  these regions begins.  These are stored as `R1start`, `R2start`, & `RVstart`
+  on the `SnowballWord` struct. I believe this is a relatively efficient way of
   storing R1 and R2.
-* I tried to avoided all maps and regular expressions 1) for kicks, and 2) because
-  I thought they'd negatively impact the performance. 
-* I end up refactoring the `snowballword` package every time I implement a
+* The code does not use any maps or regular expressions 1) for kicks, and 2) because
+  I thought they'd negatively impact the performance. (But, mostly for #1; I realize
+  #2 is silly.)
+* I end up refactoring the `snowballword` package a bit every time I implement a
   new language.
-* Code that is common to multiple lanuages may go in a separate package,
-  e.g. the small `romance` package.
 
 
 ## Future work
