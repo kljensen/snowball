@@ -1,6 +1,8 @@
 Snowball
 ========
 
+![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png)
+
 A [Go](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
 for natural language processing.  The project currently only includes
