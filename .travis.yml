@@ -1,0 +1,3 @@
+# Travis-CI configuration.  See
+# http://about.travis-ci.org/docs
+language: go
