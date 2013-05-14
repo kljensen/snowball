@@ -8,8 +8,6 @@ for natural language processing.  The project currently only includes
 the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html)
 and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html).
 
-## Status
-
 
 | Aspect        | Status           |
 | ------------- | ---------------- |
