@@ -1,10 +1,15 @@
 History
 =======
 
-### 0.1.1 / 2013-05-14
+### v0.2.0 / 2013-05-17
+
+Add French stemmer and move more common code for romance
+languages into the `romance` package.
+
+### v0.1.1 / 2013-05-14
 
 Documentation fixes.
 
-### 0.1.0 / 2013-05-13
+### v0.1.0 / 2013-05-13
 
 Added Spanish stemmer and started versioning the project.

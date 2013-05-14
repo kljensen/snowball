@@ -5,17 +5,19 @@ Snowball
 A [Go (golang)](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
 for natural language processing.  The project currently includes
-the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html)
-and the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html).
+the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html),
+the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html), and
+the [French stemmer](http://snowball.tartarus.org/algorithms/french/stemmer.html).
 
 
-|               | Status           |
-| ------------- | ---------------- |
-| Latest release | [v0.1.1](https://github.com/kljensen/snowball/tags) (2013-05-14) |
-| Latest build status  |   [![Build Status](https://travis-ci.org/kljensen/snowball.png)](https://travis-ci.org/kljensen/snowball)|
-| Go versions tested |  go1.0.3   |
-| Languages available | English, Spanish |
-| License | MIT |
+
+|                      |  Status                   |
+| -------------------- | ------------------------- |
+| Latest release       |  [v0.1.1](https://github.com/kljensen/snowball/tags) (2013-05-14) |
+| Latest build status  |  ![Test status for snowball project](https://travis-ci.org/kljensen/snowball.png) |
+| Go versions tested   |  go1.0.3                  |
+| Languages available  |  English, Spanish, French |
+| License              |  MIT                      |
 
 
 ## Usage

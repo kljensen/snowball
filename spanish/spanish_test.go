@@ -1,7 +1,7 @@
 package spanish
 
 import (
-	"github.com/kljensen/snowball/snowballword"
+	"github.com/kljensen/snowball/romance"
 	"testing"
 )
 
@@ -9,59 +9,31 @@ import (
 // or false.
 //
 func Test_stopWords(t *testing.T) {
-	testCases := []struct {
-		word   string
-		result bool
-	}{
+	testCases := []romance.WordBoolTestCase{
 		{"el", true},
 		{"queso", false},
 	}
-	for _, testCase := range testCases {
-		result := isStopWord(testCase.word)
-		if result != testCase.result {
-			t.Errorf("Expect isStopWord(\"%v\") = %v, but got %v",
-				testCase.word, testCase.result, result,
-			)
-		}
-	}
+	romance.RunWordBoolTest(t, isStopWord, testCases)
 }
 
 // Test isLowerVowel for things we know should be true
 // or false.
 //
 func Test_isLowerVowel(t *testing.T) {
-	testCases := []struct {
-		chars  string
-		result bool
-	}{
+	testCases := []romance.WordBoolTestCase{
 		// These are all vowels.
 		{"aeiouáéíóúü", true},
 		// None of these are vowels.
 		{"cbfqhkl", false},
 	}
-	for _, testCase := range testCases {
-		for _, r := range testCase.chars {
-			result := isLowerVowel(r)
-			if result != testCase.result {
-				t.Errorf("Expect isLowerVowel(\"%v\") = %v, but got %v",
-					r, testCase.result, result,
-				)
-			}
-
-		}
-	}
+	romance.RunRunewiseBoolTest(t, isLowerVowel, testCases)
 }
 
 // Test isLowerVowel for things we know should be true
 // or false.
 //
 func Test_findRegions(t *testing.T) {
-	testCases := []struct {
-		word    string
-		r1start int
-		r2start int
-		rvstart int
-	}{
+	testCases := []romance.FindRegionsTestCase{
 		{"macho", 3, 5, 3},
 		{"olivia", 2, 4, 3},
 		{"trabajo", 4, 6, 3},
@@ -167,49 +139,13 @@ func Test_findRegions(t *testing.T) {
 		{"gonzalez", 3, 6, 3},
 		{"antidemocrática", 2, 5, 4},
 	}
-	for _, testCase := range testCases {
-		w := snowballword.New(testCase.word)
-		r1start, r2start, rvstart := findRegions(w)
-		if r1start != testCase.r1start || r2start != testCase.r2start || rvstart != testCase.rvstart {
-			t.Errorf("Expect findRegions(\"%v\") = %v, %v, %v, but got %v, %v, %v",
-				testCase.word, testCase.r1start, testCase.r2start, testCase.rvstart,
-				r1start, r2start, rvstart,
-			)
-		}
-
-	}
-}
-
-type stepFunc func(*snowballword.SnowballWord) bool
-type stepTest struct {
-	WordIn     string
-	R1start    int
-	R2start    int
-	RVstart    int
-	Changed    bool
-	WordOut    string
-	R1startOut int
-	R2startOut int
-	RVstartOut int
-}
-
-func runStepTest(t *testing.T, f stepFunc, tcs []stepTest) {
-	for _, testCase := range tcs {
-		w := snowballword.New(testCase.WordIn)
-		w.R1start = testCase.R1start
-		w.R2start = testCase.R2start
-		w.RVstart = testCase.RVstart
-		retval := f(w)
-		if retval != testCase.Changed || w.String() != testCase.WordOut || w.R1start != testCase.R1startOut || w.R2start != testCase.R2startOut || w.RVstart != testCase.RVstartOut {
-			t.Errorf("Expected %v -> \"{%v, %v, %v, %v}\", but got \"{%v, %v, %v, %v}\"", testCase.WordIn, testCase.WordOut, testCase.R1startOut, testCase.R2startOut, testCase.RVstartOut, w.String(), w.R1start, w.R2start, w.RVstart)
-		}
-	}
+	romance.RunFindRegionsTest(t, findRegions, testCases)
 }
 
 // Test step0, the removal of pronoun suffixes.
 //
 func Test_step0(t *testing.T) {
-	testCases := []stepTest{
+	testCases := []romance.StepTestCase{
 		{"liberarlo", 3, 5, 3, true, "liberar", 3, 5, 3},
 		{"ejecutarse", 2, 4, 3, true, "ejecutar", 2, 4, 3},
 		{"convirtiéndolas", 3, 6, 3, true, "convirtiendo", 3, 6, 3},
@@ -311,13 +247,13 @@ func Test_step0(t *testing.T) {
 		{"establecerse", 2, 5, 4, true, "establecer", 2, 5, 4},
 		{"ponerles", 3, 5, 3, true, "poner", 3, 5, 3},
 	}
-	runStepTest(t, step0, testCases)
+	romance.RunStepTest(t, step0, testCases)
 }
 
 // Test step1, the removal of standard suffixes.
 //
 func Test_step1(t *testing.T) {
-	testCases := []stepTest{
+	testCases := []romance.StepTestCase{
 		{"retrospectiva", 3, 6, 3, true, "retrospect", 3, 6, 3},
 		{"emperador", 2, 5, 4, true, "emper", 2, 5, 4},
 		{"instalaciones", 2, 6, 5, true, "instal", 2, 6, 5},
@@ -419,5 +355,5 @@ func Test_step1(t *testing.T) {
 		{"gobernador", 3, 5, 3, true, "gobern", 3, 5, 3},
 		{"inexplicable", 2, 4, 3, true, "inexplic", 2, 4, 3},
 	}
-	runStepTest(t, step1, testCases)
+	romance.RunStepTest(t, step1, testCases)
 }

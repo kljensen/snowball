@@ -121,6 +121,24 @@ func (w *SnowballWord) slice(start, stop int) []rune {
 	return w.RS[start:stop]
 }
 
+// Returns true if `x` runes would fit into R1.
+//
+func (w *SnowballWord) FitsInR1(x int) bool {
+	return w.R1start <= len(w.RS)-x
+}
+
+// Returns true if `x` runes would fit into R2.
+//
+func (w *SnowballWord) FitsInR2(x int) bool {
+	return w.R2start <= len(w.RS)-x
+}
+
+// Returns true if `x` runes would fit into RV.
+//
+func (w *SnowballWord) FitsInRV(x int) bool {
+	return w.RVstart <= len(w.RS)-x
+}
+
 // Return the R1 region as a slice of runes
 func (w *SnowballWord) R1() []rune {
 	return w.RS[w.R1start:]
