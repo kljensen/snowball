@@ -42,9 +42,9 @@ func step1(word *snowballword.SnowballWord) bool {
 			// if preceded by iv, delete if in R2 (and if further preceded by at,
 			// delete if in R2), otherwise,
 			// if preceded by os, ic or ad, delete if in R2 
-			newSuffix, _ := word.RemoveSuffixAfter(word.R2start, "iv", "os", "ic", "ad")
+			newSuffix, _ := word.RemoveFirstSuffixIfIn(word.R2start, "iv", "os", "ic", "ad")
 			if newSuffix == "iv" {
-				word.RemoveSuffixAfter(word.R2start, "at")
+				word.RemoveFirstSuffixIfIn(word.R2start, "at")
 			}
 			return true
 		}
@@ -62,7 +62,7 @@ func step1(word *snowballword.SnowballWord) bool {
 	//
 	compoundReplacement := func(otherSuffixes ...string) bool {
 		word.RemoveLastNRunes(len(suffixRunes))
-		word.RemoveSuffixAfter(word.R2start, otherSuffixes...)
+		word.RemoveFirstSuffixIfIn(word.R2start, otherSuffixes...)
 		return true
 	}
 

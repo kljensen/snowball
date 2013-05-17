@@ -150,9 +150,9 @@ func step1(word *snowballword.SnowballWord) bool {
 
 			// If preceded by "iv", delete if in R2
 			// (and if further preceded by "at", delete if in R2)
-			newSuffix, newSuffixRunes := word.RemoveSuffixAfter(word.R2start, "iv")
+			newSuffix, newSuffixRunes := word.RemoveFirstSuffixIfIn(word.R2start, "iv")
 			if newSuffix != "" {
-				word.RemoveSuffixAfter(word.R2start, "at")
+				word.RemoveFirstSuffixIfIn(word.R2start, "at")
 				return true
 			}
 
@@ -222,7 +222,7 @@ func step1(word *snowballword.SnowballWord) bool {
 			}
 
 			// If preceded by "iv", delete if in R2 
-			newSuffix, newSuffixRunes = word.RemoveSuffixAfter(word.R2start, "iv")
+			newSuffix, newSuffixRunes = word.RemoveFirstSuffixIfIn(word.R2start, "iv")
 			return true
 		}
 	case "if", "ive", "ifs", "ives":
@@ -233,7 +233,7 @@ func step1(word *snowballword.SnowballWord) bool {
 			word.RemoveLastNRunes(len(suffixRunes))
 
 			// If preceded by at, delete if in R2 
-			newSuffix, newSuffixRunes := word.RemoveSuffixAfter(word.R2start, "at")
+			newSuffix, newSuffixRunes := word.RemoveFirstSuffixIfIn(word.R2start, "at")
 			if newSuffix != "" {
 
 				// And if further preceded by ic, delete if in R2, else replace by iqU

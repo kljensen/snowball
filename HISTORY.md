@@ -1,6 +1,10 @@
 History
 =======
 
+### v0.3.0 / 2013-05-18
+
+Add Russian stemmer.
+
 ### v0.2.0 / 2013-05-17
 
 Add French stemmer and move more common code for romance

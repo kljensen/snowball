@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"github.com/kljensen/snowball/english"
 	"github.com/kljensen/snowball/french"
+	"github.com/kljensen/snowball/russian"
 	"github.com/kljensen/snowball/spanish"
 )
 
 const (
-	VERSION string = "v0.2.0"
+	VERSION string = "v0.3.0"
 )
 
 // Stem a word in the specified language.
@@ -23,6 +24,8 @@ func Stem(word, language string, stemStopWords bool) (stemmed string, err error)
 		f = spanish.Stem
 	case "french":
 		f = french.Stem
+	case "russian":
+		f = russian.Stem
 	default:
 		err = fmt.Errorf("Unknown language: %s", language)
 		return

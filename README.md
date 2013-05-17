@@ -4,19 +4,16 @@ Snowball
 
 A [Go (golang)](http://golang.org) implementation of the
 [Snowball stemmer](http://snowball.tartarus.org/)
-for natural language processing.  The project currently includes
-the [English stemmer](http://snowball.tartarus.org/algorithms/english/stemmer.html),
-the [Spanish stemmer](http://snowball.tartarus.org/algorithms/spanish/stemmer.html), and
-the [French stemmer](http://snowball.tartarus.org/algorithms/french/stemmer.html).
+for natural language processing.
 
 
 
 |                      |  Status                   |
 | -------------------- | ------------------------- |
-| Latest release       |  [v0.2.0](https://github.com/kljensen/snowball/tags) (2013-05-14) |
+| Latest release       |  [v0.3.0](https://github.com/kljensen/snowball/tags) (2013-05-14) |
 | Latest build status  |  [![Build Status](https://travis-ci.org/kljensen/snowball.png)](https://travis-ci.org/kljensen/snowball)
 | Go versions tested   |  go1.0.3                  |
-| Languages available  |  English, Spanish, French |
+| Languages available  |  English, Spanish (español), French (le français), Russian (ру́сский язы́к)|
 | License              |  MIT                      |
 
 
@@ -77,11 +74,15 @@ Some notes about the implementation:
   #2 is silly.)
 * I end up refactoring the `snowballword` package a bit every time I implement a
   new language.
+* Clearly, the Go implentation of these stemmers is verbose relative to the
+  Snowball language.  However, it is much better than the
+  [Java version](https://github.com/weavejester/snowball-stemmer/blob/master/src/java/org/tartarus/snowball/ext/frenchStemmer.java)
+  and [others](https://github.com/patch/lingua-stem-unine-pm5/blob/master/src/frenchStemmerPlus.txt).
 
 
 ## Future work
 
-I'd like to implement the Snowball stemmer for other lanuages.
+I'd like to implement the Snowball stemmer in more lanuages.
 If you can help, I would greatly appreciate it: please fork the project and send
 a pull request!
 
@@ -92,7 +93,7 @@ a pull request!
 I know of a few other stemmers availble in Go:
 
 * [stemmer](https://github.com/dchest/stemmer) by [Dmitry Chestnykh](https://github.com/dchest).
-  Frankly, I wish I had found Dmitry's project before starting on this.  His project also
+  His project also
   implements the Snowball (Porter2) English stemmer as well as the Snowball German stemmer.
 * [porter-stemmer](https://github.com/a2800276/porter-stemmer.go) - an implementation of the
   original Porter stemming algorithm.
