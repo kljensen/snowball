@@ -1,4 +1,4 @@
 # Travis-CI configuration.  See
 # http://about.travis-ci.org/docs
 language: go
-install: go get "github.com/kljensen/snowball"
+install: go env
