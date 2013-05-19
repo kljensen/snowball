@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	VERSION string = "v0.3.3"
+	VERSION string = "v0.3.4"
 )
 
 // Stem a word in the specified language.
