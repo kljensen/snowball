@@ -4,7 +4,7 @@ import (
 	"github.com/kljensen/snowball/snowballword"
 )
 
-// Step 2 is the stemming of various endings found in 
+// Step 2 is the stemming of various endings found in
 // R1 including "al", "ness", and "li".
 //
 func step2(w *snowballword.SnowballWord) bool {

@@ -8,7 +8,7 @@ import (
 //
 func step0(word *snowballword.SnowballWord) bool {
 
-	// Search for the longest among the following suffixes 
+	// Search for the longest among the following suffixes
 	suffix1, suffix1Runes := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"selas", "selos", "sela", "selo", "las", "les",
 		"los", "nos", "me", "se", "la", "le", "lo",

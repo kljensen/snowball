@@ -52,7 +52,7 @@ func isLowerVowel(r rune) bool {
 // Capitalize Y, I, and U runes that are acting as consanants.
 // Put into upper case "u" or "i" preceded and followed by a
 // vowel, and "y" preceded or followed by a vowel. "u" after q is
-// also put into upper case. 
+// also put into upper case.
 //
 func capitalizeYUI(word *snowballword.SnowballWord) {
 

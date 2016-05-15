@@ -6,7 +6,7 @@ import (
 
 // Step 4:
 // Search for the longest among the following suffixes,
-// and, if found and in R2, perform the action indicated. 
+// and, if found and in R2, perform the action indicated.
 
 // al, ance, ence, er, ic, able, ible, ant, ement, ment,
 // ent, ism, ate, iti, ous, ive, ize

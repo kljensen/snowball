@@ -18,7 +18,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 
 	case "eed", "eedly":
 
-		// Replace by ee if in R1 
+		// Replace by ee if in R1
 		if len(suffixRunes) <= len(w.RS)-w.R1start {
 			w.ReplaceSuffixRunes(suffixRunes, []rune("ee"), true)
 		}
@@ -67,7 +67,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 
 			case "at", "bl", "iz":
 
-				// If the word ends "at", "bl" or "iz" add "e" 
+				// If the word ends "at", "bl" or "iz" add "e"
 				w.ReplaceSuffixRunes(newSuffixRunes, []rune(newSuffix+"e"), true)
 
 			case "bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt":

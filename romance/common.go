@@ -11,7 +11,7 @@ type isVowelFunc func(rune) bool
 
 // Finds the region after the first non-vowel following a vowel,
 // or a the null region at the end of the word if there is no
-// such non-vowel.  Returns the index in the Word where the 
+// such non-vowel.  Returns the index in the Word where the
 // region starts; optionally skips the first `start` characters.
 //
 func VnvSuffix(word *snowballword.SnowballWord, f isVowelFunc, start int) int {

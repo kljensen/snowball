@@ -41,7 +41,7 @@ func step1(word *snowballword.SnowballWord) bool {
 
 			// if preceded by iv, delete if in R2 (and if further preceded by at,
 			// delete if in R2), otherwise,
-			// if preceded by os, ic or ad, delete if in R2 
+			// if preceded by os, ic or ad, delete if in R2
 			newSuffix, _ := word.RemoveFirstSuffixIfIn(word.R2start, "iv", "os", "ic", "ad")
 			if newSuffix == "iv" {
 				word.RemoveFirstSuffixIfIn(word.R2start, "at")
@@ -51,7 +51,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		return false
 	}
 
-	// All the following cases require the found suffix 
+	// All the following cases require the found suffix
 	// to be in R2.
 	if isInR2 == false {
 		return false

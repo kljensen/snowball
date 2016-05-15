@@ -33,7 +33,7 @@ func step5(w *snowballword.SnowballWord) bool {
 
 	} else if w.R2start <= lri && w.RS[lri] == 108 && lri-1 >= 0 && w.RS[lri-1] == 108 {
 
-		// The word ends in double "l", and the final "l" is 
+		// The word ends in double "l", and the final "l" is
 		// in R2. (Note, the unicode code point for "l" is 108.)
 
 		// Delete the second "l".

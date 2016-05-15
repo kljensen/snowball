@@ -30,7 +30,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 
 	case "en", "es", "éis", "emos":
 
-		// Delete, and if preceded by gu delete the u (the gu need not be in RV) 
+		// Delete, and if preceded by gu delete the u (the gu need not be in RV)
 		word.RemoveLastNRunes(len(suffixRunes))
 		guSuffix, _ := word.FirstSuffix("gu")
 		if guSuffix != "" {

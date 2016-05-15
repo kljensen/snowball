@@ -17,7 +17,7 @@ func step4(word *snowballword.SnowballWord) bool {
 
 	// If the word ends s (unicode code point 115),
 	// not preceded by a, i, o, u, è or s, delete it.
-	// 
+	//
 	if idx := len(word.RS) - 1; idx >= 1 && word.RS[idx] == 115 {
 		switch word.RS[idx-1] {
 
@@ -48,7 +48,7 @@ func step4(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R2 and preceded by s or t in RV
 
-		const sLen int = 3 // equivalently, len(suffixRunes) 
+		const sLen int = 3 // equivalently, len(suffixRunes)
 		idx := len(word.RS) - sLen - 1
 		if word.FitsInR2(sLen) && idx >= 0 && word.FitsInRV(sLen+1) {
 			if word.RS[idx] == 115 || word.RS[idx] == 116 {
@@ -59,7 +59,7 @@ func step4(word *snowballword.SnowballWord) bool {
 		return hadChange
 
 	case "ier", "ière", "Ier", "Ière":
-		// Replace with i 
+		// Replace with i
 		word.ReplaceSuffixRunes(suffixRunes, []rune("i"), true)
 		return true
 

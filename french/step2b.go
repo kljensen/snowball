@@ -23,7 +23,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 	switch suffix {
 	case "ions":
 
-		// Delete if in R2 
+		// Delete if in R2
 		suffixLen := len(suffixRunes)
 		if word.FitsInR2(suffixLen) {
 			word.RemoveLastNRunes(suffixLen)

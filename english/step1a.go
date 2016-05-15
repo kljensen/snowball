@@ -13,7 +13,7 @@ func step1a(w *snowballword.SnowballWord) bool {
 
 	case "sses":
 
-		// Replace by ss 
+		// Replace by ss
 		w.ReplaceSuffixRunes(suffixRunes, []rune("ss"), true)
 		return true
 
@@ -40,7 +40,7 @@ func step1a(w *snowballword.SnowballWord) bool {
 
 		// Delete if the preceding word part contains a vowel
 		// not immediately before the s (so gas and this retain
-		// the s, gaps and kiwis lose it) 
+		// the s, gaps and kiwis lose it)
 		//
 		for i := 0; i < len(w.RS)-2; i++ {
 			if isLowerVowel(w.RS[i]) {

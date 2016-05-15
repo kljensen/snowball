@@ -225,7 +225,7 @@ func isStopWord(word string) bool {
 	return false
 }
 
-// A word is called short if it ends in a short syllable, and if R1 is null. 
+// A word is called short if it ends in a short syllable, and if R1 is null.
 //
 func isShortWord(w *snowballword.SnowballWord) (isShort bool) {
 

@@ -1,6 +1,6 @@
-// 
+//
 // Creates a binary `gostem` that stems an input file.
-// 
+//
 package main
 
 import (

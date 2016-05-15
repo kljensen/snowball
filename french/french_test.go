@@ -376,7 +376,7 @@ func Test_step2a(t *testing.T) {
 	romance.RunStepTest(t, step2a, testCases)
 }
 
-// Test the removal of Verb suffixes in RV that 
+// Test the removal of Verb suffixes in RV that
 // do not begin with "i".
 //
 func Test_step2b(t *testing.T) {
@@ -518,7 +518,7 @@ func Test_step3(t *testing.T) {
 	romance.RunStepTest(t, step3, testCases)
 }
 
-// Test 
+// Test
 //
 func Test_step4(t *testing.T) {
 	testCases := []romance.StepTestCase{
