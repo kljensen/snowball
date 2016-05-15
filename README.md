@@ -112,7 +112,7 @@ I know of a few other stemmers availble in Go:
 ## Contributors
 
 * Kyle Jensen (kljensen@gmail.com, [@DataKyle](http://twitter.com/datakyle))
-* Your name here should be here!
+* Your name should be here!
 
 
 ## License (MIT)
