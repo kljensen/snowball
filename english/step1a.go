@@ -4,7 +4,7 @@ import (
 	"github.com/kljensen/snowball/snowballword"
 )
 
-// Step 1a is noralization of various special "s"-endings.
+// Step 1a is normalization of various special "s"-endings.
 //
 func step1a(w *snowballword.SnowballWord) bool {
 
