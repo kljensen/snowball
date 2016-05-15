@@ -4,13 +4,12 @@ import (
 	"testing"
 )
 
-
 // Test a large set of words for which we know
 // the correct stemmed form.
 //
 func Test_SpanishVocabulary(t *testing.T) {
-	testCases := []struct{
-		in string
+	testCases := []struct {
+		in  string
 		out string
 	}{
 		{"a", "a"},
@@ -28404,9 +28403,9 @@ func Test_SpanishVocabulary(t *testing.T) {
 		{"zurita", "zurit"},
 		{"zutano", "zutan"},
 	}
-	for _, testCase := range testCases{
+	for _, testCase := range testCases {
 		result := Stem(testCase.in, true)
-		if result != testCase.out{
+		if result != testCase.out {
 			t.Errorf("Expected %v -> %v, but got %v", testCase.in, testCase.out, result)
 		}
 	}

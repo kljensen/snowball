@@ -11,7 +11,7 @@ import (
 )
 
 // SnowballWord represents a word that is going to be stemmed.
-// 
+//
 type SnowballWord struct {
 
 	// A slice of runes
@@ -88,7 +88,7 @@ func (w *SnowballWord) ReplaceSuffixRunes(suffixRunes []rune, replacementRunes [
 	return false
 }
 
-// Resets R1start and R2start to ensure they 
+// Resets R1start and R2start to ensure they
 // are within bounds of the current rune slice.
 func (w *SnowballWord) resetR1R2() {
 	rsLen := len(w.RS)
@@ -207,7 +207,7 @@ func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foun
 
 // Return true if `w.RS[startPos:endPos]` ends with runes from `suffixRunes`.
 // That is, the slice of runes between startPos and endPos have a suffix of
-// suffixRunes. 
+// suffixRunes.
 //
 func (w *SnowballWord) HasSuffixRunesIn(startPos, endPos int, suffixRunes []rune) bool {
 	maxLen := endPos - startPos
@@ -240,7 +240,7 @@ func (w *SnowballWord) HasSuffixRunes(suffixRunes []rune) bool {
 // those provided; then,
 // check to see if it begins after startPos.  If it does, return
 // it, else return the empty string and empty rune slice.  This
-// may seem a counterintuitive manner to do this.  However, it 
+// may seem a counterintuitive manner to do this.  However, it
 // matches what is required most of the time by the Snowball
 // stemmer steps.
 //

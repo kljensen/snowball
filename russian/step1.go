@@ -26,7 +26,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		return true
 	}
 
-	// Next remove reflexive endings 
+	// Next remove reflexive endings
 	word.RemoveFirstSuffixIn(word.RVstart, "ся", "сь")
 
 	// Next remove adjectival endings
@@ -83,7 +83,7 @@ func removePerfectiveGerundEnding(word *snowballword.SnowballWord) bool {
 //
 func removeAdjectivalEnding(word *snowballword.SnowballWord) bool {
 
-	// Remove adjectival endings.  Start by looking for 
+	// Remove adjectival endings.  Start by looking for
 	// an adjective ending.
 	//
 	suffix, _ := word.RemoveFirstSuffixIn(word.RVstart,
@@ -148,7 +148,7 @@ func removeVerbEnding(word *snowballword.SnowballWord) bool {
 
 // There are multiple classes of endings that must be
 // preceded by а (a) or я (ia) in RV in order to be removed.
-// 
+//
 func precededByARinRV(word *snowballword.SnowballWord, suffixLen int) bool {
 	idx := len(word.RS) - suffixLen - 1
 	if idx >= word.RVstart && (word.RS[idx] == 'а' || word.RS[idx] == 'я') {

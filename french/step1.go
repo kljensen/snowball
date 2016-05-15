@@ -53,8 +53,8 @@ func step1(word *snowballword.SnowballWord) bool {
 	// Handle simple replacements in RV
 	if isInRV {
 
-		// NOTE: these are "special" suffixes in that 
-		// we must still do steps 2a and 2b of the 
+		// NOTE: these are "special" suffixes in that
+		// we must still do steps 2a and 2b of the
 		// French stemmer even when these suffixes are
 		// found in step1.  Therefore, we are returning
 		// `false` here.
@@ -88,7 +88,7 @@ func step1(word *snowballword.SnowballWord) bool {
 	switch suffix {
 	case "eaux":
 
-		// Replace with eau 
+		// Replace with eau
 		word.ReplaceSuffixRunes(suffixRunes, []rune("eau"), true)
 		return true
 
@@ -102,7 +102,7 @@ func step1(word *snowballword.SnowballWord) bool {
 
 	case "euse", "euses":
 
-		// Delete if in R2, else replace by eux if in R1 
+		// Delete if in R2, else replace by eux if in R1
 		if isInR2 {
 			word.RemoveLastNRunes(len(suffixRunes))
 			return true
@@ -221,7 +221,7 @@ func step1(word *snowballword.SnowballWord) bool {
 				return true
 			}
 
-			// If preceded by "iv", delete if in R2 
+			// If preceded by "iv", delete if in R2
 			newSuffix, newSuffixRunes = word.RemoveFirstSuffixIfIn(word.R2start, "iv")
 			return true
 		}
@@ -232,7 +232,7 @@ func step1(word *snowballword.SnowballWord) bool {
 			// Delete if in R2
 			word.RemoveLastNRunes(len(suffixRunes))
 
-			// If preceded by at, delete if in R2 
+			// If preceded by at, delete if in R2
 			newSuffix, newSuffixRunes := word.RemoveFirstSuffixIfIn(word.R2start, "at")
 			if newSuffix != "" {
 
