@@ -32,7 +32,7 @@ func step2(w *snowballword.SnowballWord) bool {
 
 		// Delete if preceded by a valid li-ending. Valid li-endings inlude the
 		// following charaters: cdeghkmnrt. (Note, the unicode code points for
-		// these characters are, repectively, as follows:
+		// these characters are, respectively, as follows:
 		// 99 100 101 103 104 107 109 110 114 116)
 		//
 		rsLen := len(w.RS)
