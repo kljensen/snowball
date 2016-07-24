@@ -2,7 +2,7 @@
 	This file contains test runners that are common to
 	the romance languages.
 */
-package romance
+package romance_test
 
 import (
 	"fmt"

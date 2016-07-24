@@ -1,8 +1,9 @@
-package snowball
+package snowball_test
 
 import (
 	"regexp"
 	"testing"
+	"github.com/kljensen/snowball"
 )
 
 func Test_Stem(t *testing.T) {
@@ -48,7 +49,7 @@ func Test_Stem(t *testing.T) {
 		{"band", "spanish", true, "band", true},
 	}
 	for _, testCase := range testCases {
-		out, err := Stem(testCase.in, testCase.language, testCase.stemStopWords)
+		out, err := snowball.Stem(testCase.in, testCase.language, testCase.stemStopWords)
 		nilErr := true
 		if err != nil {
 			nilErr = false
@@ -67,7 +68,7 @@ func Test_Stem(t *testing.T) {
 //
 func Test_Version(t *testing.T) {
 	validVersionRegexp := regexp.MustCompile(`^v\d+\.\d+\.\d+$`)
-	if validVersionRegexp.MatchString(VERSION) == false {
-		t.Errorf("Invalid version specified: %v", VERSION)
+	if validVersionRegexp.MatchString(snowball.VERSION) == false {
+		t.Errorf("Invalid version specified: %v", snowball.VERSION)
 	}
 }

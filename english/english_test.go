@@ -4,7 +4,7 @@
 	Many of the tests are drawn from cases where this implementation
 	did not match the results of the Python NLTK implementation.
 */
-package english
+package english_test
 
 import (
 	"github.com/kljensen/snowball/romance"

@@ -1,4 +1,4 @@
-package french
+package french_test
 
 import (
 	"github.com/kljensen/snowball/romance"
