@@ -1,4 +1,4 @@
-package snowballword
+package snowballword_test
 
 import "testing"
 

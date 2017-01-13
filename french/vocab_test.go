@@ -1,4 +1,4 @@
-package french
+package french_test
 
 import (
 	"testing"

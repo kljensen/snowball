@@ -1,4 +1,4 @@
-package english
+package english_test
 
 import (
 	"testing"

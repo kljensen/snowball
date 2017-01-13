@@ -1,4 +1,4 @@
-package russian
+package russian_test
 
 import (
 	"github.com/kljensen/snowball/romance"
