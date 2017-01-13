@@ -43,7 +43,7 @@ func main(){
 The code is organized as follows:
 
 * The top-level `snowball` package has a single exported function `snowball.Stem`,
-  which is defined in `snowball/snowball.go`. 
+  which is defined in `snowball/snowball.go`.
 * The stemmer for each language is defined in a "sub-package", e.g `snowball/spanish`.
 * Each language exports a `Stem` function: e.g. `spanish.Stem`,
   which is defined in `snowball/spanish/stem.go`.
@@ -54,12 +54,12 @@ Some notes about the implementation:
 
 * In order to ensure the code is easily extended to non-English lanuages,
   I avoided using bytes and byte arrays, and instead perform all operations
-  on runes.  See `snowball/snowballword/snowballword.go` and the 
+  on runes.  See `snowball/snowballword/snowballword.go` and the
   `SnowballWord` struct.
 * In order to avoid casting strings into slices of runes numerous times,
   this implementation uses a single slice of runes stored in the `SnowballWord`
   struct for each word that needs to be stemmed.
-* In spite of the foregoing, readability requires that some strings be 
+* In spite of the foregoing, readability requires that some strings be
   kept around and repeatedly cast into slices of runes.  For example,
   in the Spanish stemmer, one step requires removing suffixes with accute
   accents such as "ución", "logía", and "logías".  If I were to hard-code those
@@ -79,6 +79,9 @@ Some notes about the implementation:
   [Java version](https://github.com/weavejester/snowball-stemmer/blob/master/src/java/org/tartarus/snowball/ext/frenchStemmer.java)
   and [others](https://github.com/patch/lingua-stem-unine-pm5/blob/master/src/frenchStemmerPlus.txt).
 
+## Testing
+
+To run the tests, do `go test ./...` in the top-level directory.
 
 ## Future work
 
@@ -105,7 +108,7 @@ I know of a few other stemmers availble in Go:
   stemmer.
 * [golibstemmer](https://github.com/rjohnsondev/golibstemmer)
   by [Richard Johnson](https://github.com/rjohnsondev).  This provides Go bindings for the
-  [libstemmer](http://snowball.tartarus.org/download.php) C library. 
+  [libstemmer](http://snowball.tartarus.org/download.php) C library.
 * [snowball](https://bitbucket.org/tebeka/snowball) by [Miki Tebeka](http://web.mikitebeka.com/).
   Also, I believe, Go bindings for the C library.
 

@@ -1,7 +1,9 @@
-package french
+package french_vocab_test
 
 import (
 	"testing"
+
+	"github.com/kljensen/snowball/french"
 )
 
 // Test a large set of words for which we know
@@ -20416,7 +20418,7 @@ func Test_LargeFrenchVocabulary(t *testing.T) {
 		{"zurla", "zurl"},
 	}
 	for _, testCase := range testCases {
-		result := Stem(testCase.in, true)
+		result := french.Stem(testCase.in, true)
 		if result != testCase.out {
 			t.Errorf("Expected %v -> %v, but got %v", testCase.in, testCase.out, result)
 		}

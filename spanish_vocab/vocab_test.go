@@ -1,7 +1,9 @@
-package spanish
+package spanish_vocab_test
 
 import (
 	"testing"
+
+	"github.com/kljensen/snowball/spanish"
 )
 
 // Test a large set of words for which we know
@@ -28404,7 +28406,7 @@ func Test_SpanishVocabulary(t *testing.T) {
 		{"zutano", "zutan"},
 	}
 	for _, testCase := range testCases {
-		result := Stem(testCase.in, true)
+		result := spanish.Stem(testCase.in, true)
 		if result != testCase.out {
 			t.Errorf("Expected %v -> %v, but got %v", testCase.in, testCase.out, result)
 		}

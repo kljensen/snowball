@@ -1,7 +1,9 @@
-package english
+package english_vocab_test
 
 import (
 	"testing"
+
+	"github.com/kljensen/snowball/english"
 )
 
 // Test a large set of words for which we know
@@ -29428,7 +29430,7 @@ func Test_EnglishVocabulary(t *testing.T) {
 		{"zu", "zu"},
 	}
 	for _, testCase := range testCases {
-		result := Stem(testCase.in, true)
+		result := english.Stem(testCase.in, true)
 		if result != testCase.out {
 			t.Errorf("Expected %v -> %v, but got %v", testCase.in, testCase.out, result)
 		}

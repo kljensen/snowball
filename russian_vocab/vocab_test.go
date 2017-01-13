@@ -1,7 +1,9 @@
-package russian
+package russian_vocab_test
 
 import (
 	"testing"
+
+	"github.com/kljensen/snowball/russian"
 )
 
 // Test a large set of words for which we know
@@ -49687,7 +49689,7 @@ func Test_LargeVocabulary(t *testing.T) {
 		{"ящике", "ящик"},
 	}
 	for _, testCase := range testCases {
-		result := Stem(testCase.in, true)
+		result := russian.Stem(testCase.in, true)
 		if result != testCase.out {
 			t.Errorf("Expected %v -> %v, but got %v", testCase.in, testCase.out, result)
 		}
