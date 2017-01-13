@@ -112,6 +112,8 @@ I know of a few other stemmers availble in Go:
 ## Contributors
 
 * Kyle Jensen (kljensen@gmail.com, [@DataKyle](http://twitter.com/datakyle))
+* [Shawn Smith](https://github.com/shawnps)
+* [Herman Schaaf](https://github.com/hermanschaaf)
 * Your name should be here!
 
 
