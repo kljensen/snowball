@@ -19,7 +19,7 @@ func isLowerVowel(r rune) bool {
 	return false
 }
 
-// Return `true` if the input `word` is a French stop word.
+// Return `true` if the input `word` is a Russian stop word.
 //
 func isStopWord(word string) bool {
 	switch word {
