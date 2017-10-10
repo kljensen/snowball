@@ -9,12 +9,12 @@ import (
 //
 // R1 is the region after the first non-vowel following a vowel,
 // or is the null region at the end of the word if there is no
-// such non-vowel.
+// such non-vowel. R2 is not used in Swedish
 //
 // See http://snowball.tartarus.org/texts/r1r2.html
 //
 func r1(word *snowballword.SnowballWord) (r1start int) {
-	// Skipping one character should mean the word is at least 3 letters long
+	// Like the German R1, the length of the Swedish R1 is adjusted to be at least three.
 	r1start = romance.VnvSuffix(word, isLowerVowel, 0)
 	if r1start < 3 && len(word.RS) >= 3 {
 		r1start = 3

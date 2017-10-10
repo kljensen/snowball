@@ -3,7 +3,7 @@ package swedish_vocab_test
 import (
 	"testing"
 
-	"github.com/kljensen/snowball/swedish"
+	"github.com/aaaton/snowball/swedish"
 )
 
 // Test a large set of words for which we know

@@ -4,16 +4,15 @@ import (
 	"github.com/kljensen/snowball/snowballword"
 )
 
-// Step 4:
+// Step 3:
 // Search for the longest among the following suffixes,
-// and, if found and in R2, perform the action indicated.
+// and, if found and in R1, perform the action indicated.
 
-// al, ance, ence, er, ic, able, ible, ant, ement, ment,
-// ent, ism, ate, iti, ous, ive, ize
-// delete
-//
-// ion
-// delete if preceded by s or t
+// Delete:
+// lig, els & ig
+// Replace:
+// fullt: full, löst: lös
+
 func step3(w *snowballword.SnowballWord) bool {
 	// Possible sufficies for this step, longest first.
 	suffix, suffixRunes := w.FirstSuffixIn(w.R1start, len(w.RS),
@@ -35,8 +34,7 @@ func step3(w *snowballword.SnowballWord) bool {
 	case "löst":
 		repl = "lös"
 	case "lig", "ig", "els":
-		w.RemoveLastNRunes(len(suffix))
-		return true
+		repl = ""
 	}
 	w.ReplaceSuffixRunes(suffixRunes, []rune(repl), true)
 	return true
