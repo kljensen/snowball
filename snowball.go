@@ -2,10 +2,12 @@ package snowball
 
 import (
 	"fmt"
+
 	"github.com/kljensen/snowball/english"
 	"github.com/kljensen/snowball/french"
 	"github.com/kljensen/snowball/russian"
 	"github.com/kljensen/snowball/spanish"
+	"github.com/kljensen/snowball/swedish"
 )
 
 const (
@@ -26,6 +28,8 @@ func Stem(word, language string, stemStopWords bool) (stemmed string, err error)
 		f = french.Stem
 	case "russian":
 		f = russian.Stem
+	case "swedish":
+		f = swedish.Stem
 	default:
 		err = fmt.Errorf("Unknown language: %s", language)
 		return
