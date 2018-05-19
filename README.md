@@ -123,7 +123,7 @@ I know of a few other stemmers availble in Go:
 
 ## License (MIT)
 
-Copyright (c) 2013-2017 the Contributors (see above)
+Copyright (c) 2013-2018 the Contributors (see above)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
