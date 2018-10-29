@@ -3,7 +3,7 @@ package norwegian_vocab_test
 import (
 	"testing"
 
-	"github.com/eivindam/snowball/norwegian"
+	"github.com/kljensen/snowball/norwegian"
 )
 
 // Test a large set of words for which we know
