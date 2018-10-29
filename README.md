@@ -12,8 +12,8 @@ for natural language processing.
 | -------------------- | ------------------------- |
 | Latest release       |  [v0.5.0](https://github.com/kljensen/snowball/tags) (2017-10-10) |
 | Latest build status  |  [![Build Status](https://travis-ci.org/kljensen/snowball.png)](https://travis-ci.org/kljensen/snowball)
-| Go versions tested   |  go1.7.4                 |
-| Languages available  |  English, Spanish (español), French (le français), Russian (ру́сский язы́к), Swedish (svenska)|
+| Latest Go versions tested   |  go1.10 darwin/amd64                 |
+| Languages available  |  English, Spanish (español), French (le français), Russian (ру́сский язы́к), Swedish (svenska), Norwegian (norsk)|
 | License              |  MIT                      |
 
 
