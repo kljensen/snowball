@@ -47,12 +47,12 @@ The code is organized as follows:
 * The stemmer for each language is defined in a "sub-package", e.g `snowball/spanish`.
 * Each language exports a `Stem` function: e.g. `spanish.Stem`,
   which is defined in `snowball/spanish/stem.go`.
-* Code that is common to multiple lanuages may go in a separate package,
+* Code that is common to multiple languages may go in a separate package,
   e.g. the small `romance` package.
 
 Some notes about the implementation:
 
-* In order to ensure the code is easily extended to non-English lanuages,
+* In order to ensure the code is easily extended to non-English languages,
   I avoided using bytes and byte arrays, and instead perform all operations
   on runes.  See `snowball/snowballword/snowballword.go` and the
   `SnowballWord` struct.
@@ -85,7 +85,7 @@ To run the tests, do `go test ./...` in the top-level directory.
 
 ## Future work
 
-I'd like to implement the Snowball stemmer in more lanuages.
+I'd like to implement the Snowball stemmer in more languages.
 If you can help, I would greatly appreciate it: please fork the project and send
 a pull request!
 
