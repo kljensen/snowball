@@ -1,7 +1,7 @@
 package french
 
 import (
-	"github.com/kljensen/snowball/romance"
+	"github.com/kljensen/snowball/romance/romancetest"
 	"github.com/kljensen/snowball/snowballword"
 	"testing"
 )
@@ -10,24 +10,24 @@ import (
 // or false.
 //
 func Test_stopWords(t *testing.T) {
-	testCases := []romance.WordBoolTestCase{
+	testCases := []romancetest.WordBoolTestCase{
 		{"eussiez", true},
 		{"machine", false},
 	}
-	romance.RunWordBoolTest(t, isStopWord, testCases)
+	romancetest.RunWordBoolTest(t, isStopWord, testCases)
 }
 
 // Test isLowerVowel for things we know should be true
 // or false.
 //
 func Test_isLowerVowel(t *testing.T) {
-	testCases := []romance.WordBoolTestCase{
+	testCases := []romancetest.WordBoolTestCase{
 		// These are all vowels.
 		{"aeiouyâàëéêèïîôûù", true},
 		// None of these are vowels.
 		{"cbfqhkl", false},
 	}
-	romance.RunRunewiseBoolTest(t, isLowerVowel, testCases)
+	romancetest.RunRunewiseBoolTest(t, isLowerVowel, testCases)
 }
 
 // Test capitalization of vowels acting as non-vowels.
@@ -52,7 +52,7 @@ func Test_capitalizeYUI(t *testing.T) {
 	}
 }
 func Test_findRegions(t *testing.T) {
-	testCases := []romance.FindRegionsTestCase{
+	testCases := []romancetest.FindRegionsTestCase{
 		{"iriez", 2, 5, 3},
 		{"reçoivent", 3, 6, 2},
 		{"rébarbatif", 3, 5, 2},
@@ -155,13 +155,13 @@ func Test_findRegions(t *testing.T) {
 		{"mobile", 3, 5, 2},
 	}
 
-	romance.RunFindRegionsTest(t, findRegions, testCases)
+	romancetest.RunFindRegionsTest(t, findRegions, testCases)
 }
 
 // Test step1, the removal of standard suffixes.
 //
 func Test_step1(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"rapidement", 3, 5, 2, true, "rapid", 3, 5, 2},
 		{"paresseuse", 3, 5, 3, true, "paress", 3, 5, 3},
 		{"prosaïqUement", 4, 7, 3, true, "prosaïqU", 4, 7, 3},
@@ -262,7 +262,7 @@ func Test_step1(t *testing.T) {
 		{"décidément", 3, 5, 2, false, "décidé", 3, 5, 2},
 		{"condiments", 3, 6, 2, false, "condi", 3, 5, 2},
 	}
-	romance.RunStepTest(t, step1, testCases)
+	romancetest.RunStepTest(t, step1, testCases)
 
 }
 
@@ -271,7 +271,7 @@ func Test_step1(t *testing.T) {
 // Test step1, the removal of standard suffixes.
 //
 func Test_step2a(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"épanoUit", 2, 4, 3, true, "épanoU", 2, 4, 3},
 		{"faillirent", 4, 7, 2, true, "faill", 4, 5, 2},
 		{"acabit", 2, 4, 3, true, "acab", 2, 4, 3},
@@ -373,14 +373,14 @@ func Test_step2a(t *testing.T) {
 		{"compromis", 3, 7, 2, true, "comprom", 3, 7, 2},
 		{"simonie", 3, 5, 2, true, "simon", 3, 5, 2},
 	}
-	romance.RunStepTest(t, step2a, testCases)
+	romancetest.RunStepTest(t, step2a, testCases)
 }
 
 // Test the removal of Verb suffixes in RV that
 // do not begin with "i".
 //
 func Test_step2b(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"posée", 3, 5, 2, true, "pos", 3, 3, 2},
 		{"contentait", 3, 6, 2, true, "content", 3, 6, 2},
 		{"évita", 2, 4, 3, true, "évit", 2, 4, 3},
@@ -482,13 +482,13 @@ func Test_step2b(t *testing.T) {
 		{"abrégea", 2, 5, 4, true, "abrég", 2, 5, 4},
 		{"flattait", 4, 8, 3, true, "flatt", 4, 5, 3},
 	}
-	romance.RunStepTest(t, step2b, testCases)
+	romancetest.RunStepTest(t, step2b, testCases)
 }
 
 // Test the cleaning up of "Y" and "ç" suffixes.
 //
 func Test_step3(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"ennuY", 5, 5, 5, true, "ennui", 5, 5, 5},
 		{"envoY", 5, 5, 4, true, "envoi", 5, 5, 4},
 		{"aboY", 4, 4, 3, true, "aboi", 4, 4, 3},
@@ -515,13 +515,13 @@ func Test_step3(t *testing.T) {
 		{"paY", 3, 3, 3, true, "pai", 3, 3, 3},
 		{"bunhY", 5, 5, 2, true, "bunhi", 5, 5, 2},
 	}
-	romance.RunStepTest(t, step3, testCases)
+	romancetest.RunStepTest(t, step3, testCases)
 }
 
 // Test
 //
 func Test_step4(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"défendues", 3, 5, 2, true, "défendu", 3, 5, 2},
 		{"mormones", 3, 6, 2, true, "mormon", 3, 6, 2},
 		{"souvienne", 4, 7, 2, true, "souvienn", 4, 7, 2},
@@ -623,7 +623,7 @@ func Test_step4(t *testing.T) {
 		{"sympathise", 3, 6, 2, true, "sympathis", 3, 6, 2},
 		{"assidue", 2, 5, 4, true, "assidu", 2, 5, 4},
 	}
-	romance.RunStepTest(t, step4, testCases)
+	romancetest.RunStepTest(t, step4, testCases)
 }
 
 // Test a large set of words for which we know
