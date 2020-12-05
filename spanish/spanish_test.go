@@ -1,7 +1,7 @@
 package spanish
 
 import (
-	"github.com/kljensen/snowball/romance"
+	"github.com/kljensen/snowball/romance/romancetest"
 	"testing"
 )
 
@@ -9,31 +9,31 @@ import (
 // or false.
 //
 func Test_stopWords(t *testing.T) {
-	testCases := []romance.WordBoolTestCase{
+	testCases := []romancetest.WordBoolTestCase{
 		{"el", true},
 		{"queso", false},
 	}
-	romance.RunWordBoolTest(t, isStopWord, testCases)
+	romancetest.RunWordBoolTest(t, isStopWord, testCases)
 }
 
 // Test isLowerVowel for things we know should be true
 // or false.
 //
 func Test_isLowerVowel(t *testing.T) {
-	testCases := []romance.WordBoolTestCase{
+	testCases := []romancetest.WordBoolTestCase{
 		// These are all vowels.
 		{"aeiouáéíóúü", true},
 		// None of these are vowels.
 		{"cbfqhkl", false},
 	}
-	romance.RunRunewiseBoolTest(t, isLowerVowel, testCases)
+	romancetest.RunRunewiseBoolTest(t, isLowerVowel, testCases)
 }
 
 // Test isLowerVowel for things we know should be true
 // or false.
 //
 func Test_findRegions(t *testing.T) {
-	testCases := []romance.FindRegionsTestCase{
+	testCases := []romancetest.FindRegionsTestCase{
 		{"macho", 3, 5, 3},
 		{"olivia", 2, 4, 3},
 		{"trabajo", 4, 6, 3},
@@ -139,13 +139,13 @@ func Test_findRegions(t *testing.T) {
 		{"gonzalez", 3, 6, 3},
 		{"antidemocrática", 2, 5, 4},
 	}
-	romance.RunFindRegionsTest(t, findRegions, testCases)
+	romancetest.RunFindRegionsTest(t, findRegions, testCases)
 }
 
 // Test step0, the removal of pronoun suffixes.
 //
 func Test_step0(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"liberarlo", 3, 5, 3, true, "liberar", 3, 5, 3},
 		{"ejecutarse", 2, 4, 3, true, "ejecutar", 2, 4, 3},
 		{"convirtiéndolas", 3, 6, 3, true, "convirtiendo", 3, 6, 3},
@@ -247,13 +247,13 @@ func Test_step0(t *testing.T) {
 		{"establecerse", 2, 5, 4, true, "establecer", 2, 5, 4},
 		{"ponerles", 3, 5, 3, true, "poner", 3, 5, 3},
 	}
-	romance.RunStepTest(t, step0, testCases)
+	romancetest.RunStepTest(t, step0, testCases)
 }
 
 // Test step1, the removal of standard suffixes.
 //
 func Test_step1(t *testing.T) {
-	testCases := []romance.StepTestCase{
+	testCases := []romancetest.StepTestCase{
 		{"retrospectiva", 3, 6, 3, true, "retrospect", 3, 6, 3},
 		{"emperador", 2, 5, 4, true, "emper", 2, 5, 4},
 		{"instalaciones", 2, 6, 5, true, "instal", 2, 6, 5},
@@ -355,5 +355,5 @@ func Test_step1(t *testing.T) {
 		{"gobernador", 3, 5, 3, true, "gobern", 3, 5, 3},
 		{"inexplicable", 2, 4, 3, true, "inexplic", 2, 4, 3},
 	}
-	romance.RunStepTest(t, step1, testCases)
+	romancetest.RunStepTest(t, step1, testCases)
 }
