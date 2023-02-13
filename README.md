@@ -118,6 +118,7 @@ I know of a few other stemmers availble in Go:
 * [Herman Schaaf](https://github.com/hermanschaaf)
 * [Anton Södergren](https://github.com/AAAton)
 * [Eivind Moland](https://github.com/eivindam)
+* [ Tamás Gulácsi](https://github.com/tgulacsi)
 * Your name should be here!
 
 
