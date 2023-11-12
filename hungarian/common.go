@@ -119,12 +119,12 @@ func isDoubleConsonant(rs []rune) int {
 	return 2
 }
 
-// isStopWord returns true it the word is a stop word.
+// IsStopWord returns true it the word is a stop word.
 //
 // # Hungarian stop word list prepared by Anna Tordai
 //
 // https://snowballstem.org/algorithms/hungarian/stop.txt
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "a",
 		"ahogy",
