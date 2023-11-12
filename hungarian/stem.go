@@ -94,14 +94,14 @@ func step1(w *snowballword.SnowballWord) {
 		return
 	}
 	// in R1
-	if w.R1start > n-2 {
+	if w.R1start > n-2 || n < 4 {
 		return
 	}
 	// (In the case of consonant plus digraph, such as ccs, remove a c).
-	if isDoubleConsonant(w.RS[n-5:n-2]) > 2 {
+	if n >= 5 && isDoubleConsonant(w.RS[n-5:n-2]) > 2 {
 		w.RS[n-5], w.RS[n-4] = w.RS[n-4], w.RS[n-3]
 		w.RemoveLastNRunes(3)
-	} else if isDoubleConsonant(w.RS[n-4:n-2]) > 1 {
+	} else if n >= 4 && isDoubleConsonant(w.RS[n-4:n-2]) > 1 {
 		// preceded by a double consonant
 		w.RemoveLastNRunes(3)
 	}
@@ -221,7 +221,7 @@ func step5(w *snowballword.SnowballWord) {
 		return
 	}
 	// (In the case of consonant plus digraph, such as ccs, remove a c).
-	if isDoubleConsonant(w.RS[n-4:n-1]) > 2 {
+	if n >= 4 && isDoubleConsonant(w.RS[n-4:n-1]) > 2 {
 		w.RS[n-4], w.RS[n-3] = w.RS[n-3], w.RS[n-1]
 		w.RemoveLastNRunes(2)
 	} else if isDoubleConsonant(w.RS[n-3:n-1]) > 1 {
