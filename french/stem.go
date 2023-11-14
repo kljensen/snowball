@@ -13,7 +13,7 @@ func Stem(word string, stemStopwWords bool) string {
 	word = strings.ToLower(strings.TrimSpace(word))
 
 	// Return small words and stop words
-	if len(word) <= 2 || (stemStopwWords == false && isStopWord(word)) {
+	if len(word) <= 2 || (stemStopwWords == false && IsStopWord(word)) {
 		return word
 	}
 

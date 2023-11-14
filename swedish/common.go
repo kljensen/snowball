@@ -34,7 +34,7 @@ func isLowerVowel(r rune) bool {
 
 // Return `true` if the input `word` is a Swedish stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "och", "det", "att", "i", "en", "jag", "hon", "som", "han",
 		"på", "den", "med", "var", "sig", "för", "så", "till", "är", "men",

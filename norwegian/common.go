@@ -34,7 +34,7 @@ func isLowerVowel(r rune) bool {
 
 // Return `true` if the input `word` is a Norwegian stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "ut", "få", "hadde", "hva", "tilbake", "vil", "han", "meget", "men", "vi", "en", "før",
 		"samme", "stille", "inn", "er", "kan", "makt", "ved", "forsøke", "hvis", "part", "rett",

@@ -95,7 +95,7 @@ func isLowerVowel(r rune) bool {
 
 // Return `true` if the input `word` is a Spanish stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "de", "la", "que", "el", "en", "y", "a", "los", "del", "se", "las",
 		"por", "un", "para", "con", "no", "una", "su", "al", "lo", "como",

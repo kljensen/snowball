@@ -21,7 +21,7 @@ func isLowerVowel(r rune) bool {
 
 // Return `true` if the input `word` is a French stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "и", "в", "во", "не", "что", "он", "на", "я", "с",
 		"со", "как", "а", "то", "все", "она", "так", "его",

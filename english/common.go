@@ -203,7 +203,7 @@ func stemSpecialWord(word string) (stemmed string) {
 
 // Return `true` if the input `word` is an English stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "a", "about", "above", "after", "again", "against", "all", "am", "an",
 		"and", "any", "are", "as", "at", "be", "because", "been", "before",

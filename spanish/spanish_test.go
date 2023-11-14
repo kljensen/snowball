@@ -13,7 +13,7 @@ func Test_stopWords(t *testing.T) {
 		{"el", true},
 		{"queso", false},
 	}
-	romance.RunWordBoolTest(t, isStopWord, testCases)
+	romance.RunWordBoolTest(t, IsStopWord, testCases)
 }
 
 // Test isLowerVowel for things we know should be true

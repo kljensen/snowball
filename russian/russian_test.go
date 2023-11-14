@@ -29,7 +29,7 @@ func Test_stopWords(t *testing.T) {
 		{"химическое", false},
 		{"машиностроение", false},
 	}
-	romance.RunWordBoolTest(t, isStopWord, testCases)
+	romance.RunWordBoolTest(t, IsStopWord, testCases)
 }
 
 func Test_findRegions(t *testing.T) {

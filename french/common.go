@@ -7,7 +7,7 @@ import (
 
 // Return `true` if the input `word` is a French stop word.
 //
-func isStopWord(word string) bool {
+func IsStopWord(word string) bool {
 	switch word {
 	case "au", "aux", "avec", "ce", "ces", "dans", "de", "des", "du",
 		"elle", "en", "et", "eux", "il", "je", "la", "le", "leur",
