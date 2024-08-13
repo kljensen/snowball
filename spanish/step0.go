@@ -1,15 +1,16 @@
 package spanish
 
 import (
+	"unicode/utf8"
+
 	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 0 is the removal of attached pronouns
-//
 func step0(word *snowballword.SnowballWord) bool {
 
 	// Search for the longest among the following suffixes
-	suffix1, suffix1Runes := word.FirstSuffixIn(word.RVstart, len(word.RS),
+	suffix1 := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"selas", "selos", "sela", "selo", "las", "les",
 		"los", "nos", "me", "se", "la", "le", "lo",
 	)
@@ -18,9 +19,10 @@ func step0(word *snowballword.SnowballWord) bool {
 	if suffix1 == "" {
 		return false
 	}
+	s1Len := utf8.RuneCountInString(suffix1)
 
 	// We'll remove suffix1, if comes after one of the following
-	suffix2, suffix2Runes := word.FirstSuffixIn(word.RVstart, len(word.RS)-len(suffix1),
+	suffix2 := word.FirstSuffixIn(word.RVstart, len(word.RS)-len(suffix1),
 		"iéndo", "iendo", "yendo", "ando", "ándo",
 		"ár", "ér", "ír", "ar", "er", "ir",
 	)
@@ -48,12 +50,12 @@ func step0(word *snowballword.SnowballWord) bool {
 		case "ír":
 			suffix2repl = "ir"
 		}
-		word.RemoveLastNRunes(len(suffix1Runes))
-		word.ReplaceSuffixRunes(suffix2Runes, []rune(suffix2repl), true)
+		word.RemoveLastNRunes(s1Len)
+		word.ReplaceSuffixRunes([]rune(suffix2), []rune(suffix2repl), true)
 		return true
 
 	case "ando", "iendo", "ar", "er", "ir":
-		word.RemoveLastNRunes(len(suffix1Runes))
+		word.RemoveLastNRunes(s1Len)
 		return true
 
 	case "yendo":
@@ -65,7 +67,7 @@ func step0(word *snowballword.SnowballWord) bool {
 
 			// Note, the unicode code point for "u" is 117.
 			if word.RS[i] == 117 {
-				word.RemoveLastNRunes(len(suffix1Runes))
+				word.RemoveLastNRunes(s1Len)
 				return true
 			}
 		}

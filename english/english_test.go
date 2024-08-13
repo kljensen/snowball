@@ -1,8 +1,8 @@
 /*
-	Herein lie all the tests of the Snowball English stemmer.
+Herein lie all the tests of the Snowball English stemmer.
 
-	Many of the tests are drawn from cases where this implementation
-	did not match the results of the Python NLTK implementation.
+Many of the tests are drawn from cases where this implementation
+did not match the results of the Python NLTK implementation.
 */
 package english
 
@@ -15,7 +15,6 @@ import (
 
 // Test stopWords for things we know should be true
 // or false.
-//
 func Test_stopWords(t *testing.T) {
 
 	// Test true
@@ -47,7 +46,6 @@ func Test_stopWords(t *testing.T) {
 
 // Test specialWords for things we know should be present
 // and not present.
-//
 func Test_specialWords(t *testing.T) {
 
 	// Test true
@@ -394,4 +392,48 @@ func Test_Stem(t *testing.T) {
 		}
 	}
 
+}
+
+func Benchmark_Stem(b *testing.B) {
+	b.ReportAllocs()
+	var testCases = []struct {
+		in            string
+		stemStopWords bool
+		out           string
+	}{
+		{"aberration", true, "aberr"},
+		{"abruptness", true, "abrupt"},
+		{"absolute", true, "absolut"},
+		{"abated", true, "abat"},
+		{"acclivity", true, "accliv"},
+		{"accumulations", true, "accumul"},
+		{"agreement", true, "agreement"},
+		{"breed", true, "breed"},
+		{"ape", true, "ape"},
+		{"skating", true, "skate"},
+		{"fluently", true, "fluentli"},
+		{"ied", true, "ie"},
+		{"ies", true, "ie"},
+		// Stop words
+		{"because", true, "becaus"},
+		{"because", false, "because"},
+		{"above", true, "abov"},
+		{"above", false, "above"},
+	}
+
+	var bytes int
+	// Add up the bytes
+	for _, tc := range testCases {
+		bytes += len(tc.in)
+	}
+	b.SetBytes(int64(bytes))
+
+	for i := 0; i < b.N; i++ {
+		for _, tc := range testCases {
+			stemmed := Stem(tc.in, tc.stemStopWords)
+			if stemmed != tc.out {
+				b.Errorf("Expected %v to stem to %v, but got %v", tc.in, tc.out, stemmed)
+			}
+		}
+	}
 }

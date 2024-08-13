@@ -6,7 +6,6 @@ import (
 
 // Step 4 is the undoubling of double non-vowel endings
 // and removal of superlative endings.
-//
 func step4(word *snowballword.SnowballWord) bool {
 
 	// (1) Undouble "н", or, 2) if the word ends with a SUPERLATIVE ending,
@@ -20,7 +19,7 @@ func step4(word *snowballword.SnowballWord) bool {
 	}
 
 	// Remove superlative endings
-	suffix, _ := word.RemoveFirstSuffix("ейше", "ейш")
+	suffix := word.RemoveFirstSuffix("ейше", "ейш")
 	if suffix != "" {
 		// Undouble "н"
 		if word.HasSuffixRunes([]rune("нн")) {
