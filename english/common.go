@@ -7,7 +7,6 @@ import (
 
 // Replaces all different kinds of apostrophes with a single
 // kind: "'" -- that is, "\x27", or unicode codepoint 39.
-//
 func normalizeApostrophes(word *snowballword.SnowballWord) (numSubstitutions int) {
 	for i, r := range word.RS {
 		switch r {
@@ -27,7 +26,6 @@ func normalizeApostrophes(word *snowballword.SnowballWord) (numSubstitutions int
 
 // Trim off leading apostropes.  (Slight variation from
 // NLTK implementation here, in which only the first is removed.)
-//
 func trimLeftApostrophes(word *snowballword.SnowballWord) {
 	var (
 		numApostrophes int
@@ -49,7 +47,6 @@ func trimLeftApostrophes(word *snowballword.SnowballWord) {
 }
 
 // Capitalize all 'Y's preceded by vowels or starting a word
-//
 func capitalizeYs(word *snowballword.SnowballWord) (numCapitalizations int) {
 	for i, r := range word.RS {
 
@@ -64,7 +61,6 @@ func capitalizeYs(word *snowballword.SnowballWord) (numCapitalizations int) {
 }
 
 // Uncapitalize all 'Y's
-//
 func uncapitalizeYs(word *snowballword.SnowballWord) {
 	for i, r := range word.RS {
 
@@ -88,10 +84,9 @@ func uncapitalizeYs(word *snowballword.SnowballWord) {
 // is no such non-vowel.
 //
 // See http://snowball.tartarus.org/texts/r1r2.html
-//
 func r1r2(word *snowballword.SnowballWord) (r1start, r2start int) {
 
-	specialPrefix, _ := word.FirstPrefix("gener", "commun", "arsen")
+	specialPrefix := word.FirstPrefix("gener", "commun", "arsen")
 
 	if specialPrefix != "" {
 		r1start = len(specialPrefix)
@@ -103,7 +98,6 @@ func r1r2(word *snowballword.SnowballWord) (r1start, r2start int) {
 }
 
 // Checks if a rune is a lowercase English vowel.
-//
 func isLowerVowel(r rune) bool {
 	switch r {
 	case 97, 101, 105, 111, 117, 121:
@@ -114,7 +108,6 @@ func isLowerVowel(r rune) bool {
 
 // Returns the stemmed version of a word if it is a special
 // case, otherwise returns the empty string.
-//
 func stemSpecialWord(word string) (stemmed string) {
 	switch word {
 	case "skis":
@@ -202,7 +195,6 @@ func stemSpecialWord(word string) (stemmed string) {
 }
 
 // Return `true` if the input `word` is an English stop word.
-//
 func IsStopWord(word string) bool {
 	switch word {
 	case "a", "about", "above", "after", "again", "against", "all", "am", "an",
@@ -226,7 +218,6 @@ func IsStopWord(word string) bool {
 }
 
 // A word is called short if it ends in a short syllable, and if R1 is null.
-//
 func isShortWord(w *snowballword.SnowballWord) (isShort bool) {
 
 	// If r1 is not empty, the word is not short
@@ -241,9 +232,10 @@ func isShortWord(w *snowballword.SnowballWord) (isShort bool) {
 // Return true if the indicies at `w.RS[:i]` end in a short syllable.
 // Define a short syllable in a word as either
 // (a) a vowel followed by a non-vowel other than w, x or Y
-//     and preceded by a non-vowel, or
-// (b) a vowel at the beginning of the word followed by a non-vowel.
 //
+//	and preceded by a non-vowel, or
+//
+// (b) a vowel at the beginning of the word followed by a non-vowel.
 func endsShortSyllable(w *snowballword.SnowballWord, i int) bool {
 
 	if i == 2 {

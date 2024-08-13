@@ -173,7 +173,7 @@ func (w *SnowballWord) DebugString() string {
 }
 
 // Return the first prefix found or the empty string.
-func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foundPrefixRunes []rune) {
+func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string) {
 	found := false
 	rsLen := len(w.RS)
 
@@ -192,7 +192,6 @@ func (w *SnowballWord) FirstPrefix(prefixes ...string) (foundPrefix string, foun
 		}
 		if found {
 			foundPrefix = prefix
-			foundPrefixRunes = prefixRunes
 			break
 		}
 	}

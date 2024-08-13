@@ -24,7 +24,7 @@ func Test_FirstPrefix(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		prefix, _ := w.FirstPrefix(tc.prefixes...)
+		prefix := w.FirstPrefix(tc.prefixes...)
 		if prefix != tc.prefix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.prefix, prefix)
 		}
