@@ -1,15 +1,16 @@
 package spanish
 
 import (
+	"unicode/utf8"
+
 	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 2b is the removal of verb suffixes beginning y,
 // Search for the longest among the following suffixes
 // in RV, and if found, delete if preceded by u.
-//
 func step2b(word *snowballword.SnowballWord) bool {
-	suffix, suffixRunes := word.FirstSuffixIn(word.RVstart, len(word.RS),
+	suffix := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"iésemos", "iéramos", "iríamos", "eríamos", "aríamos", "ásemos",
 		"áramos", "ábamos", "isteis", "iríais", "iremos", "ieseis",
 		"ierais", "eríais", "eremos", "asteis", "aríais", "aremos",
@@ -24,6 +25,8 @@ func step2b(word *snowballword.SnowballWord) bool {
 		"ada", "aba", "ís", "ía", "ió", "ir", "id", "es", "er", "en",
 		"ed", "as", "ar", "an", "ad",
 	)
+	suffixLength := utf8.RuneCountInString(suffix)
+
 	switch suffix {
 	case "":
 		return false
@@ -31,8 +34,8 @@ func step2b(word *snowballword.SnowballWord) bool {
 	case "en", "es", "éis", "emos":
 
 		// Delete, and if preceded by gu delete the u (the gu need not be in RV)
-		word.RemoveLastNRunes(len(suffixRunes))
-		guSuffix, _ := word.FirstSuffix("gu")
+		word.RemoveLastNRunes(suffixLength)
+		guSuffix := word.FirstSuffix("gu")
 		if guSuffix != "" {
 			word.RemoveLastNRunes(1)
 		}
@@ -40,7 +43,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 	default:
 
 		// Delete
-		word.RemoveLastNRunes(len(suffixRunes))
+		word.RemoveLastNRunes(suffixLength)
 	}
 	return true
 }

@@ -1,16 +1,17 @@
 package spanish
 
 import (
-	"github.com/kljensen/snowball/snowballword"
 	"log"
+	"unicode/utf8"
+
+	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 1 is the removal of standard suffixes
-//
 func step1(word *snowballword.SnowballWord) bool {
 
 	// Possible suffixes, longest first
-	suffix, suffixRunes := word.FirstSuffix(
+	suffix := word.FirstSuffix(
 		"amientos", "imientos", "aciones", "amiento", "imiento",
 		"uciones", "logías", "idades", "encias", "ancias", "amente",
 		"adores", "adoras", "ución", "mente", "logía", "istas",
@@ -20,9 +21,10 @@ func step1(word *snowballword.SnowballWord) bool {
 		"ante", "ador", "able", "oso", "osa", "ivo", "iva",
 		"ico", "ica",
 	)
+	suffixLength := utf8.RuneCountInString(suffix)
 
-	isInR1 := (word.R1start <= len(word.RS)-len(suffixRunes))
-	isInR2 := (word.R2start <= len(word.RS)-len(suffixRunes))
+	isInR1 := (word.R1start <= len(word.RS)-suffixLength)
+	isInR2 := (word.R2start <= len(word.RS)-suffixLength)
 
 	// Deal with special cases first.  All of these will
 	// return if they are hit.
@@ -37,12 +39,12 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		if isInR1 {
 			// Delete if in R1
-			word.RemoveLastNRunes(len(suffixRunes))
+			word.RemoveLastNRunes(suffixLength)
 
 			// if preceded by iv, delete if in R2 (and if further preceded by at,
 			// delete if in R2), otherwise,
 			// if preceded by os, ic or ad, delete if in R2
-			newSuffix, _ := word.RemoveFirstSuffixIfIn(word.R2start, "iv", "os", "ic", "ad")
+			newSuffix := word.RemoveFirstSuffixIfIn(word.R2start, "iv", "os", "ic", "ad")
 			if newSuffix == "iv" {
 				word.RemoveFirstSuffixIfIn(word.R2start, "at")
 			}
@@ -61,7 +63,7 @@ func step1(word *snowballword.SnowballWord) bool {
 	// if they are hit.
 	//
 	compoundReplacement := func(otherSuffixes ...string) bool {
-		word.RemoveLastNRunes(len(suffixRunes))
+		word.RemoveLastNRunes(suffixLength)
 		word.RemoveFirstSuffixIfIn(word.R2start, otherSuffixes...)
 		return true
 	}
@@ -80,7 +82,7 @@ func step1(word *snowballword.SnowballWord) bool {
 	// Simple replacement & deletion cases are all that remain.
 	//
 	simpleReplacement := func(repl string) bool {
-		word.ReplaceSuffixRunes(suffixRunes, []rune(repl), true)
+		word.ReplaceSuffixRunes([]rune(suffix), []rune(repl), true)
 		return true
 	}
 	switch suffix {
@@ -94,7 +96,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		"ismo", "ismos", "able", "ables", "ible", "ibles",
 		"ista", "istas", "oso", "osa", "osos", "osas",
 		"amiento", "amientos", "imiento", "imientos":
-		word.RemoveLastNRunes(len(suffixRunes))
+		word.RemoveLastNRunes(suffixLength)
 		return true
 	}
 

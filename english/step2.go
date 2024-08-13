@@ -1,24 +1,26 @@
 package english
 
 import (
+	"unicode/utf8"
+
 	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 2 is the stemming of various endings found in
 // R1 including "al", "ness", and "li".
-//
 func step2(w *snowballword.SnowballWord) bool {
 
 	// Possible sufficies for this step, longest first.
-	suffix, suffixRunes := w.FirstSuffix(
+	suffix := w.FirstSuffix(
 		"ational", "fulness", "iveness", "ization", "ousness",
 		"biliti", "lessli", "tional", "alism", "aliti", "ation",
 		"entli", "fulli", "iviti", "ousli", "anci", "abli",
 		"alli", "ator", "enci", "izer", "bli", "ogi", "li",
 	)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// If it is not in R1, do nothing
-	if suffix == "" || len(suffixRunes) > len(w.RS)-w.R1start {
+	if suffix == "" || suffixLength > len(w.RS)-w.R1start {
 		return false
 	}
 
@@ -39,7 +41,7 @@ func step2(w *snowballword.SnowballWord) bool {
 		if rsLen >= 3 {
 			switch w.RS[rsLen-3] {
 			case 99, 100, 101, 103, 104, 107, 109, 110, 114, 116:
-				w.RemoveLastNRunes(len(suffixRunes))
+				w.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}
@@ -52,7 +54,7 @@ func step2(w *snowballword.SnowballWord) bool {
 		//
 		rsLen := len(w.RS)
 		if rsLen >= 4 && w.RS[rsLen-4] == 108 {
-			w.ReplaceSuffixRunes(suffixRunes, []rune("og"), true)
+			w.ReplaceSuffixRunes([]rune(suffix), []rune("og"), true)
 		}
 		return true
 	}
@@ -91,7 +93,7 @@ func step2(w *snowballword.SnowballWord) bool {
 	case "lessli":
 		repl = "less"
 	}
-	w.ReplaceSuffixRunes(suffixRunes, []rune(repl), true)
+	w.ReplaceSuffixRunes([]rune(suffix), []rune(repl), true)
 	return true
 
 }

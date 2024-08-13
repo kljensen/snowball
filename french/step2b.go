@@ -1,17 +1,18 @@
 package french
 
 import (
+	"unicode/utf8"
+
 	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 2b is the removal of Verb suffixes in RV
 // that do not begin with "i".
-//
 func step2b(word *snowballword.SnowballWord) bool {
 
 	// Search for the longest among the following suffixes in RV.
 	//
-	suffix, suffixRunes := word.FirstSuffixIn(word.RVstart, len(word.RS),
+	suffix := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"eraIent", "assions", "erions", "assiez", "assent",
 		"èrent", "eront", "erons", "eriez", "erait", "erais",
 		"asses", "antes", "aIent", "âtes", "âmes", "ions",
@@ -20,11 +21,11 @@ func step2b(word *snowballword.SnowballWord) bool {
 		"ez", "er", "as", "ai", "é", "a",
 	)
 
+	suffixLen := utf8.RuneCountInString(suffix)
 	switch suffix {
 	case "ions":
 
 		// Delete if in R2
-		suffixLen := len(suffixRunes)
 		if word.FitsInR2(suffixLen) {
 			word.RemoveLastNRunes(suffixLen)
 			return true
@@ -36,7 +37,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 		"eriez", "erions", "erons", "eront", "ez", "iez":
 
 		// Delete
-		word.RemoveLastNRunes(len(suffixRunes))
+		word.RemoveLastNRunes(suffixLen)
 		return true
 
 	case "âmes", "ât", "âtes", "a", "ai", "aIent",
@@ -44,7 +45,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 		"asse", "assent", "asses", "assiez", "assions":
 
 		// Delete
-		word.RemoveLastNRunes(len(suffixRunes))
+		word.RemoveLastNRunes(suffixLen)
 
 		// If preceded by e (unicode code point 101), delete
 		//

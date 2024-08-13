@@ -1,12 +1,13 @@
 package french
 
 import (
+	"unicode/utf8"
+
 	"github.com/kljensen/snowball/romance"
 	"github.com/kljensen/snowball/snowballword"
 )
 
 // Return `true` if the input `word` is a French stop word.
-//
 func IsStopWord(word string) bool {
 	switch word {
 	case "au", "aux", "avec", "ce", "ces", "dans", "de", "des", "du",
@@ -36,7 +37,6 @@ func IsStopWord(word string) bool {
 }
 
 // Checks if a rune is a lowercase French vowel.
-//
 func isLowerVowel(r rune) bool {
 
 	// The French vowels are "aeiouyâàëéêèïîôûù", which
@@ -53,7 +53,6 @@ func isLowerVowel(r rune) bool {
 // Put into upper case "u" or "i" preceded and followed by a
 // vowel, and "y" preceded or followed by a vowel. "u" after q is
 // also put into upper case.
-//
 func capitalizeYUI(word *snowballword.SnowballWord) {
 
 	// Keep track of vowels that we see
@@ -105,7 +104,6 @@ func capitalizeYUI(word *snowballword.SnowballWord) {
 }
 
 // Find the starting point of the regions R1, R2, & RV
-//
 func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int) {
 
 	// R1 & R2 are defined in the standard manner.
@@ -117,9 +115,9 @@ func findRegions(word *snowballword.SnowballWord) (r1start, r2start, rvstart int
 
 	// Handle the three special cases: "par", "col", & "tap"
 	//
-	prefix, prefixRunes := word.FirstPrefix("par", "col", "tap")
+	prefix := word.FirstPrefix("par", "col", "tap")
 	if prefix != "" {
-		rvstart = len(prefixRunes)
+		rvstart = utf8.RuneCountInString(prefix)
 		return
 	}
 

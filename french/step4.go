@@ -1,12 +1,12 @@
 package french
 
 import (
-	"github.com/kljensen/snowball/snowballword"
 	"log"
+
+	"github.com/kljensen/snowball/snowballword"
 )
 
 // Step 4 is the cleaning up of residual suffixes.
-//
 func step4(word *snowballword.SnowballWord) bool {
 
 	hadChange := false
@@ -37,7 +37,7 @@ func step4(word *snowballword.SnowballWord) bool {
 
 	// Search for the longest among the following suffixes in RV.
 	//
-	suffix, suffixRunes := word.FirstSuffixIn(word.RVstart, len(word.RS),
+	suffix := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"Ière", "ière", "Ier", "ier", "ion", "e", "ë",
 	)
 
@@ -48,11 +48,11 @@ func step4(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R2 and preceded by s or t in RV
 
-		const sLen int = 3 // equivalently, len(suffixRunes)
-		idx := len(word.RS) - sLen - 1
-		if word.FitsInR2(sLen) && idx >= 0 && word.FitsInRV(sLen+1) {
+		const suffixLength int = 3 // equivalently, len(suffixRunes)
+		idx := len(word.RS) - suffixLength - 1
+		if word.FitsInR2(suffixLength) && idx >= 0 && word.FitsInRV(suffixLength+1) {
 			if word.RS[idx] == 115 || word.RS[idx] == 116 {
-				word.RemoveLastNRunes(sLen)
+				word.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}
@@ -60,6 +60,7 @@ func step4(word *snowballword.SnowballWord) bool {
 
 	case "ier", "ière", "Ier", "Ière":
 		// Replace with i
+		suffixRunes := []rune(suffix)
 		word.ReplaceSuffixRunes(suffixRunes, []rune("i"), true)
 		return true
 

@@ -24,7 +24,7 @@ func Test_FirstPrefix(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		prefix, _ := w.FirstPrefix(tc.prefixes...)
+		prefix := w.FirstPrefix(tc.prefixes...)
 		if prefix != tc.prefix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.prefix, prefix)
 		}
@@ -44,7 +44,7 @@ func Test_FirstSuffix(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		suffix, _ := w.FirstSuffix(tc.suffixes...)
+		suffix := w.FirstSuffix(tc.suffixes...)
 		if suffix != tc.suffix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
 		}
@@ -74,7 +74,7 @@ func Test_FirstSuffixIfIn(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		w := New(tc.input)
-		suffix, _ := w.FirstSuffixIfIn(tc.startPos, tc.endPos, tc.suffixes...)
+		suffix := w.FirstSuffixIfIn(tc.startPos, tc.endPos, tc.suffixes...)
 		if suffix != tc.suffix {
 			t.Errorf("Expected \"{%v}\" but got \"{%v}\"", tc.suffix, suffix)
 		}
