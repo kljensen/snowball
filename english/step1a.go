@@ -42,10 +42,10 @@ func step1a(w *snowballword.SnowballWord) bool {
 		// not immediately before the s (so gas and this retain
 		// the s, gaps and kiwis lose it)
 		//
-		sLen := utf8.RuneCountInString(suffix)
+		suffixLength := utf8.RuneCountInString(suffix)
 		for i := 0; i < len(w.RS)-2; i++ {
 			if isLowerVowel(w.RS[i]) {
-				w.RemoveLastNRunes(sLen)
+				w.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}

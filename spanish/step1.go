@@ -21,10 +21,10 @@ func step1(word *snowballword.SnowballWord) bool {
 		"ante", "ador", "able", "oso", "osa", "ivo", "iva",
 		"ico", "ica",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
-	isInR1 := (word.R1start <= len(word.RS)-sLen)
-	isInR2 := (word.R2start <= len(word.RS)-sLen)
+	isInR1 := (word.R1start <= len(word.RS)-suffixLength)
+	isInR2 := (word.R2start <= len(word.RS)-suffixLength)
 
 	// Deal with special cases first.  All of these will
 	// return if they are hit.
@@ -39,7 +39,7 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		if isInR1 {
 			// Delete if in R1
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 
 			// if preceded by iv, delete if in R2 (and if further preceded by at,
 			// delete if in R2), otherwise,
@@ -63,7 +63,7 @@ func step1(word *snowballword.SnowballWord) bool {
 	// if they are hit.
 	//
 	compoundReplacement := func(otherSuffixes ...string) bool {
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 		word.RemoveFirstSuffixIfIn(word.R2start, otherSuffixes...)
 		return true
 	}
@@ -96,7 +96,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		"ismo", "ismos", "able", "ables", "ible", "ibles",
 		"ista", "istas", "oso", "osa", "osos", "osas",
 		"amiento", "amientos", "imiento", "imientos":
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 		return true
 	}
 

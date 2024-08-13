@@ -15,10 +15,10 @@ func step3(w *snowballword.SnowballWord) bool {
 		"iciti", "ical", "ful", "ness",
 	)
 
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// If it is not in R1, do nothing
-	if suffix == "" || sLen > len(w.RS)-w.R1start {
+	if suffix == "" || suffixLength > len(w.RS)-w.R1start {
 		return false
 	}
 
@@ -31,7 +31,7 @@ func step3(w *snowballword.SnowballWord) bool {
 		// If in R2, delete.
 		//
 		if len(w.RS)-w.R2start >= 5 {
-			w.RemoveLastNRunes(sLen)
+			w.RemoveLastNRunes(suffixLength)
 			return true
 		}
 		return false

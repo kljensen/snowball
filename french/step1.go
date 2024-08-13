@@ -20,11 +20,11 @@ func step1(word *snowballword.SnowballWord) bool {
 	if suffix == "" {
 		return false
 	}
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
-	isInR1 := (word.R1start <= len(word.RS)-sLen)
-	isInR2 := (word.R2start <= len(word.RS)-sLen)
-	isInRV := (word.RVstart <= len(word.RS)-sLen)
+	isInR1 := (word.R1start <= len(word.RS)-suffixLength)
+	isInR2 := (word.R2start <= len(word.RS)-suffixLength)
+	isInRV := (word.RVstart <= len(word.RS)-suffixLength)
 
 	// Handle simple replacements & deletions in R2 first
 	if isInR2 {
@@ -47,7 +47,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		// Handle simple deletions in R2
 		switch suffix {
 		case "ance", "iqUe", "isme", "able", "iste", "eux", "ances", "iqUes", "ismes", "ables", "istes":
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 			return true
 		}
 	}
@@ -75,9 +75,9 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		// Delete if preceded by a vowel that is also in RV
 		if suffix == "ment" || suffix == "ments" {
-			idx := len(word.RS) - sLen - 1
+			idx := len(word.RS) - suffixLength - 1
 			if idx >= word.RVstart && isLowerVowel(word.RS[idx]) {
-				word.RemoveLastNRunes(sLen)
+				word.RemoveLastNRunes(suffixLength)
 				return false
 			}
 			return false
@@ -106,7 +106,7 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R2, else replace by eux if in R1
 		if isInR2 {
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 			return true
 		} else if isInR1 {
 			word.ReplaceSuffixRunes([]rune(suffix), []rune("eux"), true)
@@ -117,9 +117,9 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R1 and preceded by a non-vowel
 		if isInR1 {
-			idx := len(word.RS) - sLen - 1
+			idx := len(word.RS) - suffixLength - 1
 			if idx >= 0 && isLowerVowel(word.RS[idx]) == false {
-				word.RemoveLastNRunes(sLen)
+				word.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}
@@ -129,7 +129,7 @@ func step1(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R2
 		if isInR2 {
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 
 			// If preceded by "ic", delete if in R2, else replace by "iqU".
 			newSuffix := word.FirstSuffix("ic")
@@ -149,7 +149,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		if isInRV {
 
 			// Delete if in RV
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 
 			// If preceded by "iv", delete if in R2
 			// (and if further preceded by "at", delete if in R2)
@@ -201,7 +201,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		if isInR2 {
 
 			// Delete if in R2
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 
 			// If preceded by "abil", delete if in R2, else replace by "abl"
 			newSuffix := word.FirstSuffix("abil")
@@ -236,7 +236,7 @@ func step1(word *snowballword.SnowballWord) bool {
 		if isInR2 {
 
 			// Delete if in R2
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 
 			// If preceded by at, delete if in R2
 			newSuffix := word.RemoveFirstSuffixIfIn(word.R2start, "at")

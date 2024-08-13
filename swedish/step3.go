@@ -20,10 +20,10 @@ func step3(w *snowballword.SnowballWord) bool {
 	suffix := w.FirstSuffixIn(w.R1start, len(w.RS),
 		"fullt", "löst", "lig", "els", "ig",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// If it is not in R1, do nothing
-	if suffix == "" || sLen > len(w.RS)-w.R1start {
+	if suffix == "" || suffixLength > len(w.RS)-w.R1start {
 		return false
 	}
 

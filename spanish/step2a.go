@@ -12,10 +12,10 @@ import (
 func step2a(word *snowballword.SnowballWord) bool {
 	suffix := word.FirstSuffixIn(word.RVstart, len(word.RS), "ya", "ye", "yan", "yen", "yeron", "yendo", "yo", "yó", "yas", "yes", "yais", "yamos")
 	if suffix != "" {
-		sLen := utf8.RuneCountInString(suffix)
-		idx := len(word.RS) - sLen - 1
+		suffixLength := utf8.RuneCountInString(suffix)
+		idx := len(word.RS) - suffixLength - 1
 		if idx >= 0 && word.RS[idx] == 117 {
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 			return true
 		}
 	}

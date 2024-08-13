@@ -17,10 +17,10 @@ func step3(word *snowballword.SnowballWord) bool {
 	if suffix == "" {
 		return false
 	}
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// Remove all these suffixes
-	word.RemoveLastNRunes(sLen)
+	word.RemoveLastNRunes(suffixLength)
 
 	if suffix == "e" || suffix == "é" {
 

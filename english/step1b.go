@@ -10,7 +10,7 @@ import (
 func step1b(w *snowballword.SnowballWord) bool {
 
 	suffix := w.FirstSuffix("eedly", "ingly", "edly", "ing", "eed", "ed")
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	switch suffix {
 
@@ -21,14 +21,14 @@ func step1b(w *snowballword.SnowballWord) bool {
 	case "eed", "eedly":
 
 		// Replace by ee if in R1
-		if sLen <= len(w.RS)-w.R1start {
+		if suffixLength <= len(w.RS)-w.R1start {
 			w.ReplaceSuffixRunes([]rune(suffix), []rune("ee"), true)
 		}
 		return true
 
 	case "ed", "edly", "ing", "ingly":
 		hasLowerVowel := false
-		for i := 0; i < len(w.RS)-sLen; i++ {
+		for i := 0; i < len(w.RS)-suffixLength; i++ {
 			if isLowerVowel(w.RS[i]) {
 				hasLowerVowel = true
 				break
@@ -47,7 +47,7 @@ func step1b(w *snowballword.SnowballWord) bool {
 			originalR2start := w.R2start
 
 			// Delete if the preceding word part contains a vowel
-			w.RemoveLastNRunes(sLen)
+			w.RemoveLastNRunes(suffixLength)
 
 			// ...and after the deletion...
 

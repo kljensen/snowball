@@ -48,11 +48,11 @@ func step4(word *snowballword.SnowballWord) bool {
 
 		// Delete if in R2 and preceded by s or t in RV
 
-		const sLen int = 3 // equivalently, len(suffixRunes)
-		idx := len(word.RS) - sLen - 1
-		if word.FitsInR2(sLen) && idx >= 0 && word.FitsInRV(sLen+1) {
+		const suffixLength int = 3 // equivalently, len(suffixRunes)
+		idx := len(word.RS) - suffixLength - 1
+		if word.FitsInR2(suffixLength) && idx >= 0 && word.FitsInRV(suffixLength+1) {
 			if word.RS[idx] == 115 || word.RS[idx] == 116 {
-				word.RemoveLastNRunes(sLen)
+				word.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}

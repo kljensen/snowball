@@ -17,10 +17,10 @@ func step2(w *snowballword.SnowballWord) bool {
 		"entli", "fulli", "iviti", "ousli", "anci", "abli",
 		"alli", "ator", "enci", "izer", "bli", "ogi", "li",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// If it is not in R1, do nothing
-	if suffix == "" || sLen > len(w.RS)-w.R1start {
+	if suffix == "" || suffixLength > len(w.RS)-w.R1start {
 		return false
 	}
 
@@ -41,7 +41,7 @@ func step2(w *snowballword.SnowballWord) bool {
 		if rsLen >= 3 {
 			switch w.RS[rsLen-3] {
 			case 99, 100, 101, 103, 104, 107, 109, 110, 114, 116:
-				w.RemoveLastNRunes(sLen)
+				w.RemoveLastNRunes(suffixLength)
 				return true
 			}
 		}

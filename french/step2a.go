@@ -22,10 +22,10 @@ func step2a(word *snowballword.SnowballWord) bool {
 	)
 
 	if suffix != "" {
-		sLen := utf8.RuneCountInString(suffix)
-		idx := len(word.RS) - sLen - 1
-		if idx >= 0 && word.FitsInRV(sLen+1) && isLowerVowel(word.RS[idx]) == false {
-			word.RemoveLastNRunes(sLen)
+		suffixLength := utf8.RuneCountInString(suffix)
+		idx := len(word.RS) - suffixLength - 1
+		if idx >= 0 && word.FitsInRV(suffixLength+1) && isLowerVowel(word.RS[idx]) == false {
+			word.RemoveLastNRunes(suffixLength)
 			return true
 		}
 	}

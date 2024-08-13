@@ -60,20 +60,20 @@ func removePerfectiveGerundEnding(word *snowballword.SnowballWord) bool {
 	suffix := word.FirstSuffixIn(word.RVstart, len(word.RS),
 		"ившись", "ывшись", "вшись", "ивши", "ывши", "вши", "ив", "ыв", "в",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 	switch suffix {
 	case "в", "вши", "вшись":
 
 		// These are "Group 1" perfective gerund endings.
 		// Group 1 endings must follow а (a) or я (ia) in RV.
-		if precededByARinRV(word, sLen) == false {
+		if precededByARinRV(word, suffixLength) == false {
 			suffix = ""
 		}
 
 	}
 
 	if suffix != "" {
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 		return true
 	}
 	return false
@@ -98,20 +98,20 @@ func removeAdjectivalEnding(word *snowballword.SnowballWord) bool {
 			"ивш", "ывш", "ующ",
 			"ем", "нн", "вш", "ющ", "щ",
 		)
-		sLen := utf8.RuneCountInString(newSuffix)
+		suffixLength := utf8.RuneCountInString(newSuffix)
 
 		switch newSuffix {
 		case "ем", "нн", "вш", "ющ", "щ":
 
 			// These are "Group 1" participle endings.
 			// Group 1 endings must follow а (a) or я (ia) in RV.
-			if precededByARinRV(word, sLen) == false {
+			if precededByARinRV(word, suffixLength) == false {
 				newSuffix = ""
 			}
 		}
 
 		if newSuffix != "" {
-			word.RemoveLastNRunes(sLen)
+			word.RemoveLastNRunes(suffixLength)
 		}
 		return true
 	}
@@ -127,7 +127,7 @@ func removeVerbEnding(word *snowballword.SnowballWord) bool {
 		"ыл", "ую", "уй", "ть", "ны", "но", "на", "ло", "ли", "ла",
 		"ит", "им", "ил", "ет", "ен", "ем", "ей", "ю", "н", "л", "й",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	switch suffix {
 	case "ла", "на", "ете", "йте", "ли", "й", "л", "ем", "н",
@@ -135,14 +135,14 @@ func removeVerbEnding(word *snowballword.SnowballWord) bool {
 
 		// These are "Group 1" verb endings.
 		// Group 1 endings must follow а (a) or я (ia) in RV.
-		if precededByARinRV(word, sLen) == false {
+		if precededByARinRV(word, suffixLength) == false {
 			suffix = ""
 		}
 
 	}
 
 	if suffix != "" {
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 		return true
 	}
 	return false

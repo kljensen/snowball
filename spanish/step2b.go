@@ -25,7 +25,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 		"ada", "aba", "ís", "ía", "ió", "ir", "id", "es", "er", "en",
 		"ed", "as", "ar", "an", "ad",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	switch suffix {
 	case "":
@@ -34,7 +34,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 	case "en", "es", "éis", "emos":
 
 		// Delete, and if preceded by gu delete the u (the gu need not be in RV)
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 		guSuffix := word.FirstSuffix("gu")
 		if guSuffix != "" {
 			word.RemoveLastNRunes(1)
@@ -43,7 +43,7 @@ func step2b(word *snowballword.SnowballWord) bool {
 	default:
 
 		// Delete
-		word.RemoveLastNRunes(sLen)
+		word.RemoveLastNRunes(suffixLength)
 	}
 	return true
 }

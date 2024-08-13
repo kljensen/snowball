@@ -12,7 +12,7 @@ func step0(w *snowballword.SnowballWord) bool {
 	if suffix == "" {
 		return false
 	}
-	sLen := utf8.RuneCountInString(suffix)
-	w.RemoveLastNRunes(sLen)
+	suffixLength := utf8.RuneCountInString(suffix)
+	w.RemoveLastNRunes(suffixLength)
 	return true
 }

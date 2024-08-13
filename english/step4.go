@@ -24,10 +24,10 @@ func step4(w *snowballword.SnowballWord) bool {
 		"ent", "ant", "ism", "ate", "iti", "ous", "ive",
 		"ize", "ion", "al", "er", "ic",
 	)
-	sLen := utf8.RuneCountInString(suffix)
+	suffixLength := utf8.RuneCountInString(suffix)
 
 	// If it does not fit in R2, do nothing.
-	if sLen > len(w.RS)-w.R2start {
+	if suffixLength > len(w.RS)-w.R2start {
 		return false
 	}
 
@@ -43,7 +43,7 @@ func step4(w *snowballword.SnowballWord) bool {
 		if rsLen >= 4 {
 			switch w.RS[rsLen-4] {
 			case 115, 116:
-				w.RemoveLastNRunes(sLen)
+				w.RemoveLastNRunes(suffixLength)
 				return true
 			}
 
@@ -52,7 +52,7 @@ func step4(w *snowballword.SnowballWord) bool {
 	}
 
 	// Handle basic replacements
-	w.RemoveLastNRunes(sLen)
+	w.RemoveLastNRunes(suffixLength)
 	return true
 
 }
