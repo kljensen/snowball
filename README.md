@@ -9,7 +9,7 @@ for natural language processing.
 
 |                      |  Status                   |
 | -------------------- | ------------------------- |
-| Latest release       |  [v0.9.0](https://github.com/kljensen/snowball/tags) (2023-11-14) |
+| Latest release       |  [v0.10.0](https://github.com/kljensen/snowball/tags) (2024-08-13) |
 | Latest build status  |  [![Build](https://github.com/kljensen/snowball/workflows/Build/badge.svg?event=push)](https://github.com/kljensen/snowball/actions)
 | Languages available  |  English, Spanish (español), French (le français), Russian (ру́сский язы́к), Swedish (svenska), Norwegian (norsk), Hungarian (magyar)|
 | License              |  MIT                      |
