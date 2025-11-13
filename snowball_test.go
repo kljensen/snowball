@@ -46,6 +46,23 @@ func Test_Stem(t *testing.T) {
 		{"anticipadas", "spanish", true, "anticip", true},
 		{"goyesca", "spanish", true, "goyesc", true},
 		{"band", "spanish", true, "band", true},
+
+		// German tests
+		{"lesen", "german", true, "les", true},
+		{"strasse", "german", true, "strass", true},
+
+		// Danish tests
+		{"aabenbaringen", "danish", true, "aabenbaring", true},
+		{"abbedisse", "danish", true, "abbediss", true},
+
+		// Other new languages - basic smoke tests
+		{"testing", "italian", true, "testing", true},
+		{"testing", "portuguese", true, "testing", true},
+		{"testing", "dutch", true, "testing", true},
+		{"testing", "finnish", true, "testing", true},
+		{"testing", "turkish", true, "testing", true},
+		{"testing", "romanian", true, "testing", true},
+		{"testing", "polish", true, "testing", true},
 	}
 	for _, testCase := range testCases {
 		out, err := Stem(testCase.in, testCase.language, testCase.stemStopWords)
