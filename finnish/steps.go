@@ -162,14 +162,12 @@ func tidy(word *snowballword.SnowballWord) {
 	}
 
 	// Undouble long vowels (aa, ee, ii, oo, uu, ää, öö)
-	for len(word.RS) >= 2 {
+	if len(word.RS) >= 2 {
 		last2 := string(word.RS[len(word.RS)-2:])
 		if last2 == "aa" || last2 == "ee" || last2 == "ii" ||
 			last2 == "oo" || last2 == "uu" || last2 == "ää" || last2 == "öö" {
 			word.RemoveLastNRunes(1)
-			break
 		}
-		break
 	}
 
 	// Remove trailing a, ä, e, i if preceded by consonant

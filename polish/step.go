@@ -12,12 +12,8 @@ func removeEndings(word *snowballword.SnowballWord) bool {
 		return false
 	}
 
-	removed := false
-
 	// Try conditional suffixes first (conditionals)
-	if removeConditionals(word) {
-		removed = true
-	}
+	removed := removeConditionals(word)
 
 	// Try main suffixes
 	if removeMainSuffixes(word) {

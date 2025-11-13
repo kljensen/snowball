@@ -7,9 +7,10 @@ import (
 func postprocess(word *snowballword.SnowballWord) {
 	// Convert U/I back to u/i
 	for i, r := range word.RS {
-		if r == 'U' {
+		switch r {
+		case 'U':
 			word.RS[i] = 'u'
-		} else if r == 'I' {
+		case 'I':
 			word.RS[i] = 'i'
 		}
 	}

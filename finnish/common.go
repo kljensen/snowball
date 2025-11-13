@@ -15,16 +15,6 @@ func isV1(r rune) bool {
 	return false
 }
 
-// V2: a e i o u ä ö (without y)
-func isV2(r rune) bool {
-	switch r {
-	case 'a', 'e', 'i', 'o', 'u':
-		return true
-	case 0x00E4, 0x00F6: // ä ö
-		return true
-	}
-	return false
-}
 
 // Finnish consonants
 func isConsonant(r rune) bool {
