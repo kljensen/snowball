@@ -15,9 +15,12 @@ func Stem(word string, stemStopWords bool) string {
 	}
 
 	w := snowballword.New(word)
-	
-	// TODO: Implement stemming steps
-	_ = w
-	
-	return word
+
+	// Stemming steps
+	preprocess(w)
+	step0(w)
+	step1(w)
+	postprocess(w)
+
+	return w.String()
 }
