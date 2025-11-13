@@ -15,9 +15,24 @@ func Stem(word string, stemStopWords bool) string {
 	}
 
 	w := snowballword.New(word)
-	
-	// TODO: Implement stemming steps
-	_ = w
-	
-	return word
+
+	// Mark regions
+	markRegions(w)
+
+	// Apply stemming steps
+	endingRemoved = false
+	particleEtc(w)
+	possessive(w)
+	caseEnding(w)
+	otherEndings(w)
+
+	if endingRemoved {
+		iPlural(w)
+	} else {
+		tPlural(w)
+	}
+
+	tidy(w)
+
+	return w.String()
 }

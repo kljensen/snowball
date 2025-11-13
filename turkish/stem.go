@@ -15,9 +15,14 @@ func Stem(word string, stemStopWords bool) string {
 	}
 
 	w := snowballword.New(word)
-	
-	// TODO: Implement stemming steps
-	_ = w
-	
-	return word
+
+	// Mark regions
+	markRegions(w)
+
+	// Apply stemming steps
+	nominalVerbSuffixes(w)
+	nounSuffixes(w)
+	derivationalSuffixes(w)
+
+	return w.String()
 }
