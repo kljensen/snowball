@@ -10,7 +10,7 @@ import (
 func Stem(word string, stemStopWords bool) string {
 	word = strings.ToLower(strings.TrimSpace(word))
 
-	if len(word) <= 2 || (stemStopWords == false && IsStopWord(word)) {
+	if len(word) <= 2 || (!stemStopWords && IsStopWord(word)) {
 		return word
 	}
 
