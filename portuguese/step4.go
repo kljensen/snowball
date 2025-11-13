@@ -11,7 +11,7 @@ func step4(word *snowballword.SnowballWord) {
 	)
 
 	if suffix != "" {
-		word.RemoveLastNRunes(len(suffix))
+		word.RemoveLastNRunes(len([]rune(suffix)))
 
 		// If removed 'e' or 'ê' or 'é', and preceded by 'gu' or 'ci', remove the 'u' or 'i'
 		if len(word.RS) >= 2 {

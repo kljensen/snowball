@@ -58,8 +58,9 @@ func step2(word *snowballword.SnowballWord) bool {
 	}
 
 	// Delete if in RV
-	if word.RVstart <= len(word.RS)-len(suffix) {
-		word.RemoveLastNRunes(len(suffix))
+	suffixLen := len([]rune(suffix))
+	if word.RVstart <= len(word.RS)-suffixLen {
+		word.RemoveLastNRunes(suffixLen)
 		return true
 	}
 

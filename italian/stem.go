@@ -15,9 +15,13 @@ func Stem(word string, stemStopWords bool) string {
 	}
 
 	w := snowballword.New(word)
-	
-	// TODO: Implement stemming steps
-	_ = w
-	
-	return word
+
+	// Stem the word
+	preprocess(w)
+	step0(w) // attached pronouns
+	step1(w) // standard suffixes or verb suffixes
+	step2(w) // final vowel suffixes
+	postprocess(w)
+
+	return w.String()
 }

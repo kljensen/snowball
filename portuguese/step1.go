@@ -37,7 +37,7 @@ func step1(word *snowballword.SnowballWord) bool {
 			// If preceded by 'at' in R2, delete
 			word.RemoveFirstSuffixIfIn(word.R2start, "at")
 		} else if suffix2 != "" {
-			word.RemoveLastNRunes(len(suffix2))
+			word.RemoveLastNRunes(len([]rune(suffix2)))
 		}
 		return true
 
@@ -51,31 +51,34 @@ func step1(word *snowballword.SnowballWord) bool {
 		return true
 
 	case "idade", "idades":
-		if word.R2start > len(word.RS)-len(suffix) {
+		suffixLen := len([]rune(suffix))
+		if word.R2start > len(word.RS)-suffixLen {
 			return false
 		}
-		word.RemoveLastNRunes(len(suffix))
+		word.RemoveLastNRunes(suffixLen)
 		// Try deleting abil/ic/iv in R2
 		word.RemoveFirstSuffixIfIn(word.R2start, "abil", "ic", "iv")
 		return true
 
 	case "iva", "ivo", "ivas", "ivos":
-		if word.R2start > len(word.RS)-len(suffix) {
+		suffixLen := len([]rune(suffix))
+		if word.R2start > len(word.RS)-suffixLen {
 			return false
 		}
-		word.RemoveLastNRunes(len(suffix))
+		word.RemoveLastNRunes(suffixLen)
 		// Try deleting 'at' in R2
 		word.RemoveFirstSuffixIfIn(word.R2start, "at")
 		return true
 
 	case "ira", "iras":
 		// Delete if in RV and preceded by 'e'
-		idx := len(word.RS) - len(suffix)
+		suffixLen := len([]rune(suffix))
+		idx := len(word.RS) - suffixLen
 		if word.RVstart > idx {
 			return false
 		}
 		if idx > 0 && word.RS[idx-1] == 'e' {
-			word.RemoveLastNRunes(len(suffix))
+			word.RemoveLastNRunes(suffixLen)
 			word.ReplaceSuffixRunes([]rune("e"), []rune("ir"), true)
 			return true
 		}
@@ -83,10 +86,11 @@ func step1(word *snowballword.SnowballWord) bool {
 
 	default:
 		// All other suffixes: delete if in R2
-		if word.R2start > len(word.RS)-len(suffix) {
+		suffixLen := len([]rune(suffix))
+		if word.R2start > len(word.RS)-suffixLen {
 			return false
 		}
-		word.RemoveLastNRunes(len(suffix))
+		word.RemoveLastNRunes(suffixLen)
 		return true
 	}
 }
