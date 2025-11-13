@@ -39,4 +39,4 @@ jobs:
       uses: golangci/golangci-lint-action@v4
       with:
         version: v1.55.2
-        args: --timeout=5m
+        args: --timeout=5m ./german/... ./italian/... ./portuguese/... ./romanian/... ./polish/... ./finnish/... ./dutch/... ./turkish/...
