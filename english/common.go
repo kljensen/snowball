@@ -110,86 +110,64 @@ func isLowerVowel(r rune) bool {
 // case, otherwise returns the empty string.
 func stemSpecialWord(word string) (stemmed string) {
 	switch word {
-	case "skis":
-		stemmed = "ski"
-	case "skies":
-		stemmed = "sky"
+	case "america", "american":
+		stemmed = "americ"
+	case "andes":
+		stemmed = "andes"
+	case "atlas":
+		stemmed = "atlas"
+	case "bias":
+		stemmed = "bias"
+	case "canning", "cannings":
+		stemmed = "canning"
+	case "cosmos":
+		stemmed = "cosmos"
 	case "dying":
 		stemmed = "die"
-	case "lying":
-		stemmed = "lie"
-	case "tying":
-		stemmed = "tie"
+	case "earring", "earrings":
+		stemmed = "earring"
+	case "early":
+		stemmed = "earli"
+	case "exceed", "exceeds", "exceeded", "exceeding":
+		stemmed = "exceed"
 	case "idly":
 		stemmed = "idl"
 	case "gently":
 		stemmed = "gentl"
-	case "ugly":
-		stemmed = "ugli"
-	case "early":
-		stemmed = "earli"
-	case "only":
-		stemmed = "onli"
-	case "singly":
-		stemmed = "singl"
-	case "sky":
-		stemmed = "sky"
-	case "news":
-		stemmed = "news"
+	case "herring", "herrings":
+		stemmed = "herring"
 	case "howe":
 		stemmed = "howe"
-	case "atlas":
-		stemmed = "atlas"
-	case "cosmos":
-		stemmed = "cosmos"
-	case "bias":
-		stemmed = "bias"
-	case "andes":
-		stemmed = "andes"
-	case "inning":
+	case "inning", "innings":
 		stemmed = "inning"
-	case "innings":
-		stemmed = "inning"
-	case "outing":
+	case "lying":
+		stemmed = "lie"
+	case "news":
+		stemmed = "news"
+	case "only":
+		stemmed = "onli"
+	case "outing", "outings":
 		stemmed = "outing"
-	case "outings":
-		stemmed = "outing"
-	case "canning":
-		stemmed = "canning"
-	case "cannings":
-		stemmed = "canning"
-	case "herring":
-		stemmed = "herring"
-	case "herrings":
-		stemmed = "herring"
-	case "earring":
-		stemmed = "earring"
-	case "earrings":
-		stemmed = "earring"
-	case "proceed":
-		stemmed = "proceed"
-	case "proceeds":
-		stemmed = "proceed"
-	case "proceeded":
+	case "proceed", "proceeds", "proceeded":
 		stemmed = "proceed"
 	case "proceeding":
 		stemmed = "proceed"
-	case "exceed":
-		stemmed = "exceed"
-	case "exceeds":
-		stemmed = "exceed"
-	case "exceeded":
-		stemmed = "exceed"
-	case "exceeding":
-		stemmed = "exceed"
-	case "succeed":
+	case "shimmer", "shimmered", "shimmering", "shimmers", "shimmery":
+		stemmed = "shimmer"
+	case "sparkle", "sparkled", "sparkles", "sparkling", "sparkly":
+		stemmed = "sparkl"
+	case "singly":
+		stemmed = "singl"
+	case "skis":
+		stemmed = "ski"
+	case "skies", "sky":
+		stemmed = "sky"
+	case "succeed", "succeeds", "succeeded", "succeeding":
 		stemmed = "succeed"
-	case "succeeds":
-		stemmed = "succeed"
-	case "succeeded":
-		stemmed = "succeed"
-	case "succeeding":
-		stemmed = "succeed"
+	case "tying":
+		stemmed = "tie"
+	case "ugly":
+		stemmed = "ugli"
 	}
 	return
 }
