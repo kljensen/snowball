@@ -134,7 +134,8 @@ func step2(w *snowballword.SnowballWord) {
 		rs := runesOf(suffix)
 		// delete if in R1
 		w.RemoveLastNRunes(len(rs))
-		if len(w.RS) == 0 {
+		// the á or é must itself be in R1
+		if len(w.RS) == 0 || len(w.RS)-1 < w.R1start {
 			return
 		}
 		switch w.RS[len(w.RS)-1] {
@@ -190,20 +191,18 @@ func step3(w *snowballword.SnowballWord) {
 //
 // replace with e if in R1
 func step4(w *snowballword.SnowballWord) {
-	if suffix := firstSuffixInR1(w, []string{"ástul"}); suffix != "" {
+	switch suffix := firstSuffixInR1(w, []string{
+		"ástul", "éstül", "astul", "estül", "stul", "stül",
+	}); suffix {
+	case "":
+	case "ástul":
 		w.RemoveLastNRunes(4)
 		w.RS[len(w.RS)-1] = 'a'
-		return
-	}
-	if suffix := firstSuffixInR1(w, []string{"éstül"}); suffix != "" {
+	case "éstül":
 		w.RemoveLastNRunes(4)
 		w.RS[len(w.RS)-1] = 'e'
-		return
-	}
-	// astul   estül   stul   stül
-	if suffix := firstSuffixInR1(w, []string{"astul", "estül", "stul", "stül"}); suffix != "" {
+	default:
 		w.RemoveLastNRunes(len(runesOf(suffix)))
-		return
 	}
 }
 
@@ -222,7 +221,7 @@ func step5(w *snowballword.SnowballWord) {
 	}
 	// (In the case of consonant plus digraph, such as ccs, remove a c).
 	if n >= 4 && isDoubleConsonant(w.RS[n-4:n-1]) > 2 {
-		w.RS[n-4], w.RS[n-3] = w.RS[n-3], w.RS[n-1]
+		w.RS[n-4], w.RS[n-3] = w.RS[n-3], w.RS[n-2]
 		w.RemoveLastNRunes(2)
 	} else if isDoubleConsonant(w.RS[n-3:n-1]) > 1 {
 		// preceded by a double consonant
@@ -381,11 +380,18 @@ func step9(w *snowballword.SnowballWord) {
 	}
 }
 
+// firstSuffixInR1 finds the longest suffix of w among suffixes (which must be
+// ordered longest first) and returns it if it lies in R1. Like Snowball's
+// `[substring] R1 among(...)`, it does not fall back to a shorter suffix
+// when the longest match starts before R1.
 func firstSuffixInR1(w *snowballword.SnowballWord, suffixes []string) string {
 	for _, suffix := range suffixes {
 		rs := runesOf(suffix)
-		if len(w.RS)-w.R1start >= len(rs) && w.HasSuffixRunes(rs) {
-			return suffix
+		if w.HasSuffixRunes(rs) {
+			if len(w.RS)-w.R1start >= len(rs) {
+				return suffix
+			}
+			return ""
 		}
 	}
 	return ""

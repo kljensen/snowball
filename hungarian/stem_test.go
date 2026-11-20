@@ -36,6 +36,18 @@ func TestStem(t *testing.T) {
 	for k, want := range map[string]string{
 		"fiaiéi": "fi",
 		"megkelkáposztásíthatatlanságoskodásaitokért": "megkelkáposztásíthatatlanságoskodás",
+		// The longest matching suffix starts before R1, so nothing is
+		// removed; a shorter suffix in R1 must not be tried instead.
+		"bomba":    "bom",
+		"bért":     "bért",
+		"jön":      "jön",
+		"kft.-ben": "kft.-ben",
+		// á/é left by a removed case suffix is only shortened in R1.
+		"kára": "ká",
+		"lébe": "lé",
+		// Factive case after a double digraph keeps the digraph.
+		"keménnyé":          "kemény",
+		"költséghatékonnyá": "költséghatékony",
 	} {
 		if got := Stem(k, false); got != want {
 			t.Errorf("%q: got %q, wanted %q", k, got, want)
